@@ -11,8 +11,10 @@ import com.aurora.auroralib.ExtractedText;
 import com.aurora.basicprocessor.basicpluginobject.BasicPluginObject;
 import com.aurora.basicprocessor.facade.BasicProcessorCommunicator;
 
+/**
+ * TODO: Document class and variables
+ */
 public class MainActivity extends AppCompatActivity {
-    //private static final BasicProcessorCommunicator mProcessorCommunicator = new BasicProcessorCommunicator();
     private TextView mTextView;
     private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
 
@@ -32,21 +34,15 @@ public class MainActivity extends AppCompatActivity {
             if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_TEXT)) {
                 String inputText = intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_TEXT);
                 basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
-            }
-
-            if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
+            } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
                 String inputTextJSON = intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT);
                 ExtractedText inputText = ExtractedText.fromJson(inputTextJSON);
                 basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
+            } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)) {
+                // TODO handle a PluginObject that was cached
             }
 
-
-            // TODO handle a PluginObject that was cached
-            else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)){
-
-            }
-
-            if (basicPluginObject != null){
+            if (basicPluginObject != null) {
                 String result = basicPluginObject.getResult();
                 mTextView.setText(result);
             }

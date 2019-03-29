@@ -1,4 +1,4 @@
-package com.aurora.basicprocessor.basicpluginobject;
+package com.aurora.paperviewerprocessor.basicpluginobject;
 
 import org.junit.Test;
 

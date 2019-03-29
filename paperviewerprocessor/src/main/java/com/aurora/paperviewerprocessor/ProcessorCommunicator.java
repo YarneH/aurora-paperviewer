@@ -1,4 +1,4 @@
-package com.aurora.basicprocessor;
+package com.aurora.paperviewerprocessor;
 
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.PluginObject;

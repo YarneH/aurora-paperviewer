@@ -1,4 +1,4 @@
-package com.aurora.basicprocessor;
+package com.aurora.paperviewerprocessor;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

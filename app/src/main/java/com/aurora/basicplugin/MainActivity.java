@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         // Default constructor
     }
 
-    private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
-
     /**
      * Called upon creation of this activity. See android lifecycle for more info.
      *

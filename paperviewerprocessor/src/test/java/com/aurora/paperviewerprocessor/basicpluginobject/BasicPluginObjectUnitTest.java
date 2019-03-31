@@ -2,7 +2,7 @@ package com.aurora.paperviewerprocessor.basicpluginobject;
 
 import org.junit.Test;
 
-public class BasicPluginObjectTest {
+public class BasicPluginObjectUnitTest {
 
     @Test
     public void BasicPluginObject_Gson(){

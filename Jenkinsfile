@@ -29,9 +29,11 @@ pipeline {
                 script {
                     // Compile and run the unit tests for the app and its dependencies
                     if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'dev') {
-                        sh './gradlew testReleaseUnitTest'
+                        sh "./gradlew testReleaseUnitTest --tests '*UnitTest'"
+                        sh "./gradlew paperviewerprocessor:testReleaseUnitTest --tests '*UnitTest'"
                     } else {
-                        sh './gradlew testDebugUnitTest'
+                        sh "./gradlew testDebugUnitTest --tests '*UnitTest'"
+                        sh "./gradlew paperviewerprocessor:testDebugUnitTest --tests '*UnitTest'"
                     }
 
 
@@ -90,6 +92,64 @@ pipeline {
             }
         } // SonarQube stage
 
+        stage('Long Unit Tests') {
+            steps {
+                script {
+                    // Compile and run the unit tests for the app and its dependencies
+                    if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'dev') {
+                        sh "./gradlew testReleaseUnitTest --tests '*LongTest'"
+                        sh "./gradlew paperviewerprocessor:testReleaseUnitTest --tests '*LongTest'"
+                    } else {
+                        sh "./gradlew testDebugUnitTest --tests '*LongTest'"
+                        sh "./gradlew paperviewerprocessor:testDebugUnitTest --tests '*LongTest'"
+                    }
+
+
+                    // Analyse the test results and update the build result as appropriate
+                    junit allowEmptyResults: true, testResults: '**/TEST-*.xml'
+
+                    // Analyze coverage info
+                    jacoco sourcePattern: '**/src/main/java/com/aurora', 
+                        classPattern: '**/classes/com/aurora', 
+                        exclusionPattern: '**/*Test*.class,  **/souschef/*.class, **/R.class, **/R$*.class, **/BuildConfig'
+                }
+            }
+            post {
+                failure {
+                    slack_error_long_test()
+                }
+            }
+        } // Long Unit Tests stage
+
+        stage('Integration Tests') {
+            steps {
+                script {
+                    // Compile and run the unit tests for the app and its dependencies
+                    if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'dev') {
+                        sh "./gradlew testReleaseUnitTest --tests '*IntegTest'"
+                        sh "./gradlew paperviewerprocessor:testReleaseUnitTest --tests '*IntegTest'"
+                    } else {
+                        sh "./gradlew testDebugUnitTest --tests '*IntegTest'"
+                        sh "./gradlew paperviewerprocessor:testDebugUnitTest --tests '*IntegTest'"
+                    }
+
+
+                    // Analyse the test results and update the build result as appropriate
+                    junit allowEmptyResults: true, testResults: '**/TEST-*.xml'
+
+                    // Analyze coverage info
+                    jacoco sourcePattern: '**/src/main/java/com/aurora', 
+                        classPattern: '**/classes/com/aurora', 
+                        exclusionPattern: '**/*Test*.class,  **/souschef/*.class, **/R.class, **/R$*.class, **/BuildConfig'
+                }
+            }
+            post {
+                failure {
+                    slack_error_integration_test()
+                }
+            }
+        }
+
         stage('Javadoc') {
             when {
                 anyOf {
@@ -136,6 +196,20 @@ def slack_error_build() {
  */
 def slack_error_test() {
     slack_report(false, ':x: Tests failed', null, 'Unit Test')
+}
+
+/**
+ * Gets called when the long running unit tests fail
+ */
+def slack_error_long_test() {
+    slack_report(false, ':x: Long Unit Tests failed', null, 'Long Unit Tests')
+}
+
+/**
+ * Gets called when the integration test fail
+ */
+def slack_error_integration_test() {
+    slack_report(false, ':x: Integration tests failed', null, 'Integration Tests')
 }
 
 /**

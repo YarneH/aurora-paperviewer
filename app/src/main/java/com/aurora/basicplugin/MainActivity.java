@@ -12,9 +12,12 @@ import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
 import com.aurora.paperviewerprocessor.facade.BasicProcessorCommunicator;
 
 public class MainActivity extends AppCompatActivity {
-    //private static final BasicProcessorCommunicator mProcessorCommunicator = new BasicProcessorCommunicator();
-    private TextView mTextView;
+    private TextView mTextView = null;
     private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
+
+    public MainActivity() {
+        // Default constructor
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,22 +31,24 @@ public class MainActivity extends AppCompatActivity {
 
             BasicPluginObject basicPluginObject = null;
 
-            // TODO remove this if statement probably. Is currently used to handle cases where a plain String is sent instead of an ExtractedText
+            // TODO remove this if statement probably.
+            // TODO Is currently used to handle cases where a plain String is sent instead of an ExtractedText
             if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_TEXT)) {
-                String inputText = intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_TEXT);
+                String inputText =
+                        intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_TEXT);
                 basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
             }
 
             if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
-                String inputTextJSON = intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT);
+                String inputTextJSON =
+                        intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT);
                 ExtractedText inputText = ExtractedText.fromJson(inputTextJSON);
                 basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
             }
 
-
             // TODO handle a PluginObject that was cached
             else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)){
-
+                ;
             }
 
             if (basicPluginObject != null){

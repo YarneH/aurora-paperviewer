@@ -66,29 +66,5 @@ public class SectionFragment extends Fragment{
         return sectionView;
     }
 
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections.
-     */
-    public class SectionPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return SectionFragment.newInstance(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mPaper.getSections().size();
-        }
-
-    }
 }
 

@@ -44,7 +44,7 @@ public class Paper extends PluginObject {
         // Dummy data
         List<Section> sections = new ArrayList<>();
         Section sect1 = new Section("Introduction", "Software security is becoming " +
-                "increasingly more im-portant. With the Internet of Things, more and moredevices are connected " +
+                "increasingly more important. With the Internet of Things, more and more devices are connected " +
                 "to the internet. Usually, program-mers use low-level languages like C or C++ to programthese devices." +
                 " However, these languages do not providemany  security  guarantees,  which  makes  many  of  the devices" +
                 " prone to bugs and vulnerabilities.Software testing and finding bugs has been a manualtask for a long time, " +

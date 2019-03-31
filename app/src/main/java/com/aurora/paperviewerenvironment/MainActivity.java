@@ -141,8 +141,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            // getItem is called to instantiate the fragment for the given section/abstract
+            if(position == 0 && mPaper.getAbstract() != null) {
+                AbstractFragment abstractFragment = AbstractFragment.newInstance();
+                abstractFragment.setPaper(mPaper);
+                return abstractFragment;
+            }
             SectionFragment sectionFragment = SectionFragment.newInstance(position);
             sectionFragment.setPaper(mPaper);
             return sectionFragment;
@@ -153,4 +157,5 @@ public class MainActivity extends AppCompatActivity {
             return mPaper.getSections().size();
         }
     }
+
 }

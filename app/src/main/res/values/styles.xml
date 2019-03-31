@@ -30,4 +30,9 @@
         <item name="android:typeface">sans</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="AbstractContent">
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

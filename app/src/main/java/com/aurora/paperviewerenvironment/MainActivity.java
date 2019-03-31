@@ -1,17 +1,23 @@
-package com.aurora.basicplugin;
+package com.aurora.paperviewerenvironment;
 
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
 import com.aurora.paperviewerprocessor.facade.BasicProcessorCommunicator;
+import com.aurora.paperviewerprocessor.paper.Paper;
 
 import java.util.Objects;
 
@@ -26,7 +32,12 @@ import java.util.Objects;
  * </p>
  */
 public class MainActivity extends AppCompatActivity {
+
     private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
+
+    private Toolbar toolbar;
+    private SectionPagerAdapter mSectionPagerAdapter;
+    private ViewPager mViewPager;
 
     public MainActivity() {
         // Default constructor
@@ -42,9 +53,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TODO load the paper with appropriate background loading similar to souschef
+        Paper paper = new Paper();
+
         // Set the toolbar as supportActionBar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Create the adapter for loading the correct section fragment
+        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);
+
+        // Set up the ViewPager with the section adapter
+        mViewPager = (ViewPager) findViewById(R.id.vp_sections);
+        mViewPager.setAdapter(mSectionPagerAdapter);
+        mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
 
         // Below is the code used to handle communication with aurora and plugins.
         Intent intentThatStartedThisActivity = getIntent();
@@ -102,5 +124,33 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections of the paper
+     */
+    public class SectionPagerAdapter extends FragmentPagerAdapter {
+
+        private Paper mPaper;
+
+        public SectionPagerAdapter(FragmentManager fm, Paper paper) {
+            super(fm);
+            this.mPaper = paper;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            SectionFragment sectionFragment = SectionFragment.newInstance(position);
+            sectionFragment.setPaper(mPaper);
+            return sectionFragment;
+        }
+
+        @Override
+        public int getCount() {
+            return mPaper.getSections().size();
+        }
     }
 }

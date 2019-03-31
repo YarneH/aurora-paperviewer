@@ -142,10 +142,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given section/abstract
-            if(position == 0 && mPaper.getAbstract() != null) {
-                AbstractFragment abstractFragment = AbstractFragment.newInstance();
-                abstractFragment.setPaper(mPaper);
-                return abstractFragment;
+            if(mPaper.getAbstract() != null){
+                if(position == 0){
+                    AbstractFragment abstractFragment = AbstractFragment.newInstance();
+                    abstractFragment.setPaper(mPaper);
+                    return abstractFragment;
+                }
+                SectionFragment sectionFragment = SectionFragment.newInstance(position-1);
+                sectionFragment.setPaper(mPaper);
+                return sectionFragment;
             }
             SectionFragment sectionFragment = SectionFragment.newInstance(position);
             sectionFragment.setPaper(mPaper);
@@ -154,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
+            if(mPaper.getAbstract() != null){
+                return (1 + mPaper.getSections().size());
+            }
             return mPaper.getSections().size();
         }
     }

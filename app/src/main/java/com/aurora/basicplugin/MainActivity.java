@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
@@ -69,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (basicPluginObject != null) {
-                String result = basicPluginObject.getResult();
+                ;
                 // TODO: use the resulting information.
+                // String result = basicPluginObject.getResult();
             }
         }
     }
@@ -98,9 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        if (id == R.id.action_search) {
-            return true;
-        } else if (id == R.id.action_overview) {
+        if (id == R.id.action_search || id == R.id.action_overview) {
             return true;
         }
         return super.onOptionsItemSelected(item);

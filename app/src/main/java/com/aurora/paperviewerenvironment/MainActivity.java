@@ -2,6 +2,7 @@ package com.aurora.paperviewerenvironment;
 
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,9 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
@@ -56,6 +62,15 @@ public class MainActivity extends AppCompatActivity {
         // TODO load the paper with appropriate background loading similar to souschef
         Paper paper = new Paper();
 
+        // TODO: Load actual images. These are dummy.
+//        LayoutInflater inflater = LayoutInflater.from(this);
+//        LinearLayout gallery = findViewById(R.id.ll_gallery);
+//        View view = inflater.inflate(R.layout.gallery_item, gallery, false);
+//        ImageView img = view.findViewById(R.id.iv_gallery_image);
+//        img.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.woods));
+//        img.setMinimumHeight(50);
+//        gallery.addView(view);
+
         // Set the toolbar as supportActionBar
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -83,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_TEXT);
                 basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
             } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
-                String inputTextJSON = 
+                String inputTextJSON =
                         intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT);
                 ExtractedText inputText = ExtractedText.fromJson(inputTextJSON);
                 basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
@@ -124,15 +139,17 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_search || id == R.id.action_overview) {
             return true;
+        } else if (id == R.id.action_images) {
+            HorizontalScrollView hsv = this.findViewById(R.id.include_image_gallery);
+            if (hsv.getVisibility() == View.VISIBLE) {
+                hsv.setVisibility(View.GONE);
+            } else {
+                hsv.setVisibility(View.VISIBLE);
+            }
+            Log.d(MainActivity.class.getSimpleName(), "" + hsv.getVisibility());
         }
         // Handle navigation to other section from the toolbar
         int currSection = mViewPager.getCurrentItem();
-        if(id == R.id.action_nav_left && currSection > 0) {
-            mViewPager.setCurrentItem(currSection - 1);
-        }
-        if(id == R.id.action_nav_right && currSection+1 < mSectionPagerAdapter.getCount()) {
-            mViewPager.setCurrentItem(currSection + 1);
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -154,13 +171,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             this.mPosition = position;
             // getItem is called to instantiate the fragment for the given section/abstract
-            if(mPaper.getAbstract() != null){
-                if(position == 0){
+            if (mPaper.getAbstract() != null) {
+                if (position == 0) {
                     AbstractFragment abstractFragment = AbstractFragment.newInstance();
                     abstractFragment.setPaper(mPaper);
                     return abstractFragment;
                 }
-                SectionFragment sectionFragment = SectionFragment.newInstance(position-1);
+                SectionFragment sectionFragment = SectionFragment.newInstance(position - 1);
                 sectionFragment.setPaper(mPaper);
                 return sectionFragment;
             }
@@ -171,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            if(mPaper.getAbstract() != null){
+            if (mPaper.getAbstract() != null) {
                 return (1 + mPaper.getSections().size());
             }
             return mPaper.getSections().size();

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Coordinator layout is necessary when using AppBarLayout. Will not work otherwise. -->
+<?xml version="1.0" encoding="utf-8"?><!-- Coordinator layout is necessary when using AppBarLayout. Will not work otherwise. -->
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,13 +23,35 @@
     </android.support.design.widget.AppBarLayout>
 
     <!-- Content of the view here. -->
-
-    <!-- ViewPager for sections of the paper -->
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_sections"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </android.support.v4.view.ViewPager>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/include_image_gallery"
+                layout="@layout/image_gallery"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- ViewPager for sections of the paper -->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_sections"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/include_image_gallery" />
+
+        </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+    <!-- image scroll bar -->
 
 </android.support.design.widget.CoordinatorLayout>

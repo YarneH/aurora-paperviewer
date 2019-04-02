@@ -1,9 +1,13 @@
 <resources>
     <!-- Application name -->
     <string name="app_name">Paperviewer</string>
-
     <!-- Action bar menu items -->
     <string name="overview">Sections overview</string>
     <string name="search">Search</string>
+    <string name="nav_left">Section to the left</string>
+    <string name="nav_right">Section to the right</string>
+
+    <!-- Scrolling behavior -->
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
 </resources>

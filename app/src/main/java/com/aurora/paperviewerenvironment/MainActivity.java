@@ -1,17 +1,23 @@
-package com.aurora.basicplugin;
+package com.aurora.paperviewerenvironment;
 
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
 import com.aurora.paperviewerprocessor.facade.BasicProcessorCommunicator;
+import com.aurora.paperviewerprocessor.paper.Paper;
 
 import java.util.Objects;
 
@@ -26,7 +32,12 @@ import java.util.Objects;
  * </p>
  */
 public class MainActivity extends AppCompatActivity {
+
     private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
+
+    private Toolbar mToolbar;
+    private SectionPagerAdapter mSectionPagerAdapter;
+    private ViewPager mViewPager;
 
     public MainActivity() {
         // Default constructor
@@ -42,9 +53,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TODO load the paper with appropriate background loading similar to souschef
+        Paper paper = new Paper();
+
         // Set the toolbar as supportActionBar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        // Disable the display of the app title in the toolbar
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // Create the adapter for loading the correct section fragment
+        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);
+
+        // Set up the ViewPager with the section adapter
+        mViewPager = (ViewPager) findViewById(R.id.vp_sections);
+        mViewPager.setAdapter(mSectionPagerAdapter);
+        mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
 
         // Below is the code used to handle communication with aurora and plugins.
         Intent intentThatStartedThisActivity = getIntent();
@@ -101,6 +125,57 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search || id == R.id.action_overview) {
             return true;
         }
+        // Handle navigation to other section from the toolbar
+        int currSection = mViewPager.getCurrentItem();
+        if(id == R.id.action_nav_left && currSection > 0) {
+            mViewPager.setCurrentItem(currSection - 1);
+        }
+        if(id == R.id.action_nav_right && currSection+1 < mSectionPagerAdapter.getCount()) {
+            mViewPager.setCurrentItem(currSection + 1);
+        }
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections of the paper
+     */
+    public class SectionPagerAdapter extends FragmentPagerAdapter {
+
+        private Paper mPaper;
+        private int mPosition;
+
+        public SectionPagerAdapter(FragmentManager fm, Paper paper) {
+            super(fm);
+            this.mPaper = paper;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            this.mPosition = position;
+            // getItem is called to instantiate the fragment for the given section/abstract
+            if(mPaper.getAbstract() != null){
+                if(position == 0){
+                    AbstractFragment abstractFragment = AbstractFragment.newInstance();
+                    abstractFragment.setPaper(mPaper);
+                    return abstractFragment;
+                }
+                SectionFragment sectionFragment = SectionFragment.newInstance(position-1);
+                sectionFragment.setPaper(mPaper);
+                return sectionFragment;
+            }
+            SectionFragment sectionFragment = SectionFragment.newInstance(position);
+            sectionFragment.setPaper(mPaper);
+            return sectionFragment;
+        }
+
+        @Override
+        public int getCount() {
+            if(mPaper.getAbstract() != null){
+                return (1 + mPaper.getSections().size());
+            }
+            return mPaper.getSections().size();
+        }
+    }
+
 }

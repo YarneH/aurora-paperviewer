@@ -1,4 +1,4 @@
-package com.aurora.basicplugin;
+package com.aurora.paperviewerenvironment;
 
 import org.junit.Test;
 

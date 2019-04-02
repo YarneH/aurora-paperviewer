@@ -15,11 +15,11 @@ public class Section {
         this.mMarkedText = new ArrayList<>();
     }
 
-    public String getmHeader() {
+    public String getHeader() {
         return mHeader;
     }
 
-    public String getmContent() {
+    public String getContent() {
         return mContent;
     }
 

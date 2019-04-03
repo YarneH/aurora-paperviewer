@@ -25,6 +25,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * fragment.
      */
     private static final String ARG_SECTION_INDEX = "section_number";
+    private static final int PREV_OFFSET = 1;
+    private static final int NEXT_OFFSET = 1;
+    private static final int ABSTRACT_SIZE = 1;
 
     private Paper mPaper;
 
@@ -85,16 +88,14 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         if(canNavigateLeft(sectionIndex)){
             mBtnTopNavLeft.setVisibility(View.VISIBLE);
             mBtnBottomNavLeft.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else{
             mBtnTopNavLeft.setVisibility(View.INVISIBLE);
             mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
         }
         if(canNavigateRight(sectionIndex)){
             mBtnTopNavRight.setVisibility(View.VISIBLE);
             mBtnBottomNavRight.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else{
             mBtnTopNavRight.setVisibility(View.INVISIBLE);
             mBtnBottomNavRight.setVisibility(View.INVISIBLE);
         }
@@ -140,7 +141,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_section_top_nav_left:
             case R.id.btn_section_bottom_nav_left:
                 if(canNavigateLeft(sectionIndex)) {
-                    System.out.println("(" + sectionViewPager.hashCode() + ")" + " click left, navigation to section: " + prevSectionPosition(sectionIndex));
                     sectionViewPager.setCurrentItem(prevSectionPosition(sectionIndex));
                 }
                 break;
@@ -150,11 +150,13 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                     sectionViewPager.setCurrentItem(nextSectionPosition(sectionIndex));
                 }
                 break;
+            default:
+                break;
         }
     }
 
     private boolean canNavigateLeft(int currSectionIndex){
-        return (currSectionIndex > 0 || (currSectionIndex == 0 & mPaper.getAbstract() != null));
+        return (currSectionIndex > 0 || (currSectionIndex == 0 && mPaper.getAbstract() != null));
     }
 
     private boolean canNavigateRight(int currSectionIndex){
@@ -167,10 +169,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private int nextSectionPosition(int currSectionIndex){
         if(mPaper.getAbstract() != null){
             // add 1 extra for the abstract taking position 0 in the viewport
-            return currSectionIndex+2;
-        }
-        else{
-            return currSectionIndex+1;
+            return currSectionIndex + ABSTRACT_SIZE + NEXT_OFFSET;
+        } else{
+            return currSectionIndex + NEXT_OFFSET;
         }
     }
 
@@ -181,9 +182,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         if(mPaper.getAbstract() != null){
             // add 1 for the abstract taking position 0 in the viewport
             return currSectionIndex;
-        }
-        else{
-            return currSectionIndex-1;
+        } else{
+            return currSectionIndex - PREV_OFFSET;
         }
     }
 
@@ -193,10 +193,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private boolean isVisibleInScrollView(ScrollView scrollView, View view){
         Rect scrollBounds = new Rect();
         scrollView.getHitRect(scrollBounds);
-        if (view.getLocalVisibleRect(scrollBounds)) {
-            return true;
-        }
-        return false;
+        return view.getLocalVisibleRect(scrollBounds);
     }
 
 

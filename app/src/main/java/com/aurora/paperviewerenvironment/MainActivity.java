@@ -92,11 +92,13 @@ public class MainActivity extends AppCompatActivity {
                 // TODO handle a PluginObject that was cached
             }
 
+            /*
             if (basicPluginObject != null) {
-                ;
+
                 // TODO: use the resulting information.
                 // String result = basicPluginObject.getResult();
             }
+            */
         }
     }
 
@@ -130,17 +132,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search || id == R.id.action_overview) {
             return true;
         }
-        // Handle navigation to other section from the toolbar
-        int currSection = mViewPager.getCurrentItem();
-        if(id == R.id.action_nav_left && currSection > 0) {
-            System.out.println("MainActivity (" + mViewPager.hashCode() + "), navigating to section: " + (currSection-1));
-            mViewPager.setCurrentItem(currSection - 1);
-        }
-        if(id == R.id.action_nav_right && currSection+1 < mSectionPagerAdapter.getCount()) {
-            System.out.println("MainActivity, navigating to section: " + (currSection+1));
-            mViewPager.setCurrentItem(currSection + 1);
-        }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     /**

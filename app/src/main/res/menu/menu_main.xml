@@ -4,19 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <!-- Search menu item -->
-    <item
-        android:id="@+id/action_nav_right"
-        android:icon="@drawable/ic_nav_right"
-        android:orderInCategory="2"
-        android:title="@string/nav_right"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_nav_left"
-        android:icon="@drawable/ic_nav_left"
-        android:orderInCategory="1"
-        android:title="@string/nav_left"
-        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_menu_search"
@@ -31,7 +18,5 @@
         android:orderInCategory="4"
         android:title="@string/overview"
         app:showAsAction="ifRoom" />
-
-    <!-- Navigation to other sections/abstract within the menu -->
 
 </menu>

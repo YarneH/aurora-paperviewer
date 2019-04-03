@@ -4,10 +4,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +20,7 @@ import com.aurora.paperviewerprocessor.paper.Paper;
  */
 public class AbstractFragment extends Fragment implements View.OnClickListener{
 
-    private final static int VP_FIRST_SECTION_INDEX = 1;
+    private static final int VP_FIRST_SECTION_INDEX = 1;
 
     private Paper mPaper;
     private TextView mSectionHeader;
@@ -69,13 +66,11 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         if(canNavigateRight()){
             mBtnTopNavRight.setVisibility(View.VISIBLE);
             mBtnBottomNavRight.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             mBtnTopNavRight.setVisibility(View.INVISIBLE);
             mBtnBottomNavRight.setVisibility(View.INVISIBLE);
         }
 
-        System.out.println("CHECKING THE VISIBILITY OF VIEW IN SCROLLVIEW @@@@@@@@@@@");
         if(isVisibleInScrollView(((ScrollView) abstractView.getRootView()), mBtnBottomNavRight)){
             mBtnBottomNavRight.setVisibility(View.INVISIBLE);
         }
@@ -114,6 +109,9 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
                 if(canNavigateRight()) {
                     sectionViewPager.setCurrentItem(VP_FIRST_SECTION_INDEX);
                 }
+                break;
+            default:
+                break;
         }
     }
 
@@ -122,10 +120,8 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
      */
     private boolean isVisibleInScrollView(ScrollView scrollView, View view){
         Rect scrollBounds = new Rect();
-        System.out.println("Checking");
         scrollView.getHitRect(scrollBounds);
         if (view.getLocalVisibleRect(scrollBounds)) {
-            System.out.println("Checking resulted in in bounds");
             return true;
         }
         return false;

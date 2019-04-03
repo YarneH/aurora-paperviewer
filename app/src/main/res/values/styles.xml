@@ -21,18 +21,16 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Styles for the properties of a section -->
+    <!-- Style for section header can be found here because it is not part of the webview -->
     <style name="SectionHeader">
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">24sp</item>
     </style>
-    <style name="SectionContent">
-        <item name="android:typeface">sans</item>
-        <item name="android:textSize">16sp</item>
-    </style>
+    <!-- Font family and size of the section and the abstract content can be changed in other value files -->
     <style name="AbstractContent">
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

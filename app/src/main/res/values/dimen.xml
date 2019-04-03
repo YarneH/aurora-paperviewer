@@ -9,6 +9,13 @@
     <!-- Margins for the section view -->
     <dimen name="section_header_vertical_margin">16dp</dimen>
     <dimen name="section_header_horizontal_margin">24dp</dimen>
-    <dimen name="section_content_vertical_margin">12dp</dimen>
-    <dimen name="section_content_horizontal_margin">12dp</dimen>
+    <dimen name="section_content_vertical_margin">4dp</dimen>
+    <dimen name="section_content_horizontal_margin">4dp</dimen>
+
+    <dimen name="button_nav_size">32dp</dimen>
+
+    <!-- Font size for the section and abstract content in the webview -->
+    <dimen name="abstract_font_size">18px</dimen>
+    <dimen name="section_font_size">18px</dimen>
+
 </resources>

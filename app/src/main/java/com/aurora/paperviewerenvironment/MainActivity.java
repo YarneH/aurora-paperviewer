@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
 
         // Below is the code used to handle communication with aurora and plugins.
+        /*
         Intent intentThatStartedThisActivity = getIntent();
         if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
 
@@ -92,14 +93,15 @@ public class MainActivity extends AppCompatActivity {
                 // TODO handle a PluginObject that was cached
             }
 
-            /*
+
             if (basicPluginObject != null) {
 
                 // TODO: use the resulting information.
                 // String result = basicPluginObject.getResult();
             }
-            */
+
         }
+        */
     }
 
     /**

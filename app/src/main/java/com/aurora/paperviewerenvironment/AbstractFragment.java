@@ -118,13 +118,10 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     /**
      *   Checks whether the given view is visible in the scroll view
      */
-    private boolean isVisibleInScrollView(ScrollView scrollView, View view){
+    private boolean isVisibleInScrollView(ScrollView scrollView, View view) {
         Rect scrollBounds = new Rect();
         scrollView.getHitRect(scrollBounds);
-        if (view.getLocalVisibleRect(scrollBounds)) {
-            return true;
-        }
-        return false;
+        return view.getLocalVisibleRect(scrollBounds);
     }
 
 }

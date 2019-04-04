@@ -6,20 +6,114 @@
     android:layout_height="wrap_content"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    android:adjustViewBounds="true"
+    android:layout_margin="0dp"
+    android:padding="0dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/xml_full_img_linear_below_view"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_gravity="left|top"
+        android:orientation="horizontal"
+        android:layout_margin="0dp"
+        android:gravity="center"
+        android:padding="0dp">
 
         <ImageView
-            android:id="@+id/testimage"
+            android:id="@+id/testimage1"
+            android:adjustViewBounds="true"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:maxWidth="160dp"
-            android:src="@drawable/woods"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:layout_margin="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:scaleType="centerInside"/>
+
+        <ImageView
+            android:id="@+id/testimage2"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:layout_margin="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:scaleType="centerInside"/>
+
+        <ImageView
+            android:id="@+id/testimage3"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:layout_margin="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
             android:scaleType="centerInside" />
+
+        <ImageView
+            android:id="@+id/testimage4"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:layout_margin="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:scaleType="centerInside" />
+
+        <ImageView
+            android:id="@+id/testimage5"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:layout_margin="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:scaleType="centerInside" />
+
+
+        <ImageView
+            android:id="@+id/testimage6"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="0dp"
+            android:layout_margin="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:scaleType="centerInside" />
+
     </LinearLayout>
+
+
 
 </HorizontalScrollView>

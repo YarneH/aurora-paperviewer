@@ -2,6 +2,7 @@ package com.aurora.paperviewerenvironment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +39,8 @@ import java.util.Objects;
  * </p>
  */
 public class MainActivity extends AppCompatActivity {
+
+    private static final int GALLERY_IMG_HEIGHT = 180;
 
     private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
 
@@ -76,6 +79,49 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         // Disable the display of the app title in the toolbar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // Set the images
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.lena);
+        ImageView lena = findViewById(R.id.testimage1);
+        double ratio = ((double)bm.getWidth()/bm.getHeight());
+        int lenaWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
+        lena.setImageBitmap(Bitmap.createScaledBitmap(bm, lenaWidth, GALLERY_IMG_HEIGHT, false));
+
+        bm = BitmapFactory.decodeResource(getResources(), R.drawable.woods);
+        ImageView woods = findViewById(R.id.testimage2);
+        ratio = ((double)bm.getWidth()/bm.getHeight());
+        int woodsWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
+        woods.setImageBitmap(Bitmap.createScaledBitmap(bm, woodsWidth, GALLERY_IMG_HEIGHT, false));
+
+        bm = BitmapFactory.decodeResource(getResources(), R.drawable.vanguard);
+        ImageView vang = findViewById(R.id.testimage3);
+        ratio = ((double)bm.getWidth()/bm.getHeight());
+        int vanguardWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
+        vang.setImageBitmap(Bitmap.createScaledBitmap(bm, vanguardWidth, GALLERY_IMG_HEIGHT, false));
+
+        bm = BitmapFactory.decodeResource(getResources(), R.drawable.beach);
+        ImageView beach = findViewById(R.id.testimage3);
+        ratio = ((double)bm.getWidth()/bm.getHeight());
+        int beachWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
+        beach.setImageBitmap(Bitmap.createScaledBitmap(bm, beachWidth, GALLERY_IMG_HEIGHT, false));
+
+        bm = BitmapFactory.decodeResource(getResources(), R.drawable.city);
+        ImageView city = findViewById(R.id.testimage4);
+        ratio = ((double)bm.getWidth()/bm.getHeight());
+        int cityWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
+        city.setImageBitmap(Bitmap.createScaledBitmap(bm, cityWidth, GALLERY_IMG_HEIGHT, false));
+
+        bm = BitmapFactory.decodeResource(getResources(), R.drawable.car);
+        ImageView car = findViewById(R.id.testimage5);
+        ratio = ((double)bm.getWidth()/bm.getHeight());
+        int carWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
+        car.setImageBitmap(Bitmap.createScaledBitmap(bm, carWidth, GALLERY_IMG_HEIGHT, false));
+
+        bm = BitmapFactory.decodeResource(getResources(), R.drawable.train);
+        ImageView train = findViewById(R.id.testimage6);
+        ratio = ((double)bm.getWidth()/bm.getHeight());
+        int trainWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
+        train.setImageBitmap(Bitmap.createScaledBitmap(bm, trainWidth, GALLERY_IMG_HEIGHT, false));
 
         // Create the adapter for loading the correct section fragment
         mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);

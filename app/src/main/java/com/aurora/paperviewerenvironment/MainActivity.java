@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionPagerAdapter);
         mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
 
+        /*
         // Below is the code used to handle communication with aurora and plugins.
         Intent intentThatStartedThisActivity = getIntent();
         if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 // String result = basicPluginObject.getResult();
             }
         }
+        */
     }
 
     /**
@@ -194,8 +196,6 @@ public class MainActivity extends AppCompatActivity {
             }
             Log.d(MainActivity.class.getSimpleName(), "" + hsv.getVisibility());
         }
-        // Handle navigation to other section from the toolbar
-        int currSection = mViewPager.getCurrentItem();
         return super.onOptionsItemSelected(item);
     }
 
@@ -206,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
     public class SectionPagerAdapter extends FragmentPagerAdapter {
 
         private Paper mPaper;
-        private int mPosition;
 
         public SectionPagerAdapter(FragmentManager fm, Paper paper) {
             super(fm);
@@ -215,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            this.mPosition = position;
             // getItem is called to instantiate the fragment for the given section/abstract
             if (mPaper.getAbstract() != null) {
                 if (position == 0) {

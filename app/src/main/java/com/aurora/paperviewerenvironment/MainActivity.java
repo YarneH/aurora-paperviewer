@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO load the paper with appropriate background loading similar to souschef
+        // TODO load the paper with the communicator class
         Paper paper = new Paper();
 
         // Set the toolbar as supportActionBar

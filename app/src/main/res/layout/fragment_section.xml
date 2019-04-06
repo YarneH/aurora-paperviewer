@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
-    android:id="@+id/section_scrollview">
+    android:id="@+id/section_scrollview"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -70,7 +71,9 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/section_header"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1" />
+            tools:layout_constraintTop_creator="1"
+            android:scrollbars="none"
+            android:overScrollMode="never"/>
 
         <ImageButton
             android:id="@+id/btn_section_bottom_nav_left"
@@ -80,7 +83,6 @@
             android:background="@drawable/ic_nav_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/section_webview"
-            app:layout_constraintBottom_toBottomOf="parent"
             />
 
         <ImageButton
@@ -91,11 +93,10 @@
             android:background="@drawable/ic_nav_right"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/section_webview"
-            app:layout_constraintBottom_toBottomOf="parent"
             />
 
         <!-- TODO add contentdescription for images -->
 
     </android.support.constraint.ConstraintLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

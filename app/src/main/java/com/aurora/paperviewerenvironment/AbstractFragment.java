@@ -78,7 +78,9 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
 
         // Set the abstract
         mAbstractWebView = mAbstractView.findViewById(R.id.abstract_webview);
+        mAbstractWebView.setFocusable(false);
         mAbstractWebView.setBackgroundColor(Color.TRANSPARENT);
+        mAbstractWebView.setScrollContainer(false);
 
         // Set the text properties of the abstract content
         String htmlFront = "<html><head>" +

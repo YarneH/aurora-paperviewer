@@ -77,7 +77,9 @@
             app:layout_constraintTop_toBottomOf="@+id/abstract_header"
             app:layout_constraintBottom_toTopOf="@+id/btn_abstract_bottom_nav_right"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1"/>
+            tools:layout_constraintTop_creator="1"
+            android:scrollbars="none"
+            android:overScrollMode="never"/>
 
         <ImageButton
             android:id="@+id/btn_abstract_bottom_nav_right"

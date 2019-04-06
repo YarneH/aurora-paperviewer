@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -99,6 +100,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         mSectionWebView = mSectionView.findViewById(R.id.section_webview);
         mSectionWebView.setFocusable(false);
         mSectionWebView.setBackgroundColor(Color.TRANSPARENT);
+        mSectionWebView.setScrollContainer(false);
 
         // Remove bottom navigation button in case the button is visible at start position
         mSectionView.post(() -> {

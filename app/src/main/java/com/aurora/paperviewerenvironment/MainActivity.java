@@ -26,8 +26,6 @@ import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
 import com.aurora.paperviewerprocessor.facade.BasicProcessorCommunicator;
 import com.aurora.paperviewerprocessor.paper.Paper;
 
-import java.util.Objects;
-
 /**
  * <p>
  * Activity class that is shown on launch.
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO load the paper with appropriate background loading similar to souschef
+        // TODO load the paper with the communicator class
         Paper paper = new Paper();
 
         // TODO: Load actual images. These are dummy.
@@ -129,10 +127,12 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the section adapter
         mViewPager = (ViewPager) findViewById(R.id.vp_sections);
         mViewPager.setAdapter(mSectionPagerAdapter);
+        // Allocate retention buffers for the loaded section/abstract fragments
         mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
 
         /*
         // Below is the code used to handle communication with aurora and plugins.
+        /*
         Intent intentThatStartedThisActivity = getIntent();
         if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
 
@@ -153,11 +153,13 @@ public class MainActivity extends AppCompatActivity {
                 // TODO handle a PluginObject that was cached
             }
 
+
             if (basicPluginObject != null) {
-                ;
+
                 // TODO: use the resulting information.
                 // String result = basicPluginObject.getResult();
             }
+
         }
         */
     }
@@ -173,6 +175,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public ViewPager getSectionViewPager(){
+        return mViewPager;
     }
 
     /**
@@ -238,5 +244,4 @@ public class MainActivity extends AppCompatActivity {
             return mPaper.getSections().size();
         }
     }
-
 }

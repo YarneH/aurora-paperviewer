@@ -19,15 +19,28 @@ import com.aurora.paperviewerprocessor.paper.Paper;
  */
 public class AbstractFragment extends Fragment implements View.OnClickListener{
 
-    private static final int VP_FIRST_SECTION_INDEX = 1;
+    /**
+     * The size of this abstract
+     * TODO set this to appropriate size based on the content
+     */
+    private static final int ABSTRACT_SIZE = 1;
 
     private Paper mPaper;
 
+    /**
+     * The root {@link android.support.v4.widget.NestedScrollView}
+     */
     private View mAbstractView;
+
+    /**
+     * Text area's for displaying the content from the section
+     */
     private TextView mSectionHeader;
     private WebView mAbstractWebView;
 
-    // Button's for navigating to the sections of the paper
+    /**
+     * Button's for navigating to the other sections and the abstract
+     */
     private ImageButton mBtnTopNavRight;
     private ImageButton mBtnBottomNavRight;
 
@@ -69,14 +82,14 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
             mBtnBottomNavRight.setVisibility(View.INVISIBLE);
         }
 
-        // Remove bottom navigation button in case the button is visible at start position
+        // Remove bottom navigation button in case the button is visible if positioned at the start view
         mAbstractView.post(() ->{
             if(isVisibleInRootView(mAbstractView, mBtnBottomNavRight)){
                 mBtnBottomNavRight.setVisibility(View.INVISIBLE);
             }
         });
 
-        // Set the abstract
+        // Disable focus on initial view and remove scrolling of the web view
         mAbstractWebView = mAbstractView.findViewById(R.id.abstract_webview);
         mAbstractWebView.setFocusable(false);
         mAbstractWebView.setBackgroundColor(Color.TRANSPARENT);
@@ -110,7 +123,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
             case R.id.btn_abstract_top_nav_right:
             case R.id.btn_abstract_bottom_nav_right:
                 if(canNavigateRight()) {
-                    sectionViewPager.setCurrentItem(VP_FIRST_SECTION_INDEX);
+                    sectionViewPager.setCurrentItem(ABSTRACT_SIZE);
                 }
                 break;
             default:
@@ -118,8 +131,12 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    /**
-     *   Checks whether the given view is visible in the root view
+    /***
+     * Checks whether the view is (partially) visible in the given root view
+     *
+     * @param rootView The root view in which to check the visibility
+     * @param view The view to check it's visibility in the root view
+     * @return Boolean indicating the visibility of the view in the root view
      */
     private boolean isVisibleInRootView(View rootView, View view){
         Rect scrollBounds = new Rect();

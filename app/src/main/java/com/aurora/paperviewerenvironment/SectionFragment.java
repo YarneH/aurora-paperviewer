@@ -31,6 +31,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     private Paper mPaper;
 
+    private View mSectionView;
     // Text area's for displaying the content from the section
     private TextView mSectionHeader;
     private WebView mSectionWebView;
@@ -67,20 +68,16 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         Section section = mPaper.getSections().get(sectionIndex);
 
         // Inflate the scrollable view for a section
-        View sectionView = inflater.inflate(R.layout.fragment_section, container, false);
+        mSectionView = inflater.inflate(R.layout.fragment_section, container, false);
 
-        // TODO this doesn't seem to fix the initial position problem
-        // Set the initial position to the start of the abstract
-        ((ScrollView)sectionView.getRootView()).scrollTo(0,0);
-
-        mSectionHeader = sectionView.findViewById(R.id.section_header);
+        mSectionHeader = mSectionView.findViewById(R.id.section_header);
         mSectionHeader.setText(section.getHeader());
 
         // Initialize navigation buttons
-        mBtnTopNavLeft = sectionView.findViewById(R.id.btn_section_top_nav_left);
-        mBtnBottomNavLeft = sectionView.findViewById(R.id.btn_section_bottom_nav_left);
-        mBtnTopNavRight = sectionView.findViewById(R.id.btn_section_top_nav_right);
-        mBtnBottomNavRight = sectionView.findViewById(R.id.btn_section_bottom_nav_right);
+        mBtnTopNavLeft = mSectionView.findViewById(R.id.btn_section_top_nav_left);
+        mBtnBottomNavLeft = mSectionView.findViewById(R.id.btn_section_bottom_nav_left);
+        mBtnTopNavRight = mSectionView.findViewById(R.id.btn_section_top_nav_right);
+        mBtnBottomNavRight = mSectionView.findViewById(R.id.btn_section_bottom_nav_right);
         mBtnTopNavLeft.setOnClickListener(this);
         mBtnBottomNavLeft.setOnClickListener(this);
         mBtnTopNavRight.setOnClickListener(this);
@@ -100,20 +97,22 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             mBtnBottomNavRight.setVisibility(View.INVISIBLE);
         }
 
-        mSectionWebView = sectionView.findViewById(R.id.section_webview);
+        mSectionWebView = mSectionView.findViewById(R.id.section_webview);
         mSectionWebView.setFocusable(false);
         mSectionWebView.setBackgroundColor(Color.TRANSPARENT);
 
-        // Make buttons at the bottom invisible if they are part of the initial screen
-        if(isVisibleInScrollView(((ScrollView) sectionView.getRootView()), mBtnBottomNavLeft)){
-            mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-        }
-
-        if(isVisibleInScrollView(((ScrollView) sectionView.getRootView()), mBtnBottomNavRight)){
-            mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-        }
-        // TODO remove buttons at the bottom of scrollview if text smaller than window size
-        // having them at the bottom for short text seems weird
+        // Remove bottom navigation button in case the button is visible at start position
+        mSectionView.post(new Runnable(){
+            @Override
+            public void run(){
+                if(isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
+                    mBtnBottomNavRight.setVisibility(View.INVISIBLE);
+                }
+                if(isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
+                    mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         // Set the text properties of the section content
         String htmlFront = "<html><head>" +
@@ -129,7 +128,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         // Add content to the webview
         mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
 
-        return sectionView;
+        return mSectionView;
     }
 
     @Override
@@ -181,7 +180,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private int prevSectionPosition(int currSectionIndex){
         if(mPaper.getAbstract() != null){
             // add 1 for the abstract taking position 0 in the viewport
-            return currSectionIndex;
+            return currSectionIndex + ABSTRACT_SIZE - PREV_OFFSET;
         } else{
             return currSectionIndex - PREV_OFFSET;
         }
@@ -190,9 +189,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     /**
      *   Checks whether the given view is visible in the scroll view
      */
-    private boolean isVisibleInScrollView(ScrollView scrollView, View view){
+    private boolean isVisibleInRootView(View rootView, View view){
         Rect scrollBounds = new Rect();
-        scrollView.getHitRect(scrollBounds);
+        rootView.getHitRect(scrollBounds);
         return view.getLocalVisibleRect(scrollBounds);
     }
 

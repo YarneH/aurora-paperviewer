@@ -23,6 +23,8 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     private static final int VP_FIRST_SECTION_INDEX = 1;
 
     private Paper mPaper;
+
+    private View mAbstractView;
     private TextView mSectionHeader;
     private WebView mAbstractWebView;
 
@@ -50,17 +52,14 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the view for a section
-        View abstractView = inflater.inflate(R.layout.fragment_abstract, container, false);
+        mAbstractView = inflater.inflate(R.layout.fragment_abstract, container, false);
 
-        // Set the initial position to the start of the abstract
-        abstractView.getRootView().scrollTo(0,0);
-
-        mSectionHeader = (TextView) abstractView.findViewById(R.id.abstract_header);
+        mSectionHeader = (TextView) mAbstractView.findViewById(R.id.abstract_header);
         mSectionHeader.setText("Abstract");
 
         // Initialize navigation buttons
-        mBtnTopNavRight = abstractView.findViewById(R.id.btn_abstract_top_nav_right);
-        mBtnBottomNavRight = abstractView.findViewById(R.id.btn_abstract_bottom_nav_right);
+        mBtnTopNavRight = mAbstractView.findViewById(R.id.btn_abstract_top_nav_right);
+        mBtnBottomNavRight = mAbstractView.findViewById(R.id.btn_abstract_bottom_nav_right);
         mBtnTopNavRight.setOnClickListener(this);
         mBtnBottomNavRight.setOnClickListener(this);
         if(canNavigateRight()){
@@ -71,12 +70,18 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
             mBtnBottomNavRight.setVisibility(View.INVISIBLE);
         }
 
-        if(isVisibleInScrollView(((ScrollView) abstractView.getRootView()), mBtnBottomNavRight)){
-            mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-        }
+        // Remove bottom navigation button in case the button is visible at start position
+        mAbstractView.post(new Runnable(){
+            @Override
+            public void run(){
+                if(isVisibleInRootView(mAbstractView, mBtnBottomNavRight)){
+                    mBtnBottomNavRight.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         // Set the abstract
-        mAbstractWebView = abstractView.findViewById(R.id.abstract_webview);
+        mAbstractWebView = mAbstractView.findViewById(R.id.abstract_webview);
         mAbstractWebView.setBackgroundColor(Color.TRANSPARENT);
 
         // Set the text properties of the abstract content
@@ -92,7 +97,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
 
         // Add content to the webview
         mAbstractWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
-        return abstractView;
+        return mAbstractView;
     }
 
     private boolean canNavigateRight(){
@@ -116,11 +121,11 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     }
 
     /**
-     *   Checks whether the given view is visible in the scroll view
+     *   Checks whether the given view is visible in the root view
      */
-    private boolean isVisibleInScrollView(ScrollView scrollView, View view) {
+    private boolean isVisibleInRootView(View rootView, View view){
         Rect scrollBounds = new Rect();
-        scrollView.getHitRect(scrollBounds);
+        rootView.getHitRect(scrollBounds);
         return view.getLocalVisibleRect(scrollBounds);
     }
 

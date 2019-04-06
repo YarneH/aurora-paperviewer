@@ -41,7 +41,7 @@ public class AbstractFragment extends Fragment{
         View abstractView = inflater.inflate(R.layout.fragment_abstract, container, false);
 
         mSectionHeader = (TextView) abstractView.findViewById(R.id.abstract_header);
-        mSectionHeader.setText("Abstract");
+        mSectionHeader.setText(getString(R.string.abstract_header));
 
         // Set the abstract
         mAbstract = (TextView) abstractView.findViewById(R.id.abstract_content);

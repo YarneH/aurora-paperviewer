@@ -20,19 +20,11 @@
     <!-- Theme of the popup that appears when clicking a menu item (only when not enough space) -->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- Styles for the properties of a section -->
+    <!-- Styles for the properties of a header of a section or abstract -->
+    <!-- Styles for the content (webview) can be found in the dimen and string resources -->
     <style name="SectionHeader">
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-    <style name="SectionContent">
-        <item name="android:typeface">sans</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-    <style name="AbstractContent">
-        <item name="android:textStyle">bold</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">24sp</item>
     </style>
 </resources>

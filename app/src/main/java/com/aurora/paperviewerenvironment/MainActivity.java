@@ -12,14 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.view.Window;
+import android.view.WindowManager;
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
 import com.aurora.paperviewerprocessor.facade.BasicProcessorCommunicator;
 import com.aurora.paperviewerprocessor.paper.Paper;
-
-import java.util.Objects;
 
 /**
  * <p>
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO load the paper with appropriate background loading similar to souschef
+        // TODO load the paper with the communicator class
         Paper paper = new Paper();
 
         // Set the toolbar as supportActionBar
@@ -68,9 +67,11 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the section adapter
         mViewPager = (ViewPager) findViewById(R.id.vp_sections);
         mViewPager.setAdapter(mSectionPagerAdapter);
+        // Allocate retention buffers for the loaded section/abstract fragments
         mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
 
         // Below is the code used to handle communication with aurora and plugins.
+        /*
         Intent intentThatStartedThisActivity = getIntent();
         if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
 
@@ -91,12 +92,15 @@ public class MainActivity extends AppCompatActivity {
                 // TODO handle a PluginObject that was cached
             }
 
+
             if (basicPluginObject != null) {
-                ;
+
                 // TODO: use the resulting information.
                 // String result = basicPluginObject.getResult();
             }
+
         }
+        */
     }
 
     /**
@@ -112,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public ViewPager getSectionViewPager(){
+        return mViewPager;
+    }
+
     /**
      * Called when a menu option is selected.
      *
@@ -125,15 +133,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search || id == R.id.action_overview) {
             return true;
         }
-        // Handle navigation to other section from the toolbar
-        int currSection = mViewPager.getCurrentItem();
-        if(id == R.id.action_nav_left && currSection > 0) {
-            mViewPager.setCurrentItem(currSection - 1);
-        }
-        if(id == R.id.action_nav_right && currSection+1 < mSectionPagerAdapter.getCount()) {
-            mViewPager.setCurrentItem(currSection + 1);
-        }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     /**
@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
     public class SectionPagerAdapter extends FragmentPagerAdapter {
 
         private Paper mPaper;
-        private int mPosition;
 
         public SectionPagerAdapter(FragmentManager fm, Paper paper) {
             super(fm);
@@ -152,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            this.mPosition = position;
             // getItem is called to instantiate the fragment for the given section/abstract
             if(mPaper.getAbstract() != null){
                 if(position == 0){
@@ -177,5 +175,4 @@ public class MainActivity extends AppCompatActivity {
             return mPaper.getSections().size();
         }
     }
-
 }

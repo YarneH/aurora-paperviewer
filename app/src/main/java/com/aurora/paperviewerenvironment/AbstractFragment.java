@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aurora.paperviewerprocessor.paper.Paper;
@@ -54,7 +53,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         // Inflate the view for a section
         mAbstractView = inflater.inflate(R.layout.fragment_abstract, container, false);
 
-        mSectionHeader = (TextView) mAbstractView.findViewById(R.id.abstract_header);
+        mSectionHeader = mAbstractView.findViewById(R.id.abstract_header);
         mSectionHeader.setText("Abstract");
 
         // Initialize navigation buttons

@@ -70,12 +70,9 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         }
 
         // Remove bottom navigation button in case the button is visible at start position
-        mAbstractView.post(new Runnable(){
-            @Override
-            public void run(){
-                if(isVisibleInRootView(mAbstractView, mBtnBottomNavRight)){
-                    mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-                }
+        mAbstractView.post(() ->{
+            if(isVisibleInRootView(mAbstractView, mBtnBottomNavRight)){
+                mBtnBottomNavRight.setVisibility(View.INVISIBLE);
             }
         });
 

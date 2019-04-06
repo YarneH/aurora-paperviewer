@@ -101,15 +101,12 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         mSectionWebView.setBackgroundColor(Color.TRANSPARENT);
 
         // Remove bottom navigation button in case the button is visible at start position
-        mSectionView.post(new Runnable(){
-            @Override
-            public void run(){
-                if(isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
-                    mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-                }
-                if(isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
-                    mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-                }
+        mSectionView.post(() -> {
+            if(isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
+                mBtnBottomNavRight.setVisibility(View.INVISIBLE);
+            }
+            if(isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
+                mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
             }
         });
 

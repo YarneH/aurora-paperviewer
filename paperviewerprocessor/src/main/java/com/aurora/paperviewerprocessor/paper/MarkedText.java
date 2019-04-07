@@ -4,6 +4,10 @@ import android.graphics.Color;
 
 public class MarkedText {
 
+    // TODO: remove
+    private static final int DUMMY_BEGIN_INDEX = 0;
+    private static final int DUMMY_END_INDEX = 5;
+
     private int mColor;
     private int beginIndex;
     private int mEndIndex;
@@ -23,11 +27,11 @@ public class MarkedText {
 
     public int getBeginIndex() {
         // Dummy data
-        return 0;
+        return DUMMY_BEGIN_INDEX;
     }
 
     public int getEndIndex() {
         // Dummy data
-        return 5;
+        return DUMMY_END_INDEX;
     }
 }

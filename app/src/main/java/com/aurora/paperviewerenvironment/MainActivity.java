@@ -26,10 +26,14 @@ import com.aurora.paperviewerprocessor.paper.Paper;
  */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Temporary field. I think.
+     */
     private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
 
-    private Toolbar mToolbar;
-    private SectionPagerAdapter mSectionPagerAdapter;
+    /**
+     * Viewpager for the different reading sections in the document.
+     */
     private ViewPager mViewPager;
 
     public MainActivity() {
@@ -50,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
         Paper paper = new Paper();
 
         // Set the toolbar as supportActionBar
-        mToolbar = findViewById(R.id.toolbar);
+        Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         // Disable the display of the app title in the toolbar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Create the adapter for loading the correct section fragment
-        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);
+        SectionPagerAdapter mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);
 
         // Set up the ViewPager with the section adapter
         mViewPager = (ViewPager) findViewById(R.id.vp_sections);

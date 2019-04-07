@@ -33,15 +33,13 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     private View mAbstractView;
 
     /**
-     * Text area's for displaying the content from the section
-     */
-    private TextView mSectionHeader;
-    private WebView mAbstractWebView;
-
-    /**
-     * Button's for navigating to the other sections and the abstract
+     * Button for navigating to the next section
      */
     private ImageButton mBtnTopNavRight;
+
+    /**
+     * Button for navigating to the previous section
+     */
     private ImageButton mBtnBottomNavRight;
 
     public AbstractFragment() {
@@ -66,7 +64,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         // Inflate the view for a section
         mAbstractView = inflater.inflate(R.layout.fragment_abstract, container, false);
 
-        mSectionHeader = mAbstractView.findViewById(R.id.abstract_header);
+        TextView mSectionHeader = mAbstractView.findViewById(R.id.abstract_header);
         mSectionHeader.setText("Abstract");
 
         // Initialize navigation buttons
@@ -90,7 +88,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         });
 
         // Disable focus on initial view and remove scrolling of the web view
-        mAbstractWebView = mAbstractView.findViewById(R.id.abstract_webview);
+        WebView mAbstractWebView = mAbstractView.findViewById(R.id.abstract_webview);
         mAbstractWebView.setFocusable(false);
         mAbstractWebView.setBackgroundColor(Color.TRANSPARENT);
         mAbstractWebView.setScrollContainer(false);

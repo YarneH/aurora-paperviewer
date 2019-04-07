@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.aurora.paperviewerprocessor.facade.BasicProcessorCommunicator;
+import com.aurora.paperviewerprocessor.facade.PaperProcessorCommunicator;
 import com.aurora.paperviewerprocessor.paper.Paper;
 
 /**
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Temporary field. I think.
      */
-    private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
+    private PaperProcessorCommunicator mBasicProcessorCommunicator = new PaperProcessorCommunicator();
 
     /**
      * Viewpager for the different reading sections in the document.

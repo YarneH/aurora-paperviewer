@@ -206,10 +206,6 @@ public class Paper extends PluginObject {
     public Paper() {
     }
 
-    public static PluginObject fromJson(String json) {
-        return mGson.fromJson(json, PluginObject.class);
-    }
-
     public String getTitle() {
         // Dummy data
         return "What is all the fuzz about?";

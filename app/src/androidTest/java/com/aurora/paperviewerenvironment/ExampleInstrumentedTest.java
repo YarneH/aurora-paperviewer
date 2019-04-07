@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.aurora.basicplugin", appContext.getPackageName());
+        assertEquals("com.aurora.paperviewer", appContext.getPackageName());
     }
 }

@@ -19,6 +19,7 @@ import com.aurora.paperviewerprocessor.paper.Section;
  * A fragment containing the view for a section of the paper
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
+
     /**
      * The fragment argument representing the index of this section in the paper
      * for this fragment.
@@ -26,25 +27,59 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_SECTION_INDEX = "section_index";
 
     /**
-     * Values for calculating the offset for navigation to other sections
+     * Offset to previous section in the {@link ViewPager}
      */
     private static final int PREV_OFFSET = 1;
+
+    /**
+     * Offset to next section in the {@link ViewPager}
+     */
     private static final int NEXT_OFFSET = 1;
+
+    /**
+     * Size of the abstract in terms of occupied {@link ViewPager} positions
+     * TODO set this to the appropriate size based on the content of the abstract
+     */
     private static final int ABSTRACT_SIZE = 1;
 
+    /**
+     * The processed paper
+     */
     private Paper mPaper;
 
     /**
-     * The root {@link android.support.v4.widget.NestedScrollView}
+     * The root {@link android.support.v4.widget.NestedScrollView} of this fragment
      */
     private View mSectionView;
 
     /**
-     * Buttons for navigating to the other sections and the abstract
+     * The {@link TextView} for displaying the header of the section
+     */
+    private TextView mSectionHeader;
+
+    /**
+     * The {@link WebView} for displaying the content of the section
+     */
+    private WebView mSectionWebView;
+
+    /**
+     * Button for navigating to the previous section at the top of the fragment
      */
     private ImageButton mBtnTopNavLeft;
-    private ImageButton mBtnTopNavRight;
+
+    /**
+     * Button for navigating to the previous section at the top of the fragment
+     */
     private ImageButton mBtnBottomNavLeft;
+
+    /**
+     * Button for navigating to the next section at the top of the fragment
+     */
+    private ImageButton mBtnTopNavRight;
+
+    /**
+     * Button for navigating to the next section at the bottom of the fragment
+     */
     private ImageButton mBtnBottomNavRight;
 
     public SectionFragment() {
@@ -78,7 +113,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         // Inflate the scrollable view for a section
         mSectionView = inflater.inflate(R.layout.fragment_section, container, false);
 
-        TextView mSectionHeader = mSectionView.findViewById(R.id.section_header);
+        mSectionHeader = mSectionView.findViewById(R.id.section_header);
         mSectionHeader.setText(section.getHeader());
 
         // Initialize navigation buttons
@@ -106,7 +141,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
 
         // Disable focus on initial view and remove scrolling of the web view
-        WebView mSectionWebView = mSectionView.findViewById(R.id.section_webview);
+        mSectionWebView = mSectionView.findViewById(R.id.section_webview);
         mSectionWebView.setFocusable(false);
         mSectionWebView.setBackgroundColor(Color.TRANSPARENT);
         mSectionWebView.setScrollContainer(false);
@@ -138,26 +173,34 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         return mSectionView;
     }
 
+    /**
+     * Called when a navigation button has been clicked in this fragment and
+     * navigates to the appropriate section/abstract
+     *
+     * @param view The root view
+     */
     @Override
     public void onClick(View view) {
         int sectionIndex = getArguments().getInt(ARG_SECTION_INDEX);
         ViewPager sectionViewPager = ((MainActivity) getActivity()).getSectionViewPager();
 
-        switch(view.getId()){
-            case R.id.btn_section_top_nav_left:
-            case R.id.btn_section_bottom_nav_left:
-                if(canNavigateLeft(sectionIndex)) {
-                    sectionViewPager.setCurrentItem(prevSectionPosition(sectionIndex));
-                }
-                break;
-            case R.id.btn_section_top_nav_right:
-            case R.id.btn_section_bottom_nav_right:
-                if(canNavigateRight(sectionIndex)) {
-                    sectionViewPager.setCurrentItem(nextSectionPosition(sectionIndex));
-                }
-                break;
-            default:
-                break;
+        if(sectionViewPager != null){
+            switch(view.getId()){
+                case R.id.btn_section_top_nav_left:
+                case R.id.btn_section_bottom_nav_left:
+                    if(canNavigateLeft(sectionIndex)) {
+                        sectionViewPager.setCurrentItem(prevSectionPosition(sectionIndex));
+                    }
+                    break;
+                case R.id.btn_section_top_nav_right:
+                case R.id.btn_section_bottom_nav_right:
+                    if(canNavigateRight(sectionIndex)) {
+                        sectionViewPager.setCurrentItem(nextSectionPosition(sectionIndex));
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -182,7 +225,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Retrieves the positions of the next section in the section viewport
+     * Retrieves the position of the next section in the section viewport
      *
      * @param currSectionIndex The index of the current section
      * @return the next position in the section viewport
@@ -197,7 +240,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Retrieves the positions of the previous section in the section viewport
+     * Retrieves the position of the previous section in the section viewport
      *
      * @param currSectionIndex The index of the current section
      * @return the previous position in the section viewport

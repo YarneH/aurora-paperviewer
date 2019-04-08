@@ -10,8 +10,11 @@
     <!-- Scrolling behavior -->
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
+    <!-- Header content for the abstract -->
+    <string name="abstract_header_content">Abstract</string>
+
     <!-- Font properties for the section and abstract content in the webview -->
-    <string name="abstract_font_family">Times New Roman, sans-serif</string>
+    <string name="abstract_font_family">Times New Roman, serif</string>
     <string name="abstract_font_weight">bold</string>
     <string name="abstract_text_align">left</string>
     <string name="section_font_family">Arial, sans-serif</string>

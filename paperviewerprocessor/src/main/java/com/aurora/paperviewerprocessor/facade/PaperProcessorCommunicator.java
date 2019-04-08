@@ -4,6 +4,7 @@ import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.PluginObject;
 import com.aurora.paperviewerprocessor.ProcessorCommunicator;
 import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
+import com.aurora.paperviewerprocessor.paper.Paper;
 
 public class PaperProcessorCommunicator extends ProcessorCommunicator {
 
@@ -15,9 +16,8 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
      */
     @Override
     public PluginObject process(ExtractedText extractedText) {
-        BasicPluginObject res = new BasicPluginObject();
-        res.setResult("Basic Plugin processed:\n" + extractedText.toString());
-        return res;
+        // TODO change this dummy paper to extracted and processed paper
+        return new Paper();
     }
 
     // TODO depending on whether we will also allow regular Strings to be passed: either remove this
@@ -31,9 +31,8 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
      * @return A string that consists of standard text and the inputText
      */
     public PluginObject process(String inputText) {
-        BasicPluginObject res = new BasicPluginObject();
-        res.setResult("Basic Plugin processed:\n" + inputText);
-        return res;
+        // TODO change this dummy paper to extracted and processed paper
+        return new Paper();
     }
 
 }

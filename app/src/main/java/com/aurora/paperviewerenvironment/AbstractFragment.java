@@ -20,25 +20,38 @@ import com.aurora.paperviewerprocessor.paper.Paper;
 public class AbstractFragment extends Fragment implements View.OnClickListener{
 
     /**
-     * The size of this abstract
+     * The size of this abstract in terms of occupied {@link ViewPager} positions
      * TODO set this to appropriate size based on the content
      */
     private static final int ABSTRACT_SIZE = 1;
 
+    /**
+     * The processed paper
+     */
     private Paper mPaper;
 
     /**
-     * The root {@link android.support.v4.widget.NestedScrollView}
+     * The root {@link android.support.v4.widget.NestedScrollView} of this fragment
      */
     private View mAbstractView;
 
     /**
-     * Button for navigating to the next section
+     * The {@link TextView} for displaying the header of the abstract
+     */
+    private TextView mAbstractHeader;
+
+    /**
+     * The {@link WebView} for displaying the content of the abstract
+     */
+    private WebView mAbstractWebView;
+
+    /**
+     * Button for navigating to the sections at the top of this fragment
      */
     private ImageButton mBtnTopNavRight;
 
     /**
-     * Button for navigating to the previous section
+     * Button for navigating to the sections at the bottom of this fragment
      */
     private ImageButton mBtnBottomNavRight;
 
@@ -47,8 +60,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     }
 
     /**
-     * Returns a new instance of this fragment for the given section
-     * number.
+     * Returns a new instance of this fragment
      */
     public static AbstractFragment newInstance() {
         return new AbstractFragment();
@@ -64,8 +76,8 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         // Inflate the view for a section
         mAbstractView = inflater.inflate(R.layout.fragment_abstract, container, false);
 
-        TextView mSectionHeader = mAbstractView.findViewById(R.id.abstract_header);
-        mSectionHeader.setText("Abstract");
+        mAbstractHeader = mAbstractView.findViewById(R.id.abstract_header);
+        mAbstractHeader.setText(getResources().getString(R.string.abstract_header_content));
 
         // Initialize navigation buttons
         mBtnTopNavRight = mAbstractView.findViewById(R.id.btn_abstract_top_nav_right);
@@ -88,7 +100,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         });
 
         // Disable focus on initial view and remove scrolling of the web view
-        WebView mAbstractWebView = mAbstractView.findViewById(R.id.abstract_webview);
+        mAbstractWebView = mAbstractView.findViewById(R.id.abstract_webview);
         mAbstractWebView.setFocusable(false);
         mAbstractWebView.setBackgroundColor(Color.TRANSPARENT);
         mAbstractWebView.setScrollContainer(false);
@@ -129,7 +141,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    /***
+    /**
      * Checks whether the view is (partially) visible in the given root view
      *
      * @param rootView The root view in which to check the visibility

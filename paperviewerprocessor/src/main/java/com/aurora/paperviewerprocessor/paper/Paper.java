@@ -18,6 +18,15 @@ public class Paper extends PluginObject {
      */
     private static final String BR_BR_BR_CONSTANT = "<br><br><br>";
     // TODO: remove the dummy data
+    private static final String TITLE = "What is all the fuzz about?";
+    private static final String ABSTRACT_CONTENT =
+            "Fuzzing is an automated software testing technique that has proven " +
+            "to be remarkably effective in finding bugs and vulnerabilities in various " +
+            "programs. Most existing surveys on the topic discuss the conceptual principles of fuzzing. " +
+            "The present survey paper attempts to illustrate these concepts with practical examples " +
+            "from industry and academia. This survey is directed at people who are new to the field of fuzzing " +
+            "as well as people with more experience, who want to refresh their general knowledge " +
+            "on the topic.";
     private static final Section DUMMY_SECTION1 = new Section("Introduction",
             "Software security is becoming " +
             "increasingly more important. With the Internet of Things, more and more devices are " +
@@ -207,26 +216,16 @@ public class Paper extends PluginObject {
     }
 
     public String getTitle() {
-        // Dummy data
-        return "What is all the fuzz about?";
+        return TITLE;
     }
 
     public String getAbstract() {
-        // Dummy data
-        return "Fuzzing is an automated software testing technique that has proven " +
-                "to be remarkably effective in finding bugs and vulnerabilities in various " +
-                "programs. Most existing surveys on the topic discuss the conceptual principles of fuzzing. " +
-                "The present survey paper attempts to illustrate these concepts with practical examples " +
-                "from industry and academia. This survey is directed at people who are new to the field of fuzzing " +
-                "as well as people with more experience, who want to refresh their general knowledge " +
-                "on the topic.";
+        return ABSTRACT_CONTENT;
     }
 
     public List<Section> getSections() {
-        // Dummy data
         List<Section> sections = new ArrayList<>();
         Section sect1 = DUMMY_SECTION1;
-
         Section sect2 = DUMMY_SECTION2;
         sections.add(sect1);
         sections.add(sect2);
@@ -234,7 +233,6 @@ public class Paper extends PluginObject {
     }
 
     public List<Bitmap> getImages() {
-        // Dummy data
         return new ArrayList<>();
     }
 

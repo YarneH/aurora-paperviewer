@@ -61,16 +61,18 @@ pipeline {
                         withSonarQubeEnv("Aurora SonarQube") {
                         sh """
                         ${scannerHome}/bin/sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.branch=${env.BRANCH_NAME} \
-                        -Dsonar.java.binaries=app/build/intermediates/javac/release/compileReleaseJavaWithJavac
+                        -Dapp.sonar.java.binaries=build/intermediates/javac/release/compileReleaseJavaWithJavac \
+                        -Dpaperviewerprocessor.sonar.java.binaries=build/intermediates/javac/release/compileReleaseJavaWithJavac
                         """
                         }
                     } else {
-                       withSonarQubeEnv("Aurora SonarQube") {
+                        withSonarQubeEnv("Aurora SonarQube") {
                         sh """
                         ${scannerHome}/bin/sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.branch=${env.BRANCH_NAME} \
-                        -Dsonar.java.binaries=app/build/intermediates/javac/debug/compileDebugJavaWithJavac
+                        -Dapp.sonar.java.binaries=build/intermediates/javac/debug/compileDebugJavaWithJavac \
+                        -Dpaperviewerprocessor.sonar.java.binaries=build/intermediates/javac/debug/compileDebugJavaWithJavac
                         """
-                        } 
+                        }
                     }
 
                     timeout(time: 1, unit: 'HOURS') {

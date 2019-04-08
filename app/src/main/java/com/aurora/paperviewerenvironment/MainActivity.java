@@ -2,23 +2,22 @@ package com.aurora.paperviewerenvironment;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
-import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
-import com.aurora.paperviewerprocessor.facade.BasicProcessorCommunicator;
+import com.aurora.paperviewerprocessor.facade.PaperProcessorCommunicator;
 import com.aurora.paperviewerprocessor.paper.Paper;
+
+import java.util.Objects;
 
 /**
  * <p>
@@ -32,11 +31,30 @@ import com.aurora.paperviewerprocessor.paper.Paper;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private BasicProcessorCommunicator mBasicProcessorCommunicator = new BasicProcessorCommunicator();
+    /**
+     * Communicator that acts as an interface to the BasicPlugin's processor
+     */
+    private PaperProcessorCommunicator mBasicProcessorCommunicator = new PaperProcessorCommunicator();
 
+    /**
+     * {@link Toolbar} for displaying various functionality buttons at the top of the application
+     */
     private Toolbar mToolbar;
-    private SectionPagerAdapter mSectionPagerAdapter;
+
+    /**
+     * {@link ViewPager} for displaying the abstract and the sections of the paper.
+     */
     private ViewPager mViewPager;
+
+    /**
+     * the {@link SectionPagerAdapter} for loading the correct fragments in the {@link ViewPager}
+     */
+    private SectionPagerAdapter mSectionPagerAdapter;
+
+    /**
+     * The processed paper
+     */
+    private Paper mPaper;
 
     public MainActivity() {
         // Default constructor
@@ -52,55 +70,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO load the paper with the communicator class
-        Paper paper = new Paper();
-
         // Set the toolbar as supportActionBar
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         // Disable the display of the app title in the toolbar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Create the adapter for loading the correct section fragment
-        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);
-
-        // Set up the ViewPager with the section adapter
-        mViewPager = (ViewPager) findViewById(R.id.vp_sections);
-        mViewPager.setAdapter(mSectionPagerAdapter);
-        // Allocate retention buffers for the loaded section/abstract fragments
-        mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
-
         // Below is the code used to handle communication with aurora and plugins.
-        /*
         Intent intentThatStartedThisActivity = getIntent();
         if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
 
-            BasicPluginObject basicPluginObject = null;
+            mPaper = null;
 
             // TODO remove this if statement probably.
             // TODO Is currently used to handle cases where a plain String is sent instead of an ExtractedText
             if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_TEXT)) {
                 String inputText =
                         intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_TEXT);
-                basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
-            } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
+                mPaper = (Paper) mBasicProcessorCommunicator.process(inputText);
+            }
+
+            // Handle ExtractedText object (received when first opening a new file)
+            else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
                 String inputTextJSON = 
                         intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT);
                 ExtractedText inputText = ExtractedText.fromJson(inputTextJSON);
-                basicPluginObject = (BasicPluginObject) mBasicProcessorCommunicator.process(inputText);
+                mPaper = (Paper) mBasicProcessorCommunicator.process(inputText);
+
+            // TODO handle a BasicPluginObject that was cached (will come in Json format)
             } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)) {
-                // TODO handle a PluginObject that was cached
+                return;
             }
-
-
-            if (basicPluginObject != null) {
-
-                // TODO: use the resulting information.
-                // String result = basicPluginObject.getResult();
-            }
-
         }
-        */
+
+        if (mPaper != null) {
+            // Create the adapter for loading the correct section fragment
+            mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
+
+            // Set up the ViewPager with the section adapter
+            mViewPager = findViewById(R.id.vp_sections);
+            mViewPager.setAdapter(mSectionPagerAdapter);
+            // Allocate retention buffers for the loaded section/abstract fragments
+            mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
+        }
     }
 
     /**
@@ -130,23 +142,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        if (id == R.id.action_search || id == R.id.action_overview) {
-            return true;
-        }
-        return false;
+        return id == R.id.action_search || id == R.id.action_overview;
     }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections of the paper
+     * one of the sections of the paper.
      */
     public class SectionPagerAdapter extends FragmentPagerAdapter {
 
-        private Paper mPaper;
-
-        public SectionPagerAdapter(FragmentManager fm, Paper paper) {
+        public SectionPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.mPaper = paper;
         }
 
         @Override

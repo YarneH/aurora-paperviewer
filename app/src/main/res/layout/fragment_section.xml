@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:id="@+id/section_scrollview"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_gravity="start|top"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/constraintLayout_section">
+
+        <ImageButton
+            android:id="@+id/btn_section_top_nav_left"
+            android:layout_width="@dimen/button_nav_size"
+            android:layout_height="@dimen/button_nav_size"
+            android:layout_gravity="start|top"
+            android:background="@drawable/ic_nav_left"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintRight_toLeftOf="@+id/section_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <ImageButton
+            android:id="@+id/btn_section_top_nav_right"
+            android:layout_width="@dimen/button_nav_size"
+            android:layout_height="@dimen/button_nav_size"
+            android:layout_gravity="end|top"
+            android:background="@drawable/ic_nav_right"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/section_header"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/section_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/section_header_horizontal_margin"
+            android:layout_marginEnd="@dimen/section_header_horizontal_margin"
+            android:layout_marginTop="@dimen/section_header_vertical_margin"
+            android:layout_marginBottom="@dimen/section_header_vertical_margin"
+            android:gravity="start"
+            android:textAppearance="@style/SectionHeader"
+            app:layout_constraintBottom_toTopOf="@+id/section_webview"
+            app:layout_constraintLeft_toRightOf="@+id/btn_section_top_nav_left"
+            app:layout_constraintRight_toLeftOf="@+id/btn_section_top_nav_right"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
+
+        <WebView
+            android:id="@+id/section_webview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_content_vertical_margin"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/section_header"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1"
+            android:scrollbars="none"
+            android:overScrollMode="never"/>
+
+        <ImageButton
+            android:id="@+id/btn_section_bottom_nav_left"
+            android:layout_width="@dimen/button_nav_size"
+            android:layout_height="@dimen/button_nav_size"
+            android:layout_gravity="start|bottom"
+            android:background="@drawable/ic_nav_left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/section_webview"
+            />
+
+        <ImageButton
+            android:id="@+id/btn_section_bottom_nav_right"
+            android:layout_width="@dimen/button_nav_size"
+            android:layout_height="@dimen/button_nav_size"
+            android:gravity="end|bottom"
+            android:background="@drawable/ic_nav_right"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/section_webview"
+            />
+
+        <!-- TODO add contentdescription for images -->
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,23 @@
+<resources>
+    <!-- Application name -->
+    <string name="app_name">Paperviewer</string>
+    <!-- Action bar menu items -->
+    <string name="overview">Sections overview</string>
+    <string name="search">Search</string>
+    <string name="nav_left">Section to the left</string>
+    <string name="nav_right">Section to the right</string>
+
+    <!-- Scrolling behavior -->
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
+    <!-- Header content for the abstract -->
+    <string name="abstract_header_content">Abstract</string>
+
+    <!-- Font properties for the section and abstract content in the webview -->
+    <string name="abstract_font_family">Times New Roman, serif</string>
+    <string name="abstract_font_weight">bold</string>
+    <string name="abstract_text_align">left</string>
+    <string name="section_font_family">Arial, sans-serif</string>
+    <string name="section_font_weight">normal</string>
+    <string name="section_text_align">justify</string>
+</resources>

@@ -157,39 +157,22 @@ pipeline {
                 anyOf {
                     branch 'master';
                     branch 'dev';
-                    branch 'javadoc-issue'
                 }
             }
             steps {
-                script {
-                    if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'dev') {
-                        // Generate javadoc
-                        sh """
-                        javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
-                        -classpath ${WORKSPACE}/*/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
-                        """
+                // Generate javadoc
+                sh """
+                javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
+                -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes \
+                -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
+                """
 
-                        sh """
-                        javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
-                        -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
-                        -subpackages com -private -classpath ${WORKSPACE}/*/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
-                        """
-                    } else {
-                        // Generate javadoc
-                        sh """
-                        javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
-                        -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes \
-                        -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
-                        """
-
-                        sh """
-                        javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
-                        -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
-                        -subpackages com -private -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes \
-                        -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
-                        """
-                    }
-                }
+                sh """
+                javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
+                -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
+                -subpackages com -private -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes \
+                -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
+                """
             }
             post {
                 failure {

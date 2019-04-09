@@ -178,13 +178,15 @@ pipeline {
                         // Generate javadoc
                         sh """
                         javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
-                        -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
+                        -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes \
+                        -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
                         """
 
                         sh """
                         javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
                         -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
-                        -subpackages com -private -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
+                        -subpackages com -private -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes \
+                        -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
                         """
                     }
                 }

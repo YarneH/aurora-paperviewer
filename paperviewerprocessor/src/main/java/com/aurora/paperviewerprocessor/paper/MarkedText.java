@@ -1,13 +1,13 @@
 package com.aurora.paperviewerprocessor.paper;
 
-import android.graphics.Color;
-
 public class MarkedText {
 
     // TODO: remove
     private static final int DUMMY_BEGIN_INDEX = 0;
     private static final int DUMMY_END_INDEX = 5;
-    private static final int DUMMY_COLOR = Color.YELLOW;
+    //private static final int DUMMY_COLOR = Color.YELLOW;
+    // Test
+    private static final int DUMMY_COLOR = 0xFFFFFF00;
 
     private int mColor;
     private int mBeginIndex;

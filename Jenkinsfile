@@ -156,21 +156,36 @@ pipeline {
             when {
                 anyOf {
                     branch 'master';
-                    branch 'dev'
+                    branch 'dev';
+                    branch 'javadoc-issue'
                 }
             }
             steps {
-                // Generate javadoc
-                sh """
-                javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
-                -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
-                """
+                if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'dev') {
+                    // Generate javadoc
+                    sh """
+                    javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
+                    -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
+                    """
 
-                sh """
-                javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
-                -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
-                -subpackages com -private -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
-                """
+                    sh """
+                    javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
+                    -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
+                    -subpackages com -private -classpath ${WORKSPACE}/paperviewerprocessor/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
+                    """
+                } else {
+                    // Generate javadoc
+                    sh """
+                    javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
+                    -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
+                    """
+
+                    sh """
+                    javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
+                    -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
+                    -subpackages com -private -classpath ${WORKSPACE}/paperviewerprocessor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
+                    """
+                }
             }
             post {
                 failure {

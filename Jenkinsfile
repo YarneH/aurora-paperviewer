@@ -166,19 +166,19 @@ pipeline {
                         // Generate javadoc
                         sh """
                         javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
-                        -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
+                        -classpath ${WORKSPACE}/*/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
                         """
 
                         sh """
                         javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
                         -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
-                        -subpackages com -private -classpath ${WORKSPACE}/paperviewerprocessor/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
+                        -subpackages com -private -classpath ${WORKSPACE}/*/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
                         """
                     } else {
                         // Generate javadoc
                         sh """
                         javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
-                        -classpath ${WORKSPACE}/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
+                        -classpath ${WORKSPACE}/*/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
                         """
 
                         sh """

@@ -184,7 +184,7 @@ pipeline {
                         sh """
                         javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
                         -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
-                        -subpackages com -private -classpath ${WORKSPACE}/paperviewerprocessor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
+                        -subpackages com -private -classpath ${WORKSPACE}/*/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
                         """
                     }
                 }

@@ -1,5 +1,7 @@
 package com.aurora.paperviewerprocessor.paper;
 
+import android.graphics.Color;
+
 public class MarkedText {
 
     // TODO: remove

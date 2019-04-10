@@ -156,20 +156,22 @@ pipeline {
             when {
                 anyOf {
                     branch 'master';
-                    branch 'dev'
+                    branch 'dev';
                 }
             }
             steps {
                 // Generate javadoc
                 sh """
                 javadoc -d /var/www/javadoc/paperviewer/app/${env.BRANCH_NAME} -sourcepath ${WORKSPACE}/app/src/main/java -subpackages com -private \
-                -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
+                -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes \
+                -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
                 """
 
                 sh """
                 javadoc -d /var/www/javadoc/paperviewer/paperviewerprocessor/${env.BRANCH_NAME} \
                 -sourcepath ${WORKSPACE}/paperviewerprocessor/src/main/java \
-                -subpackages com -private -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes
+                -subpackages com -private -classpath ${WORKSPACE}/app/build/intermediates/javac/release/compileReleaseJavaWithJavac/classes \
+                -bootclasspath /opt/android-sdk-linux/platforms/android-28/android.jar
                 """
             }
             post {

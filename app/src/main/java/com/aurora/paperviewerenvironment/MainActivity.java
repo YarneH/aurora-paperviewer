@@ -2,8 +2,6 @@ package com.aurora.paperviewerenvironment;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,12 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
@@ -38,8 +34,6 @@ import java.util.Objects;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final int GALLERY_IMG_HEIGHT = 180;
-
     /**
      * Communicator that acts as an interface to the BasicPlugin's processor
      */
@@ -49,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
      * {@link Toolbar} for displaying various functionality buttons at the top of the application
      */
     private Toolbar mToolbar;
+
+    /**
+     * Container for holding the gallery and the enlarged view for the images
+     */
+    FrameLayout mImageContainer;
 
     /**
      * {@link ViewPager} for displaying the abstract and the sections of the paper.
@@ -85,49 +84,6 @@ public class MainActivity extends AppCompatActivity {
         // Disable the display of the app title in the toolbar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Set the images
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.lena);
-        ImageView lena = findViewById(R.id.testimage1);
-        double ratio = ((double)bm.getWidth()/bm.getHeight());
-        int lenaWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
-        lena.setImageBitmap(Bitmap.createScaledBitmap(bm, lenaWidth, GALLERY_IMG_HEIGHT, false));
-
-        bm = BitmapFactory.decodeResource(getResources(), R.drawable.woods);
-        ImageView woods = findViewById(R.id.testimage2);
-        ratio = ((double)bm.getWidth()/bm.getHeight());
-        int woodsWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
-        woods.setImageBitmap(Bitmap.createScaledBitmap(bm, woodsWidth, GALLERY_IMG_HEIGHT, false));
-
-        bm = BitmapFactory.decodeResource(getResources(), R.drawable.vanguard);
-        ImageView vang = findViewById(R.id.testimage3);
-        ratio = ((double)bm.getWidth()/bm.getHeight());
-        int vanguardWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
-        vang.setImageBitmap(Bitmap.createScaledBitmap(bm, vanguardWidth, GALLERY_IMG_HEIGHT, false));
-
-        bm = BitmapFactory.decodeResource(getResources(), R.drawable.beach);
-        ImageView beach = findViewById(R.id.testimage3);
-        ratio = ((double)bm.getWidth()/bm.getHeight());
-        int beachWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
-        beach.setImageBitmap(Bitmap.createScaledBitmap(bm, beachWidth, GALLERY_IMG_HEIGHT, false));
-
-        bm = BitmapFactory.decodeResource(getResources(), R.drawable.city);
-        ImageView city = findViewById(R.id.testimage4);
-        ratio = ((double)bm.getWidth()/bm.getHeight());
-        int cityWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
-        city.setImageBitmap(Bitmap.createScaledBitmap(bm, cityWidth, GALLERY_IMG_HEIGHT, false));
-
-        bm = BitmapFactory.decodeResource(getResources(), R.drawable.car);
-        ImageView car = findViewById(R.id.testimage5);
-        ratio = ((double)bm.getWidth()/bm.getHeight());
-        int carWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
-        car.setImageBitmap(Bitmap.createScaledBitmap(bm, carWidth, GALLERY_IMG_HEIGHT, false));
-
-        bm = BitmapFactory.decodeResource(getResources(), R.drawable.train);
-        ImageView train = findViewById(R.id.testimage6);
-        ratio = ((double)bm.getWidth()/bm.getHeight());
-        int trainWidth = (int) (ratio * GALLERY_IMG_HEIGHT);
-        train.setImageBitmap(Bitmap.createScaledBitmap(bm, trainWidth, GALLERY_IMG_HEIGHT, false));
-
         // Below is the code used to handle communication with aurora and plugins.
         Intent intentThatStartedThisActivity = getIntent();
         if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
@@ -155,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        mPaper = new Paper();
+
         if (mPaper != null) {
             // Create the adapter for loading the correct section fragment
             mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
@@ -164,6 +122,16 @@ public class MainActivity extends AppCompatActivity {
             mViewPager.setAdapter(mSectionPagerAdapter);
             // Allocate retention buffers for the loaded section/abstract fragments
             mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
+
+            // Prepare the image container
+            mImageContainer = findViewById(R.id.image_container);
+            mImageContainer.setVisibility(View.GONE);
+
+            // Add the fragment for the gallery / enlarged image to the image container
+            FragmentManager fm = getSupportFragmentManager();
+            ImageFragment imageFragment = ImageFragment.newInstance();
+            imageFragment.setPaper(mPaper);
+            fm.beginTransaction().add(R.id.image_container, imageFragment).commit();
         }
     }
 
@@ -197,13 +165,12 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search || id == R.id.action_overview) {
             return true;
         } else if (id == R.id.action_images) {
-            HorizontalScrollView hsv = this.findViewById(R.id.include_image_gallery);
-            if (hsv.getVisibility() == View.VISIBLE) {
-                hsv.setVisibility(View.GONE);
+            if (mImageContainer.getVisibility() == View.VISIBLE) {
+                mImageContainer.setVisibility(View.GONE);
             } else {
-                hsv.setVisibility(View.VISIBLE);
+                mImageContainer.setVisibility(View.VISIBLE);
             }
-            Log.d(MainActivity.class.getSimpleName(), "" + hsv.getVisibility());
+            Log.d(MainActivity.class.getSimpleName(), "" + mImageContainer.getVisibility());
         }
         return super.onOptionsItemSelected(item);
     }

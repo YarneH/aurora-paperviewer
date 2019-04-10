@@ -18,4 +18,10 @@
     <dimen name="abstract_font_size">18px</dimen>
     <dimen name="section_font_size">18px</dimen>
 
+    <!-- TODO: maybe convert these to weights in a linearlayout instead -->
+    <!-- Dimension for the images in the gallery -->
+    <dimen name="image_gallery_height">180px</dimen>
+    <!-- Dimension for the enlarged images -->
+    <dimen name="image_enlarged_height">600px</dimen>
+
 </resources>

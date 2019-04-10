@@ -1,8 +1,12 @@
 package com.aurora.paperviewerprocessor.paper;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.aurora.auroralib.PluginObject;
+import com.aurora.paperviewerprocessor.App;
+import com.aurora.paperviewerprocessor.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,7 @@ public class Paper extends PluginObject {
      */
     private static final String BR_BR_BR_CONSTANT = "<br><br><br>";
     // TODO: remove the dummy data
+    private static final String AUTHOR = "Stijn";
     private static final String TITLE = "What is all the fuzz about?";
     private static final String ABSTRACT_CONTENT =
             "Fuzzing is an automated software testing technique that has proven " +
@@ -213,27 +218,40 @@ public class Paper extends PluginObject {
     }
 
     public Paper() {
-    }
-
-    public String getTitle() {
-        return TITLE;
-    }
-
-    public String getAbstract() {
-        return ABSTRACT_CONTENT;
-    }
-
-    public List<Section> getSections() {
+        this.mAuthor = AUTHOR;
+        this.mTitle = TITLE;
+        this.mAbstract = ABSTRACT_CONTENT;
         List<Section> sections = new ArrayList<>();
         Section sect1 = DUMMY_SECTION1;
         Section sect2 = DUMMY_SECTION2;
         sections.add(sect1);
         sections.add(sect2);
-        return sections;
+        this.mSections = sections;
+        List<Bitmap> images = new ArrayList<>();
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.train));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.lena));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.woods));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.car));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.vanguard));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.city));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.beach));
+        this.mImages = images;
+    }
+
+    public String getTitle() {
+        return this.mTitle;
+    }
+
+    public String getAbstract() {
+        return this.mAbstract;
+    }
+
+    public List<Section> getSections() {
+        return this.mSections;
     }
 
     public List<Bitmap> getImages() {
-        return new ArrayList<>();
+        return this.mImages;
     }
 
 }

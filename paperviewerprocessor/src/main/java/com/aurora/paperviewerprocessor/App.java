@@ -5,7 +5,7 @@ import android.content.Context;
 
 /**
  * This class is used to obtain a context to retrieve the drawable images
- * TODO: retrieve this class when the images are received from aurora
+ * TODO: remove this class when the images are received from aurora
  */
 public class App extends Application{
 

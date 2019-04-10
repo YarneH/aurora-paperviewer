@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Container for holding the gallery and the enlarged view for the images
      */
-    FrameLayout mImageContainer;
+    private FrameLayout mImageContainer;
 
     /**
      * {@link ViewPager} for displaying the abstract and the sections of the paper.

@@ -17,11 +17,6 @@ import com.aurora.paperviewerprocessor.paper.Paper;
 import com.ortiz.touchview.TouchImageView;
 
 /**
- *
- */
-
-
-/**
  * A fragment containing either: <br>
  *     The view for the image gallery. <br>
  *     The view for the an enlarged image,

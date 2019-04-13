@@ -113,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
         mPaper = new Paper();
 
-        if (mPaper != null) {
+        // Dummy paper makes this statement always true, but this will not be the case
+        // when the dummy paper is removed
+        if (mPaper != null) { // NOSONAR
             // Create the adapter for loading the correct section fragment
             mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
 

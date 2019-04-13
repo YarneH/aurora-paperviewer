@@ -151,7 +151,7 @@ public class ImageFragment extends Fragment {
             mEnlargedImageView.setImageBitmap(mPaper.getImages().get(position));
 
             // Set the behavior for clicking on an enlarged image
-            itemView.setOnClickListener(view -> {
+            itemView.setOnClickListener((View view) -> {
                 mImagesGallery.setVisibility(View.VISIBLE);
                 mEnlargedImagePager.setVisibility(View.GONE);
             });

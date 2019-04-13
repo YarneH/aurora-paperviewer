@@ -12,7 +12,9 @@
     <dimen name="section_content_vertical_margin">4dp</dimen>
     <dimen name="section_content_horizontal_margin">4dp</dimen>
 
+    <!-- minimization square appears larger than fitted circle -->
     <dimen name="button_nav_size">32dp</dimen>
+    <dimen name="button_minimize">24dp</dimen>
 
     <!-- Font size for the section and abstract content in the webview -->
     <dimen name="abstract_font_size">18px</dimen>

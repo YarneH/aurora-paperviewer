@@ -227,13 +227,15 @@ public class Paper extends PluginObject {
         sections.add(sect2);
         this.mSections = sections;
         List<Bitmap> images = new ArrayList<>();
-        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.train));
-        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.lena));
-        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.woods));
-        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.car));
-        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.vanguard));
-        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.city));
-        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.beach));
+
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.fuzzing_scheme));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.hard_to_trigger_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.symbolic_execution_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.problem_symbolic_execution_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.before_symbol_execution_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.interaction_scheme));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.under_tainting_code));
+
         this.mImages = images;
     }
 

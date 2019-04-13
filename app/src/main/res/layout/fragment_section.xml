@@ -29,6 +29,7 @@
             android:layout_height="@dimen/button_nav_size"
             android:layout_gravity="start|top"
             android:background="@drawable/ic_nav_left"
+            android:drawSelectorOnTop="true"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintRight_toLeftOf="@+id/section_header"
             app:layout_constraintStart_toStartOf="parent"

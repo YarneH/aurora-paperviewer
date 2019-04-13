@@ -3,7 +3,6 @@ package com.aurora.paperviewerprocessor.facade;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.PluginObject;
 import com.aurora.paperviewerprocessor.ProcessorCommunicator;
-import com.aurora.paperviewerprocessor.basicpluginobject.BasicPluginObject;
 import com.aurora.paperviewerprocessor.paper.Paper;
 
 public class PaperProcessorCommunicator extends ProcessorCommunicator {

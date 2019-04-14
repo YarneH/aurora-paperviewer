@@ -13,6 +13,7 @@
         android:orientation="horizontal"
         android:layout_margin="0dp"
         android:gravity="center"
+        android:background="@color/colorPrimary"
         android:padding="0dp">
 
     </LinearLayout>

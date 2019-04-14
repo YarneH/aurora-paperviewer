@@ -102,6 +102,10 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
         galleryImage.setLayoutParams(new ViewGroup.LayoutParams(galleryImageWidth, imageHeight));
         galleryImage.setImageBitmap(Bitmap.createScaledBitmap(bm, galleryImageWidth, imageHeight, false));
 
+        float density = getResources().getDisplayMetrics().density;
+        int paddingPixel = (int)(getResources().getDimension(R.dimen.gallery_padding) * density);
+        galleryImage.setPadding(paddingPixel,0,paddingPixel,paddingPixel);
+
         // Set the click behavior for this gallery image
         galleryImage.setOnClickListener((View view) -> enLargeImage(position));
         return galleryImage;
@@ -127,17 +131,11 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
      * A {@link PagerAdapter} that returns an ImageView
      * for the enlarged images when they are clicked in the image gallery.
      */
-    /**
-     * Adapter for the {@link ViewPager} for enlarged images
-     */
     public class ImageAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            if(mPaper.getImages() != null){
-                return mPaper.getImages().size();
-            }
-            return 0;
+            return mPaper.getImages().size();
         }
 
         @Override

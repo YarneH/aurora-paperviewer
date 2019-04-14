@@ -12,6 +12,9 @@
     <dimen name="section_content_vertical_margin">4dp</dimen>
     <dimen name="section_content_horizontal_margin">4dp</dimen>
 
+    <!-- Margins for the enlarged image buttons -->
+    <dimen name="enlarged_image_button_margin">4dp</dimen>
+
     <!-- minimization square appears larger than fitted circle -->
     <dimen name="button_nav_size">32dp</dimen>
     <dimen name="button_minimize">24dp</dimen>
@@ -25,5 +28,9 @@
     <dimen name="image_gallery_height">180px</dimen>
     <!-- Dimension for the enlarged images -->
     <dimen name="image_enlarged_height">600px</dimen>
+
+    <!-- padding between gallery images -->
+    <dimen name="gallery_padding">1dp</dimen>
+
 
 </resources>

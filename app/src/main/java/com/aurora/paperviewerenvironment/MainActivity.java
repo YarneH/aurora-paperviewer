@@ -172,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 mImageContainer.setVisibility(View.VISIBLE);
             }
-            Log.d(MainActivity.class.getSimpleName(), "" + mImageContainer.getVisibility());
         }
         return super.onOptionsItemSelected(item);
     }

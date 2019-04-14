@@ -1,8 +1,11 @@
 package com.aurora.paperviewerprocessor.paper;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.aurora.auroralib.PluginObject;
+import com.aurora.paperviewerprocessor.App;
+import com.aurora.paperviewerprocessor.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,7 @@ public class Paper extends PluginObject {
      */
     private static final String BR_BR_BR_CONSTANT = "<br><br><br>";
     // TODO: remove the dummy data
+    private static final String AUTHOR = "Stijn";
     private static final String TITLE = "What is all the fuzz about?";
     private static final String ABSTRACT_CONTENT =
             "Fuzzing is an automated software testing technique that has proven " +
@@ -213,27 +217,49 @@ public class Paper extends PluginObject {
     }
 
     public Paper() {
-    }
-
-    public String getTitle() {
-        return TITLE;
-    }
-
-    public String getAbstract() {
-        return ABSTRACT_CONTENT;
-    }
-
-    public List<Section> getSections() {
+        this.mAuthor = AUTHOR;
+        this.mTitle = TITLE;
+        this.mAbstract = ABSTRACT_CONTENT;
         List<Section> sections = new ArrayList<>();
         Section sect1 = DUMMY_SECTION1;
         Section sect2 = DUMMY_SECTION2;
         sections.add(sect1);
         sections.add(sect2);
-        return sections;
+        this.mSections = sections;
+        List<Bitmap> images = new ArrayList<>();
+
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(),
+                R.drawable.fuzzing_scheme));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(),
+                R.drawable.hard_to_trigger_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(),
+                R.drawable.symbolic_execution_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(),
+                R.drawable.problem_symbolic_execution_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(),
+                R.drawable.before_symbol_execution_code));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(),
+                R.drawable.interaction_scheme));
+        images.add(BitmapFactory.decodeResource(App.getContext().getResources(),
+                R.drawable.under_tainting_code));
+
+        this.mImages = images;
+    }
+
+    public String getTitle() {
+        return this.mTitle;
+    }
+
+    public String getAbstract() {
+        return this.mAbstract;
+    }
+
+    public List<Section> getSections() {
+        return this.mSections;
     }
 
     public List<Bitmap> getImages() {
-        return new ArrayList<>();
+        return this.mImages;
     }
 
 }

@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
-    android:id="@+id/section_scrollview"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:scrollbars="vertical"
+    android:id="@+id/section_scrollview">
 
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -183,6 +183,45 @@ pipeline {
                 }
             }
         } // Javadoc stage
+
+        stage('Deployment') {
+            when {
+                anyOf {
+                    branch 'master'
+                } 
+            }
+            steps {
+                script {
+                    // Create unsigned apk
+                    sh './gradlew assembleRelease'
+
+
+                    // Sign the apk
+                    signAndroidApks (
+                        keyStoreId: "key0aurora",
+                        keyAlias: "key0",
+                        apksToSign: "app/build/outputs/apk/release/app-release-unsigned.apk"
+                    )
+
+                    // Move to right directory
+                    sh """
+                    if [ ! -d /var/www/javadoc/deploy/ ]; then
+                        mkdir -p /var/www/javadoc/deploy;
+                    fi
+
+                    mv app/build/outputs/apk/release/app-release.apk /var/www/javadoc/deploy/paperviewer.apk
+                    """
+                }
+            }
+            post {
+                failure {
+                    slack_error_deploy()
+                }
+                success {
+                    slack_deployed()
+                }
+            }
+        } // Deployment stage
     } // Stages
     post {
         success {
@@ -233,6 +272,13 @@ def slack_error_sonar() {
  */
 def slack_error_doc() {
     slack_report(false, ':x: Javadoc failed', null, 'Javadoc')
+}
+
+/**
+ * Gets called when automatic deployment fails
+ */
+def slack_error_deploy() {
+    slack_report(false, ':x: Automatic deployment failed', null, 'Deployment')
 }
 
 
@@ -418,5 +464,5 @@ def slack_deployed() {
 
     String token = 'TD60N85K8/BG960T35H/zH59dbicld2uw5Tfdaipg0oL'
 
-    slackSend(channel: '#aurora-builds', attachments: attachments.toString(), teamDomain: 'aurora1819', baseUrl: 'https://hooks.slack.com/services/', token: token)
+    slackSend(channel: '#paperviewer-builds', attachments: attachments.toString(), teamDomain: 'aurora1819', baseUrl: 'https://hooks.slack.com/services/', token: token)
 }

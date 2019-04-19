@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Enlarged image view -->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/enlarged_image_pager"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_enlarged_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Minimize button for enlarged image view -->
+    <ImageButton
+        android:id="@+id/btn_minimize_image"
+        android:layout_width="@dimen/button_minimize"
+        android:layout_height="@dimen/button_minimize"
+        android:layout_gravity="end|top"
+        android:layout_marginRight="@dimen/enlarged_image_button_margin"
+        android:layout_marginTop="@dimen/enlarged_image_button_margin"
+        android:background="@drawable/minimize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <!-- Image gallery -->
+    <include
+        android:id="@+id/include_image_gallery"
+        layout="@layout/image_gallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+</android.support.constraint.ConstraintLayout>

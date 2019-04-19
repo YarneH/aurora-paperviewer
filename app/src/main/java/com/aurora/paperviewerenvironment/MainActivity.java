@@ -9,8 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
@@ -40,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
      * {@link Toolbar} for displaying various functionality buttons at the top of the application
      */
     private Toolbar mToolbar;
+
+    /**
+     * Container for holding the gallery and the enlarged view for the images
+     */
+    private FrameLayout mImageContainer;
 
     /**
      * {@link ViewPager} for displaying the abstract and the sections of the paper.
@@ -103,7 +111,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (mPaper != null) {
+        mPaper = new Paper();
+
+        // Dummy paper makes this statement always true, but this will not be the case
+        // when the dummy paper is removed
+        if (mPaper != null) { // NOSONAR
             // Create the adapter for loading the correct section fragment
             mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
 
@@ -112,6 +124,16 @@ public class MainActivity extends AppCompatActivity {
             mViewPager.setAdapter(mSectionPagerAdapter);
             // Allocate retention buffers for the loaded section/abstract fragments
             mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
+
+            // Prepare the image container
+            mImageContainer = findViewById(R.id.image_container);
+            mImageContainer.setVisibility(View.GONE);
+
+            // Add the fragment for the gallery / enlarged image to the image container
+            FragmentManager fm = getSupportFragmentManager();
+            ImageFragment imageFragment = ImageFragment.newInstance();
+            imageFragment.setPaper(mPaper);
+            fm.beginTransaction().add(R.id.image_container, imageFragment).commit();
         }
     }
 
@@ -142,7 +164,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        return id == R.id.action_search || id == R.id.action_overview;
+        if (id == R.id.action_search || id == R.id.action_overview) {
+            return true;
+        } else if (id == R.id.action_images) {
+            if (mImageContainer.getVisibility() == View.VISIBLE) {
+                mImageContainer.setVisibility(View.GONE);
+            } else {
+                mImageContainer.setVisibility(View.VISIBLE);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -158,13 +189,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given section/abstract
-            if(mPaper.getAbstract() != null){
-                if(position == 0){
+            if (mPaper.getAbstract() != null) {
+                if (position == 0) {
                     AbstractFragment abstractFragment = AbstractFragment.newInstance();
                     abstractFragment.setPaper(mPaper);
                     return abstractFragment;
                 }
-                SectionFragment sectionFragment = SectionFragment.newInstance(position-1);
+                SectionFragment sectionFragment = SectionFragment.newInstance(position - 1);
                 sectionFragment.setPaper(mPaper);
                 return sectionFragment;
             }
@@ -175,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            if(mPaper.getAbstract() != null){
+            if (mPaper.getAbstract() != null) {
                 return (1 + mPaper.getSections().size());
             }
             return mPaper.getSections().size();

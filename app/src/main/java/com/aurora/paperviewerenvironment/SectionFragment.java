@@ -1,5 +1,6 @@
 package com.aurora.paperviewerenvironment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -43,9 +44,11 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final int ABSTRACT_SIZE = 1;
 
     /**
-     * The processed paper
+     * The {@link android.arch.lifecycle.AndroidViewModel}
+     * for maintaining the paper it's data and state
+     * across the lifecycles of the activity
      */
-    private Paper mPaper;
+    private PaperViewModel mPaperViewModel;
 
     /**
      * The root {@link android.support.v4.widget.NestedScrollView} of this fragment
@@ -101,50 +104,24 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
-    public void setPaper(Paper paper){
-        this.mPaper = paper;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mPaperViewModel = ViewModelProviders.of(getActivity()).get(PaperViewModel.class);
+
         int sectionIndex = getArguments().getInt(ARG_SECTION_INDEX);
-        Section section = mPaper.getSections().get(sectionIndex);
 
-        // Inflate the scrollable view for a section
+        // Inflate the scrollable view for the section container
         mSectionView = inflater.inflate(R.layout.fragment_section, container, false);
-
         mSectionHeader = mSectionView.findViewById(R.id.section_header);
-        mSectionHeader.setText(section.getHeader());
-
-        // Initialize navigation buttons
-        mBtnTopNavLeft = mSectionView.findViewById(R.id.btn_section_top_nav_left);
-        mBtnBottomNavLeft = mSectionView.findViewById(R.id.btn_section_bottom_nav_left);
-        mBtnTopNavRight = mSectionView.findViewById(R.id.btn_section_top_nav_right);
-        mBtnBottomNavRight = mSectionView.findViewById(R.id.btn_section_bottom_nav_right);
-        mBtnTopNavLeft.setOnClickListener(this);
-        mBtnBottomNavLeft.setOnClickListener(this);
-        mBtnTopNavRight.setOnClickListener(this);
-        mBtnBottomNavRight.setOnClickListener(this);
-        if(canNavigateLeft(sectionIndex)){
-            mBtnTopNavLeft.setVisibility(View.VISIBLE);
-            mBtnBottomNavLeft.setVisibility(View.VISIBLE);
-        } else{
-            mBtnTopNavLeft.setVisibility(View.INVISIBLE);
-            mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-        }
-        if(canNavigateRight(sectionIndex)){
-            mBtnTopNavRight.setVisibility(View.VISIBLE);
-            mBtnBottomNavRight.setVisibility(View.VISIBLE);
-        } else{
-            mBtnTopNavRight.setVisibility(View.INVISIBLE);
-            mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-        }
 
         // Disable focus on initial view and remove scrolling of the web view
         mSectionWebView = mSectionView.findViewById(R.id.section_webview);
         mSectionWebView.setFocusable(false);
         mSectionWebView.setBackgroundColor(Color.TRANSPARENT);
         mSectionWebView.setScrollContainer(false);
+
+        // Initialize and configure navigation buttons
+        setUpNavigationButtons(sectionIndex);
 
         // Remove bottom navigation button in case the button is visible if positioned at the start view
         mSectionView.post(() -> {
@@ -165,17 +142,24 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 "text-align: " + getResources().getString(R.string.section_text_align) + ";" +
                 "}</style></head><body>";
         String htmlEnd = "</body></html>";
-        String myHtmlString = htmlFront + section.getContent() + htmlEnd;
 
-        // Add content to the webview
-        mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+        mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
+            if(paper == null){
+                return;
+            }
+            Section section = paper.getSections().get(sectionIndex);
+            mSectionHeader.setText(section.getHeader());
+
+            String myHtmlString = htmlFront + section.getContent() + htmlEnd;
+            mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+        });
 
         return mSectionView;
     }
 
     /**
-     * Called when a navigation button has been clicked in this fragment and
-     * navigates to the appropriate section/abstract
+     * Called when a navigation button has been clicked in this fragment. <br>
+     * Navigates to the appropriate section/abstract.
      *
      * @param view The root view
      */
@@ -211,7 +195,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @return boolean indicating available navigation to the left
      */
     private boolean canNavigateLeft(int currSectionIndex){
-        return (currSectionIndex > 0 || (currSectionIndex == 0 && mPaper.getAbstract() != null));
+        return (currSectionIndex > 0 || (currSectionIndex == 0 && mPaperViewModel.hasAbstract()));
     }
 
     /**
@@ -221,7 +205,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @return boolean indicating available navigation to the right
      */
     private boolean canNavigateRight(int currSectionIndex){
-        return currSectionIndex < (mPaper.getSections().size()-1);
+        return currSectionIndex < (mPaperViewModel.getNumberOfSections() - 1);
     }
 
     /**
@@ -231,7 +215,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @return the next position in the section viewport
      */
     private int nextSectionPosition(int currSectionIndex){
-        if(mPaper.getAbstract() != null){
+        if(mPaperViewModel.hasAbstract()){
             // add size of abstract extra for the abstract taking first positions in the viewport
             return currSectionIndex + ABSTRACT_SIZE + NEXT_OFFSET;
         } else{
@@ -246,11 +230,41 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @return the previous position in the section viewport
      */
     private int prevSectionPosition(int currSectionIndex){
-        if(mPaper.getAbstract() != null){
+        if(mPaperViewModel.hasAbstract()){
             // add size of abstract for the abstract taking first positions in the viewport
             return currSectionIndex + ABSTRACT_SIZE - PREV_OFFSET;
         } else{
             return currSectionIndex - PREV_OFFSET;
+        }
+    }
+
+    /**
+     * Sets the clicking behavior and the visibility of the navigation buttons
+     *
+     * @param sectionIndex The index of the current section
+     */
+    private void setUpNavigationButtons(int sectionIndex) {
+        mBtnTopNavLeft = mSectionView.findViewById(R.id.btn_section_top_nav_left);
+        mBtnBottomNavLeft = mSectionView.findViewById(R.id.btn_section_bottom_nav_left);
+        mBtnTopNavRight = mSectionView.findViewById(R.id.btn_section_top_nav_right);
+        mBtnBottomNavRight = mSectionView.findViewById(R.id.btn_section_bottom_nav_right);
+        mBtnTopNavLeft.setOnClickListener(this);
+        mBtnBottomNavLeft.setOnClickListener(this);
+        mBtnTopNavRight.setOnClickListener(this);
+        mBtnBottomNavRight.setOnClickListener(this);
+        if(canNavigateLeft(sectionIndex)){
+            mBtnTopNavLeft.setVisibility(View.VISIBLE);
+            mBtnBottomNavLeft.setVisibility(View.VISIBLE);
+        } else{
+            mBtnTopNavLeft.setVisibility(View.INVISIBLE);
+            mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
+        }
+        if(canNavigateRight(sectionIndex)){
+            mBtnTopNavRight.setVisibility(View.VISIBLE);
+            mBtnBottomNavRight.setVisibility(View.VISIBLE);
+        } else{
+            mBtnTopNavRight.setVisibility(View.INVISIBLE);
+            mBtnBottomNavRight.setVisibility(View.INVISIBLE);
         }
     }
 

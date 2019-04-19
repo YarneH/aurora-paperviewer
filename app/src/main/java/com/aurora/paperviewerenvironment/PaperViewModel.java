@@ -16,7 +16,7 @@ public class PaperViewModel extends AndroidViewModel {
      * {@link LiveData} of the current paper to maintain the paper in memory
      * across activity lifecycles
      */
-    private MutableLiveData<Paper> mPaper = new MutableLiveData<Paper>();
+    private MutableLiveData<Paper> mPaper = new MutableLiveData<>();
 
     private PaperProcessorCommunicator mCommunicator;
 

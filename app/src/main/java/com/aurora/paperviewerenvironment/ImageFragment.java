@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.aurora.paperviewerprocessor.paper.Paper;
-import com.aurora.paperviewerprocessor.paper.Section;
 import com.ortiz.touchview.TouchImageView;
 
 import java.util.List;

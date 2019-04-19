@@ -16,7 +16,6 @@ import android.widget.FrameLayout;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
-import com.aurora.paperviewerprocessor.facade.PaperProcessorCommunicator;
 import com.aurora.paperviewerprocessor.paper.Paper;
 
 import java.util.Objects;

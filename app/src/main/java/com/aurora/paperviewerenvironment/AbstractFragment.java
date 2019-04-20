@@ -1,5 +1,6 @@
 package com.aurora.paperviewerenvironment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -26,9 +27,11 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     private static final int ABSTRACT_SIZE = 1;
 
     /**
-     * The processed paper
+     * The {@link android.arch.lifecycle.AndroidViewModel}
+     * for maintaining the paper it's data and state
+     * across the lifecycles of the activity
      */
-    private Paper mPaper;
+    private PaperViewModel mPaperViewModel;
 
     /**
      * The root {@link android.support.v4.widget.NestedScrollView} of this fragment
@@ -66,14 +69,11 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         return new AbstractFragment();
     }
 
-    public void setPaper(Paper paper){
-        this.mPaper = paper;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mPaperViewModel = ViewModelProviders.of(getActivity()).get(PaperViewModel.class);
 
-        // Inflate the view for a section
+        // Inflate the view for the abstract
         mAbstractView = inflater.inflate(R.layout.fragment_abstract, container, false);
 
         mAbstractHeader = mAbstractView.findViewById(R.id.abstract_header);
@@ -114,15 +114,21 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
                 "text-align: " + getResources().getString(R.string.abstract_text_align) + ";" +
                 "}</style></head><body>";
         String htmlEnd = "</body></html>";
-        String myHtmlString = htmlFront + mPaper.getAbstract() + htmlEnd;
 
-        // Add content to the webview
-        mAbstractWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+        mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
+            if(paper == null){
+                return;
+            }
+            // Add content to the webview
+            String myHtmlString = htmlFront + paper.getAbstract() + htmlEnd;
+            mAbstractWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+        });
+
         return mAbstractView;
     }
 
     private boolean canNavigateRight(){
-        return mPaper.getSections().size() > 0;
+        return mPaperViewModel.getNumberOfSections() > 0;
     }
 
     @Override

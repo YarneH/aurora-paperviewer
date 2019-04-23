@@ -19,7 +19,7 @@ import java.util.List;
  * Parses the {@link ExtractedText} obtained from PaperViewer into a
  * custom PluginObject {@link Paper}.
  */
-public class PaperParser {
+public final class PaperParser {
 
     private PaperParser(){}
 
@@ -50,11 +50,10 @@ public class PaperParser {
             }
             if(section.getBody() != null){
                 // Capture the title and content of the first section encountered
-                if(section.getTitle() != null && currentSectionBody.equals("")) {
+                if(section.getTitle() != null && "".equals(currentSectionBody)) {
                     currentSectionTitle = section.getTitle();
                     currentSectionBody = section.getBody();
-                }
-                else if(section.getTitle() != null){
+                } else if(section.getTitle() != null){
                     // Reached a new section, add the completed previous section to the list
                     PaperSection paperSection = new PaperSection(currentSectionTitle, currentSectionBody);
                     paperSections.add(paperSection);

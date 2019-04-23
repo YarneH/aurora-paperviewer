@@ -7,8 +7,6 @@ import android.util.Log;
 
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.Section;
-import com.aurora.paperviewerprocessor.App;
-import com.aurora.paperviewerprocessor.R;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
@@ -23,6 +21,8 @@ import java.util.List;
  */
 public class PaperParser {
 
+    private PaperParser(){}
+
     /**
      * Parses a {@link Paper} from {@link ExtractedText}.
      *
@@ -30,7 +30,6 @@ public class PaperParser {
      * @return A parsed {@link Paper}
      */
     public static Paper parsePaper(ExtractedText extractedText){
-        System.out.println("Parsing the paper...");
         Paper processedPaper = new Paper();
         processedPaper.setTitle(extractedText.getTitle());
         processedPaper.setImages(extractImages(extractedText));
@@ -44,7 +43,7 @@ public class PaperParser {
             Section section = extractedText.getSections().get(s);
 
             // Detect an abstract
-            if(section.getTitle() != null && section.getTitle().equals("Abstract")){
+            if(section.getTitle() != null && "Abstract".equals(section.getTitle())){
                 processedPaper.setAbstract(section.getBody());
                 s += 1;
                 continue;
@@ -57,8 +56,6 @@ public class PaperParser {
                 }
                 else if(section.getTitle() != null){
                     // Reached a new section, add the completed previous section to the list
-                    System.out.println("title: " + currentSectionTitle);
-                    System.out.println(currentSectionBody.replace("\n", "\\n"));
                     PaperSection paperSection = new PaperSection(currentSectionTitle, currentSectionBody);
                     paperSections.add(paperSection);
                     currentSectionTitle = section.getTitle();
@@ -76,9 +73,6 @@ public class PaperParser {
             s++;
         }
         // Add last section to the list
-        System.out.println("title: " + currentSectionTitle);
-        System.out.println(currentSectionBody.replace("\n", "\\n"));
-
         PaperSection paperSection = new PaperSection(currentSectionTitle, currentSectionBody);
         paperSections.add(paperSection);
 

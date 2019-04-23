@@ -147,14 +147,12 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             mSectionView.post(() -> {
                 if(!isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
                     mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-                }
-                else{
+                } else{
                     mBtnBottomNavRight.setVisibility(View.VISIBLE);
                 }
                 if(!isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
                     mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-                }
-                else{
+                } else{
                     mBtnBottomNavLeft.setVisibility(View.VISIBLE);
                 }
             });
@@ -164,7 +162,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         return mSectionView;
     }
 
-    private String htmlFormatContent(String content){
+    private static String htmlFormatContent(String content){
         String formattedContent;
         formattedContent = content.replace("\n\n\n", "<br><br>");
         formattedContent = formattedContent.replace("\n\n", "<br><br>");

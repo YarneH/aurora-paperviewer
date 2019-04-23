@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.ortiz.touchview.TouchImageView;

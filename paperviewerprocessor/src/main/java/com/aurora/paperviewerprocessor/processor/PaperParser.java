@@ -15,13 +15,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Parses the {@link ExtractedText} obtained from PaperViewer into a
  * custom PluginObject {@link Paper}.
  */
-public final class PaperParser {
+public class PaperParser {
 
-    private PaperParser(){}
+    public PaperParser(){}
 
     /**
      * Parses a {@link Paper} from {@link ExtractedText}.
@@ -38,14 +40,11 @@ public final class PaperParser {
         List<PaperSection> paperSections = new ArrayList<>();
         String currentSectionTitle = null;
         String currentSectionBody = "";
-        int s = 0;
-        while(s < extractedText.getSections().size()){
-            Section section = extractedText.getSections().get(s);
+        for(Section section : extractedText.getSections()){
 
             // Detect an abstract
             if(section.getTitle() != null && "Abstract".equals(section.getTitle())){
                 processedPaper.setAbstract(section.getBody());
-                s += 1;
                 continue;
             }
             if(section.getBody() != null){
@@ -68,21 +67,25 @@ public final class PaperParser {
                     currentSectionBody +=  "\n\n" + body;
                 }
             }
-
-            s++;
         }
         // Add last section to the list
         PaperSection paperSection = new PaperSection(currentSectionTitle, currentSectionBody);
         paperSections.add(paperSection);
 
-        if(paperSections == null || paperSections.isEmpty()){
-            Log.e("ERROR in PaperParser", "This is probably not a paper as no sections were recognized.");
+        if(paperSections.isEmpty()){
+            Log.e(TAG, "PaperParser: This is probably not a paper as no sections were recognized.\" ");
         }
         processedPaper.setSections(paperSections);
 
         return processedPaper;
     }
 
+    /**
+     * Extract the images from the Paper {@link com.aurora.auroralib.PluginObject} received from aurora.
+     *
+     * @param extractedText The extractedText passed by aurora
+     * @return a list containing all the images of the paper
+     */
     private static List<Bitmap> extractImages(ExtractedText extractedText){
         List<Bitmap> images = new ArrayList<>();
         for(Section section : extractedText.getSections()){

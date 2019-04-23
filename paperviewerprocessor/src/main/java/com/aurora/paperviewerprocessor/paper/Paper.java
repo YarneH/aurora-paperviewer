@@ -13,6 +13,8 @@ public class Paper extends PluginObject {
     private List<PaperSection> mSections;
     private List<Bitmap> mImages;
 
+    public Paper() { }
+
     public Paper(String author, String title, String paperAbstract, List<PaperSection> sections) {
         this.mAuthor = author;
         this.mTitle = title;
@@ -20,14 +22,20 @@ public class Paper extends PluginObject {
         this.mSections = sections;
     }
 
-    public Paper() { }
-
     public void setAuthor(String author) {
         this.mAuthor = author;
     }
 
+    public String getAuthor() {
+        return this.mAuthor;
+    }
+
     public void setTitle(String title) {
         this.mTitle = title;
+    }
+
+    public String getTitle() {
+        return this.mTitle;
     }
 
     public void setAbstract(String abstractContent) {
@@ -38,20 +46,16 @@ public class Paper extends PluginObject {
         this.mSections = sections;
     }
 
-    public void setImages(List<Bitmap> images) {
-        this.mImages = images;
-    }
-
-    public String getTitle() {
-        return this.mTitle;
-    }
-
     public String getAbstract() {
         return this.mAbstract;
     }
 
     public List<PaperSection> getSections() {
         return this.mSections;
+    }
+
+    public void setImages(List<Bitmap> images) {
+        this.mImages = images;
     }
 
     public List<Bitmap> getImages() {

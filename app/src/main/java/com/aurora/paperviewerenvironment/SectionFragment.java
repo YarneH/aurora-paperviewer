@@ -123,16 +123,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         // Initialize and configure navigation buttons
         setUpNavigationButtons(sectionIndex);
 
-        // Remove bottom navigation button in case the button is visible if positioned at the start view
-        mSectionView.post(() -> {
-            if(isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
-                mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-            }
-            if(isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
-                mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-            }
-        });
-
         // Set the text properties of the section content
         String htmlFront = "<html><head>" +
                 "<style type=\"text/css\">body {" +
@@ -152,6 +142,23 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
             String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
             mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+
+            // Remove bottom navigation button in case the button is visible if positioned at the start view
+            mSectionView.post(() -> {
+                if(!isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
+                    mBtnBottomNavRight.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    mBtnBottomNavRight.setVisibility(View.VISIBLE);
+                }
+                if(!isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
+                    mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    mBtnBottomNavLeft.setVisibility(View.VISIBLE);
+                }
+            });
+
         });
 
         return mSectionView;

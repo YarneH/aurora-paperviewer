@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.aurora.paperviewerprocessor.paper.Paper;
-import com.aurora.paperviewerprocessor.paper.Section;
+import com.aurora.paperviewerprocessor.paper.PaperSection;
 
 /**
  * A fragment containing the view for a section of the paper
@@ -147,14 +147,23 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             if(paper == null){
                 return;
             }
-            Section section = paper.getSections().get(sectionIndex);
+            PaperSection section = paper.getSections().get(sectionIndex);
             mSectionHeader.setText(section.getHeader());
 
-            String myHtmlString = htmlFront + section.getContent() + htmlEnd;
+            String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
             mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
         });
 
         return mSectionView;
+    }
+
+    private String htmlFormatContent(String content){
+        String formattedContent;
+        formattedContent = content.replace("\n\n\n", "<br><br>");
+        formattedContent = formattedContent.replace("\n\n", "<br><br>");
+        formattedContent = formattedContent.replace("\n", "<br><br>");
+
+        return formattedContent;
     }
 
     /**

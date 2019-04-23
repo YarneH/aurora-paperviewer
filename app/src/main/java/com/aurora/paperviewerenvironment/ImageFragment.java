@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.ortiz.touchview.TouchImageView;
@@ -82,9 +84,9 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
 
             // Add the images of the paper to the image gallery
             mImagesGallery = mView.findViewById(R.id.linear_image_gallery);
-            mImagesGallery.setVisibility(View.VISIBLE);
             for (int i = 0; i < paper.getImages().size(); i++) {
                 mImagesGallery.addView(getGalleryImageView(i, paper.getImages()));
+            mImagesGallery.setVisibility(View.VISIBLE);
             }
         });
 

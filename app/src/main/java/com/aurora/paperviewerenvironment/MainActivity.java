@@ -3,6 +3,7 @@ package com.aurora.paperviewerenvironment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
@@ -163,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search || id == R.id.action_overview) {
             return true;
         } else if (id == R.id.action_images) {
+            if(!mPaperViewModel.hasImages()){
+                Toast.makeText(this, "No images were found for this paper.", Snackbar.LENGTH_LONG).show();
+                return false;
+            }
             if (mImageContainer.getVisibility() == View.VISIBLE) {
                 mImageContainer.setVisibility(View.GONE);
             } else {

@@ -18,12 +18,14 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 /**
- * Parses the {@link ExtractedText} obtained from PaperViewer into a
- * custom PluginObject {@link Paper}.
+ * Utility class for parsing the {@link ExtractedText} received from aurora
+ * into a custom {@link com.aurora.auroralib.PluginObject} {@link Paper}.
  */
-public class PaperParser {
+public final class PaperParser {
 
-    public PaperParser(){}
+    private PaperParser() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Parses a {@link Paper} from {@link ExtractedText}.
@@ -81,10 +83,10 @@ public class PaperParser {
     }
 
     /**
-     * Extract the images from the Paper {@link com.aurora.auroralib.PluginObject} received from aurora.
+     * Extract the images from the {@link Paper} {@link com.aurora.auroralib.PluginObject} received from aurora.
      *
      * @param extractedText The extractedText passed by aurora
-     * @return a list containing all the images of the paper
+     * @return a list containing all the images of the {@link Paper}
      */
     private static List<Bitmap> extractImages(ExtractedText extractedText){
         List<Bitmap> images = new ArrayList<>();

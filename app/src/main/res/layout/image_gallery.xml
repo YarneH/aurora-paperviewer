@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/hsv_image_overview"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
 
     <LinearLayout
         android:id="@+id/linear_image_gallery"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="left|top"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:layout_margin="0dp"
         android:gravity="center"

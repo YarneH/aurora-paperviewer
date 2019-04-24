@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.aurora.paperviewerprocessor.paper.Paper;
-import com.aurora.paperviewerprocessor.paper.Section;
+import com.aurora.paperviewerprocessor.paper.PaperSection;
 
 /**
  * A fragment containing the view for a section of the paper
@@ -123,16 +123,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         // Initialize and configure navigation buttons
         setUpNavigationButtons(sectionIndex);
 
-        // Remove bottom navigation button in case the button is visible if positioned at the start view
-        mSectionView.post(() -> {
-            if(isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
-                mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-            }
-            if(isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
-                mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-            }
-        });
-
         // Set the text properties of the section content
         String htmlFront = "<html><head>" +
                 "<style type=\"text/css\">body {" +
@@ -147,14 +137,38 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             if(paper == null){
                 return;
             }
-            Section section = paper.getSections().get(sectionIndex);
+            PaperSection section = paper.getSections().get(sectionIndex);
             mSectionHeader.setText(section.getHeader());
 
-            String myHtmlString = htmlFront + section.getContent() + htmlEnd;
+            String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
             mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+
+            // Remove bottom navigation button in case the button is visible if positioned at the start view
+            mSectionView.post(() -> {
+                if(!isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
+                    mBtnBottomNavRight.setVisibility(View.INVISIBLE);
+                } else{
+                    mBtnBottomNavRight.setVisibility(View.VISIBLE);
+                }
+                if(!isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
+                    mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
+                } else{
+                    mBtnBottomNavLeft.setVisibility(View.VISIBLE);
+                }
+            });
+
         });
 
         return mSectionView;
+    }
+
+    private static String htmlFormatContent(String content){
+        String formattedContent;
+        formattedContent = content.replace("\n\n\n", "<br><br>");
+        formattedContent = formattedContent.replace("\n\n", "<br><br>");
+        formattedContent = formattedContent.replace("\n", "<br><br>");
+
+        return formattedContent;
     }
 
     /**

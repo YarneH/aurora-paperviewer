@@ -10,6 +10,10 @@ import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.facade.PaperProcessorCommunicator;
 import com.aurora.paperviewerprocessor.paper.Paper;
 
+/**
+ * The {@link AndroidViewModel} for maintaining the data and state of
+ * the current Paper being visualized.
+ */
 public class PaperViewModel extends AndroidViewModel {
 
     /**

@@ -112,7 +112,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
         galleryImage.setPadding(paddingPixel,0,paddingPixel,paddingPixel);
 
         // Set the click behavior for this gallery image
-        galleryImage.setOnClickListener((View view) -> enLargeImage(position, images));
+        galleryImage.setOnClickListener((View view) -> enlargeImage(position, images));
         return galleryImage;
     }
 
@@ -123,7 +123,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
      * @param position The position of the image to enlarge in the {@link ViewPager}
      * @param images The images for in the {@link ViewPager}
      */
-    public void enLargeImage(int position, List<Bitmap> images){
+    public void enlargeImage(int position, List<Bitmap> images){
         mImagesGallery.setVisibility(View.GONE);
 
         // Initiate the ViewPager with the ImageAdapter with the clicked gallery image

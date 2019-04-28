@@ -75,7 +75,8 @@ public final class PaperParser {
         paperSections.add(paperSection);
 
         if(paperSections.isEmpty()){
-            Log.e(TAG, "PaperParser: This is probably not a paper as no sections were recognized.\" ");
+            Log.e(TAG, "PaperParser: This is probably not a paper as no sections were recognized.");
+            // TODO add custom exception
         }
         processedPaper.setSections(paperSections);
 

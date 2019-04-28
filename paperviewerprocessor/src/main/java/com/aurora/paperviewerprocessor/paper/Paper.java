@@ -46,12 +46,12 @@ public class Paper extends PluginObject {
         this.mSections = sections;
     }
 
-    public String getAbstract() {
-        return this.mAbstract;
-    }
-
     public List<PaperSection> getSections() {
         return this.mSections;
+    }
+
+    public String getAbstract() {
+        return this.mAbstract;
     }
 
     public void setImages(List<Bitmap> images) {

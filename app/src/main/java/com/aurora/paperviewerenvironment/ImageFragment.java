@@ -1,5 +1,6 @@
 package com.aurora.paperviewerenvironment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.LinearLayout;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.ortiz.touchview.TouchImageView;
 
+import java.util.List;
+
 /**
  * A fragment containing either: <br>
  *     The view for the image gallery. <br>
@@ -25,9 +28,11 @@ import com.ortiz.touchview.TouchImageView;
 public class ImageFragment extends Fragment implements View.OnClickListener {
 
     /**
-     * The processed paper
+     * The {@link android.arch.lifecycle.AndroidViewModel}
+     * for maintaining the paper it's data and state
+     * across the lifecycles of the activity
      */
-    private Paper mPaper;
+    private PaperViewModel mPaperViewModel;
 
     /**
      * The root view
@@ -60,30 +65,28 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
         return new ImageFragment();
     }
 
-    public void setPaper(Paper paper) {
-        this.mPaper = paper;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the view for a section
+        mPaperViewModel = ViewModelProviders.of(getActivity()).get(PaperViewModel.class);
+
+        // Inflate the view for the image container
         mView = inflater.inflate(R.layout.fragment_image, container, false);
-
-        // Prepare the enlarged image view
         mEnlargedImagePager = mView.findViewById(R.id.enlarged_image_pager);
-        mEnlargedImagePager.setVisibility(View.GONE);
-
-        // Prepare the minimization button for the enlarged view
         mBtnMinimize = mView.findViewById(R.id.btn_minimize_image);
-        mBtnMinimize.setVisibility(View.GONE);
         mBtnMinimize.setOnClickListener(this);
 
-        // Add the images of the paper to the image gallery
-        mImagesGallery = mView.findViewById(R.id.linear_image_gallery);
-        mImagesGallery.setVisibility(View.VISIBLE);
-        for (int i = 0; i < mPaper.getImages().size(); i++) {
-            mImagesGallery.addView(getGalleryImageView(i, mPaper.getImages().get(i)));
-        }
+        mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
+            // Hide the enlarged image view
+            mEnlargedImagePager.setVisibility(View.GONE);
+            mBtnMinimize.setVisibility(View.GONE);
+
+            // Add the images of the paper to the image gallery
+            mImagesGallery = mView.findViewById(R.id.linear_image_gallery);
+            for (int i = 0; i < paper.getImages().size(); i++) {
+                mImagesGallery.addView(getGalleryImageView(i, paper.getImages()));
+            mImagesGallery.setVisibility(View.VISIBLE);
+            }
+        });
 
         return mView;
     }
@@ -91,10 +94,12 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
     /**
      * Creates an ImageView for in the image gallery.
      *
-     * @param bm Bitmap with the image from the paper
-     * @return An {@link ImageView} containing the rescaled image for the gallery
+     * @param position The index of the image in the image gallery
+     * @param images The images in the image gallery
+     * @return {@link ImageView} containing the rescaled image for the gallery
      */
-    private ImageView getGalleryImageView(int position, Bitmap bm){
+    private ImageView getGalleryImageView(int position, List<Bitmap> images){
+        Bitmap bm = images.get(position);
         ImageView galleryImage = new ImageView(getActivity());
         int imageHeight = (int) getResources().getDimension(R.dimen.image_gallery_height);
         double ratio = ((double)bm.getWidth()/bm.getHeight());
@@ -107,7 +112,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
         galleryImage.setPadding(paddingPixel,0,paddingPixel,paddingPixel);
 
         // Set the click behavior for this gallery image
-        galleryImage.setOnClickListener((View view) -> enLargeImage(position));
+        galleryImage.setOnClickListener((View view) -> enlargeImage(position, images));
         return galleryImage;
     }
 
@@ -116,14 +121,15 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
      * Triggered when an image is clicked in the image gallery.
      *
      * @param position The position of the image to enlarge in the {@link ViewPager}
+     * @param images The images for in the {@link ViewPager}
      */
-    public void enLargeImage(int position){
+    public void enlargeImage(int position, List<Bitmap> images){
         mImagesGallery.setVisibility(View.GONE);
 
         // Initiate the ViewPager with the ImageAdapter with the clicked gallery image
         mBtnMinimize.setVisibility(View.VISIBLE);
         mEnlargedImagePager.setVisibility(View.VISIBLE);
-        mEnlargedImagePager.setAdapter(new ImageAdapter());
+        mEnlargedImagePager.setAdapter(new ImageAdapter(images));
         mEnlargedImagePager.setCurrentItem(position);
     }
 
@@ -133,9 +139,15 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
      */
     public class ImageAdapter extends PagerAdapter {
 
+        private List<Bitmap> mImages;
+
+        public ImageAdapter(List<Bitmap> images){
+            this.mImages = images;
+        }
+
         @Override
         public int getCount() {
-            return mPaper.getImages().size();
+            return mImages.size();
         }
 
         @Override
@@ -153,7 +165,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
             TouchImageView mEnlargedImageView = itemView.findViewById(R.id.imageView);
             mEnlargedImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             mEnlargedImageView.setAdjustViewBounds(true);
-            mEnlargedImageView.setImageBitmap(mPaper.getImages().get(position));
+            mEnlargedImageView.setImageBitmap(mImages.get(position));
 
             container.addView(itemView);
             return itemView;
@@ -161,12 +173,12 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout)object);
+            container.removeView((LinearLayout) object);
         }
     }
 
     /**
-     * Called when a minimization button has been clicked
+     * Called when the minimization button has been clicked.
      *
      * @param view The root view
      */

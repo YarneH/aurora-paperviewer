@@ -1,6 +1,8 @@
 package com.aurora.paperviewerprocessor.paper;
 
 import android.graphics.Bitmap;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.aurora.auroralib.PluginObject;
@@ -20,6 +22,7 @@ public class Paper extends PluginObject {
         this.mTitle = title;
         this.mAbstract = paperAbstract;
         this.mSections = sections;
+        this.mImages = new ArrayList<>();
     }
 
     public void setAuthor(String author) {
@@ -60,6 +63,28 @@ public class Paper extends PluginObject {
 
     public List<Bitmap> getImages() {
         return this.mImages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Paper) {
+            Paper paper = (Paper) o;
+            return  paper.getAuthor().equals(mAuthor)
+                    && paper.getTitle().equals(mTitle)
+                    && (paper.getAbstract() != null && mAbstract != null ? paper.getAbstract().equals(mAbstract) : true)
+                    && paper.getSections().equals(mSections)
+                    && paper.getImages().equals(mImages);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Paper{" +
+                "title=" + mTitle + ", author=" + mAuthor +
+                (mAbstract != null ? ",\nabstract=" + mAbstract : "") +
+                ",\nsections=" + mSections +
+                '}';
     }
 
 }

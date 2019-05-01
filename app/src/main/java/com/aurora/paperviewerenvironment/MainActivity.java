@@ -109,10 +109,6 @@ public class MainActivity extends AppCompatActivity {
                 mPaperViewModel.initialiseWithExtractedText(inputText);
             // TODO handle a BasicPluginObject that was cached (will come in Json format)
             } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)) {
-                String paperJson =
-                        intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_OBJECT);
-                Paper paper = (Paper)
-                        Paper.fromJson(paperJson, Paper.class);
                 return;
             }
         }

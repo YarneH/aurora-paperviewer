@@ -104,38 +104,8 @@ public class MainActivity extends AppCompatActivity {
                 // Get the Uri to the transferred file
                 Uri fileUri = intentThatStartedThisActivity.getData();
 
-                StringBuilder total = new StringBuilder();
-                ParcelFileDescriptor inputPFD = null;
-                if(fileUri != null) {
-                    // Open the file
-                    try {
-                        inputPFD = getContentResolver().openFileDescriptor(fileUri, "r");
-                    } catch (FileNotFoundException e) {
-                        Log.e("MAIN", "There was a problem receiving the file from " +
-                                "the plugin", e);
-                    }
-                }
-
-                // Read the file
-                if(inputPFD != null) {
-                    InputStream fileStream = new FileInputStream(inputPFD.getFileDescriptor());
-
-
-                    try (BufferedReader r = new BufferedReader(new InputStreamReader(fileStream))){
-                        for (String line; (line = r.readLine()) != null; ) {
-                            total.append(line).append('\n');
-                        }
-                    } catch (IOException e) {
-                        Log.e("MAIN", "There was a problem receiving the file from " +
-                                "the plugin", e);
-                    }
-                } else {
-                    Log.e("MAIN", "There was a problem receiving the file from " +
-                            "the plugin");
-                }
-
                 // Convert the read file to an ExtractedText object
-                ExtractedText inputText = ExtractedText.fromJson(total.toString());
+                ExtractedText inputText = getExtractedTextFromFile(fileUri);
                 mPaperViewModel.initialiseWithExtractedText(inputText);
             // TODO handle a BasicPluginObject that was cached (will come in Json format)
             } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)) {
@@ -212,6 +182,44 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private ExtractedText getExtractedTextFromFile(Uri fileUri){
+        StringBuilder total = new StringBuilder();
+        ParcelFileDescriptor inputPFD = null;
+        if(fileUri != null) {
+            // Open the file
+            try {
+                inputPFD = getContentResolver().openFileDescriptor(fileUri, "r");
+            } catch (FileNotFoundException e) {
+                Log.e("MAIN", "There was a problem receiving the file from " +
+                        "the plugin", e);
+            }
+
+            // Read the file
+            if (inputPFD != null) {
+                InputStream fileStream = new FileInputStream(inputPFD.getFileDescriptor());
+
+
+                try (BufferedReader r = new BufferedReader(new InputStreamReader(fileStream))) {
+                    for (String line; (line = r.readLine()) != null; ) {
+                        total.append(line).append('\n');
+                    }
+                } catch (IOException e) {
+                    Log.e("MAIN", "There was a problem receiving the file from " +
+                            "the plugin", e);
+                }
+            } else {
+                Log.e("MAIN", "There was a problem receiving the file from " +
+                        "the plugin");
+            }
+        } else {
+                Log.e("MAIN", "There was a problem receiving the file from " +
+                        "the plugin");
+        }
+
+        // Convert the read file to an ExtractedText object
+        return ExtractedText.fromJson(total.toString());
     }
 
     /**

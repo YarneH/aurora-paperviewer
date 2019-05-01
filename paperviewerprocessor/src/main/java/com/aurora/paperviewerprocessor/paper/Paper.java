@@ -75,22 +75,30 @@ public class Paper extends PluginObject {
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
-            return  paper.getAuthor().equals(mAuthor)
-                    && paper.getTitle().equals(mTitle)
-                    && (paper.getAbstract() != null && mAbstract != null ? paper.getAbstract().equals(mAbstract) : true)
-                    && paper.getSections().equals(mSections)
+            Boolean equalHeaderContent = paper.getAuthor().equals(mAuthor)
+                    && paper.getTitle().equals(mTitle);
+            Boolean equalAbstract = true;
+            if(paper.getAbstract() != null && mAbstract != null && !paper.getAbstract().equals(mAbstract)){
+                equalAbstract = false;
+            }
+            Boolean equalContent = paper.getSections().equals(mSections)
                     && paper.getImages().equals(mImages);
+            return  equalHeaderContent && equalAbstract && equalContent;
         }
         return false;
     }
 
     @Override
     public String toString() {
-        return "Paper{" +
-                "title=" + mTitle + ", author=" + mAuthor +
-                (mAbstract != null ? ",\nabstract=" + mAbstract : "") +
-                ",\nsections=" + mSections +
-                '}';
+        StringBuilder ret = new StringBuilder("Paper{");
+        ret.append("title=").append(mTitle);
+        ret.append(", author=").append(mAuthor);
+        if(mAbstract != null){
+            ret.append(",\nabstract=").append(mAbstract);
+        }
+        ret.append(",\nsections=").append(mSections);
+        ret.append("}");
+        return ret.toString();
     }
 
 }

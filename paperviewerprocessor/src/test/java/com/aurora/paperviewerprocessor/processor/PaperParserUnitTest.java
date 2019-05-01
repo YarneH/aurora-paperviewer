@@ -63,24 +63,6 @@ public class PaperParserUnitTest {
     }
 
     @Test
-    public void PaperParser_parsePaper_AuthorHasBeenSet() {
-        // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
-
-        // Assert
-        assert(paper.getAuthor() != null);
-    }
-
-    @Test
-    public void PaperParser_parsePaper_paperCorrectAuthor() {
-        // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
-
-        // Assert
-        assert(paper.getAuthor().equals("Author"));
-    }
-
-    @Test
     public void PaperParser_parsePaper_sectionsCorrectSize() {
         // Act
         Paper paper = PaperParser.parsePaper(extractedText);

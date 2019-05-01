@@ -105,32 +105,29 @@ public class MainActivity extends AppCompatActivity {
                 Uri fileUri = intentThatStartedThisActivity.getData();
 
                 StringBuilder total = new StringBuilder();
+                ParcelFileDescriptor inputPFD = null;
                 if(fileUri != null) {
                     // Open the file
-                    ParcelFileDescriptor inputPFD = null;
                     try {
                         inputPFD = getContentResolver().openFileDescriptor(fileUri, "r");
                     } catch (FileNotFoundException e) {
                         Log.e("MAIN", "There was a problem receiving the file from " +
                                 "the plugin", e);
                     }
+                }
 
-                    // Read the file
-                    if(inputPFD != null) {
-                        InputStream fileStream = new FileInputStream(inputPFD.getFileDescriptor());
+                // Read the file
+                if(inputPFD != null) {
+                    InputStream fileStream = new FileInputStream(inputPFD.getFileDescriptor());
 
 
-                        try (BufferedReader r = new BufferedReader(new InputStreamReader(fileStream))){
-                            for (String line; (line = r.readLine()) != null; ) {
-                                total.append(line).append('\n');
-                            }
-                        } catch (IOException e) {
-                            Log.e("MAIN", "There was a problem receiving the file from " +
-                                    "the plugin", e);
+                    try (BufferedReader r = new BufferedReader(new InputStreamReader(fileStream))){
+                        for (String line; (line = r.readLine()) != null; ) {
+                            total.append(line).append('\n');
                         }
-                    } else {
+                    } catch (IOException e) {
                         Log.e("MAIN", "There was a problem receiving the file from " +
-                                "the plugin");
+                                "the plugin", e);
                     }
                 } else {
                     Log.e("MAIN", "There was a problem receiving the file from " +

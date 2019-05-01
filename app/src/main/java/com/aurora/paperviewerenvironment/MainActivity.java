@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
                         InputStream fileStream = new FileInputStream(inputPFD.getFileDescriptor());
 
 
-                        try {
-                            BufferedReader r = new BufferedReader(new InputStreamReader(fileStream));
+                        try (BufferedReader r = new BufferedReader(new InputStreamReader(fileStream))){
+
                             for (String line; (line = r.readLine()) != null; ) {
                                 total.append(line).append('\n');
                             }

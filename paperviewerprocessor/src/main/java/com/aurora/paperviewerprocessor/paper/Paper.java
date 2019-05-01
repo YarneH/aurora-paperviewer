@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.aurora.auroralib.PluginObject;
 
@@ -63,6 +64,11 @@ public class Paper extends PluginObject {
 
     public List<Bitmap> getImages() {
         return this.mImages;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mAuthor, mTitle, mAbstract, mSections, mImages);
     }
 
     @Override

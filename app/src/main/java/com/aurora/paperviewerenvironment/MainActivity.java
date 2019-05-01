@@ -121,15 +121,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                         try (BufferedReader r = new BufferedReader(new InputStreamReader(fileStream))){
-
                             for (String line; (line = r.readLine()) != null; ) {
                                 total.append(line).append('\n');
                             }
-                            r.close();
                         } catch (IOException e) {
                             Log.e("MAIN", "There was a problem receiving the file from " +
                                     "the plugin", e);
-                        } 
+                        }
                     } else {
                         Log.e("MAIN", "There was a problem receiving the file from " +
                                 "the plugin");

@@ -2,7 +2,9 @@ package com.aurora.paperviewerenvironment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,12 @@ import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.paper.Paper;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Objects;
 
 /**
@@ -91,22 +100,51 @@ public class MainActivity extends AppCompatActivity {
         Intent intentThatStartedThisActivity = getIntent();
         if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
 
-            // TODO remove this if statement probably.
-            // TODO Is currently used to handle cases where a plain String is sent instead of an ExtractedText
-            if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_TEXT)) {
-                String inputText =
-                        intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_TEXT);
-                mPaperViewModel.initialiseWithPlainText(inputText);
-            }
+            if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
+                // Get the Uri to the transferred file
+                Uri fileUri = intentThatStartedThisActivity.getData();
 
-            // Handle ExtractedText object (received when first opening a new file)
-            else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
-                String inputTextJSON =
-                        intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT);
-                ExtractedText inputText = ExtractedText.fromJson(inputTextJSON);
+                StringBuilder total = new StringBuilder();
+                if(fileUri != null) {
+                    // Open the file
+                    ParcelFileDescriptor inputPFD = null;
+                    try {
+                        inputPFD = getContentResolver().openFileDescriptor(fileUri, "r");
+                    } catch (FileNotFoundException e) {
+                        Log.e("MAIN", "There was a problem receiving the file from " +
+                                "the plugin", e);
+                    }
+
+                    // Read the file
+                    if(inputPFD != null) {
+                        InputStream fileStream = new FileInputStream(inputPFD.getFileDescriptor());
+                        BufferedReader r = new BufferedReader(new InputStreamReader(fileStream));
+                        try {
+                            for (String line; (line = r.readLine()) != null; ) {
+                                total.append(line).append('\n');
+                            }
+                        } catch (IOException e) {
+                            Log.e("MAIN", "There was a problem receiving the file from " +
+                                    "the plugin", e);
+                        }
+                    } else {
+                        Log.e("MAIN", "There was a problem receiving the file from " +
+                                "the plugin");
+                    }
+                } else {
+                    Log.e("MAIN", "There was a problem receiving the file from " +
+                            "the plugin");
+                }
+
+                // Convert the read file to an ExtractedText object
+                ExtractedText inputText = ExtractedText.fromJson(total.toString());
                 mPaperViewModel.initialiseWithExtractedText(inputText);
             // TODO handle a BasicPluginObject that was cached (will come in Json format)
             } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)) {
+                String paperJson =
+                        intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_OBJECT);
+                Paper paper = (Paper)
+                        Paper.fromJson(paperJson, Paper.class);
                 return;
             }
         }

@@ -2,6 +2,7 @@ package com.aurora.paperviewerprocessor.paper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PaperSection {
 
@@ -30,4 +31,26 @@ public class PaperSection {
     public void addMarkedText(MarkedText markedText){
         this.mMarkedText.add(markedText);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mHeader, mContent);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PaperSection) {
+            PaperSection paperSection = (PaperSection) o;
+            return (paperSection.getHeader().equals(mHeader)
+                    && paperSection.getContent().equals(mContent));
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "PaperSection{" +
+                "header=" + mHeader + ", content=" + mContent + "}";
+    }
+
 }

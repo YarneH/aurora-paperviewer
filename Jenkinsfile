@@ -43,7 +43,7 @@ pipeline {
                     // Analyze coverage info
                     jacoco sourcePattern: '**/src/*/java', 
                         classPattern: '**/classes/com/aurora', 
-                        exclusionPattern: '**/*Test*.class,  **/aurora/*.class, **/src/test, **/src/androidTest'
+                        exclusionPattern: '**/*Test*.class,  **/paperviewerenvironment/*.class, **/R.class, **/R$*.class, **/BuildConfig  **/src/test, **/src/androidTest'
                 }
             }
 
@@ -113,7 +113,7 @@ pipeline {
                     // Analyze coverage info
                     jacoco sourcePattern: '**/src/main/java/com/aurora', 
                         classPattern: '**/classes/com/aurora', 
-                        exclusionPattern: '**/*Test*.class,  **/souschef/*.class, **/R.class, **/R$*.class, **/BuildConfig'
+                        exclusionPattern: '**/*Test*.class,  **/paperviewerenvironment/*.class, **/R.class, **/R$*.class, **/BuildConfig  **/src/test, **/src/androidTest'
                 }
             }
             post {
@@ -142,7 +142,7 @@ pipeline {
                     // Analyze coverage info
                     jacoco sourcePattern: '**/src/main/java/com/aurora', 
                         classPattern: '**/classes/com/aurora', 
-                        exclusionPattern: '**/*Test*.class,  **/souschef/*.class, **/R.class, **/R$*.class, **/BuildConfig'
+                        exclusionPattern: '**/*Test*.class,  **/paperviewerenvironment/*.class, **/R.class, **/R$*.class, **/BuildConfig  **/src/test, **/src/androidTest'
                 }
             }
             post {

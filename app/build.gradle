@@ -22,7 +22,6 @@ android {
     }
 }
 
-
 apply plugin: 'jacoco-android'
 
 jacoco {

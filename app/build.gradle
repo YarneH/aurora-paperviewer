@@ -48,4 +48,8 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     // zoomable image view
     implementation 'com.github.MikeOrtiz:TouchImageView:1.4.0'
+
+    // Required by auroralib
+    implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.7.1'
+
 }

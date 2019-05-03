@@ -34,7 +34,7 @@ public final class PaperParser {
      * @return A parsed {@link Paper}
      */
     public static Paper parsePaper(ExtractedText extractedText){
-        Paper processedPaper = new Paper();
+        Paper processedPaper = new Paper(extractedText.getFilename());
         processedPaper.setTitle(extractedText.getTitle());
         processedPaper.setImages(extractImages(extractedText));
 

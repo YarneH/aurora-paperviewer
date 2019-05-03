@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.aurora.auroralib.PluginObject;
+import com.aurora.paperviewerprocessor.PluginConstants;
 
 public class Paper extends PluginObject {
 
@@ -16,9 +17,13 @@ public class Paper extends PluginObject {
     private List<PaperSection> mSections;
     private List<Bitmap> mImages;
 
-    public Paper() { }
+    public Paper(String fileName) {
+        super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
+    }
 
-    public Paper(String author, String title, String paperAbstract, List<PaperSection> sections) {
+    public Paper(String fileName, String author, String title,
+                 String paperAbstract, List<PaperSection> sections) {
+        super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
         this.mAuthor = author;
         this.mTitle = title;
         this.mAbstract = paperAbstract;

@@ -23,7 +23,7 @@ public class PaperUnitTest {
         paperSections.add(section1);
         paperSections.add(section2);
 
-        paper = new Paper("Author", "Title", "Abstract content", paperSections);
+        paper = new Paper("", "Author", "Title", "Abstract content", paperSections);
     }
 
     @Test

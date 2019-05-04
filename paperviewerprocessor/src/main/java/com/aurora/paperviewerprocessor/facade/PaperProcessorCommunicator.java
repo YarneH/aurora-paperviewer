@@ -6,7 +6,6 @@ import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.PluginObject;
 import com.aurora.auroralib.ProcessorCommunicator;
 import com.aurora.paperviewerprocessor.PluginConstants;
-import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.processor.PaperParser;
 
 public class PaperProcessorCommunicator extends ProcessorCommunicator {

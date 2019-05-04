@@ -184,14 +184,10 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.btn_minimize_image:
-                mEnlargedImagePager.setVisibility(View.GONE);
-                mImagesGallery.setVisibility(View.VISIBLE);
-                mBtnMinimize.setVisibility(View.GONE);
-                break;
-            default:
-                break;
+        if(view.getId() == R.id.btn_minimize_image){
+            mEnlargedImagePager.setVisibility(View.GONE);
+            mImagesGallery.setVisibility(View.VISIBLE);
+            mBtnMinimize.setVisibility(View.GONE);
         }
     }
 

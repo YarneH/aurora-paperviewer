@@ -92,12 +92,14 @@ public final class PaperParser {
     private static List<Bitmap> extractImages(ExtractedText extractedText){
         List<Bitmap> images = new ArrayList<>();
         for(Section section : extractedText.getSections()){
-            for(String base64Image : section.getImages()){
-                InputStream stream = new ByteArrayInputStream(Base64.decode(base64Image.getBytes(),
-                        Base64.DEFAULT));
-                Bitmap imageBitmap = BitmapFactory.decodeStream(stream);
+            if(section.getImages() != null){
+                for(String base64Image : section.getImages()){
+                    InputStream stream = new ByteArrayInputStream(Base64.decode(base64Image.getBytes(),
+                            Base64.DEFAULT));
+                    Bitmap imageBitmap = BitmapFactory.decodeStream(stream);
 
-                images.add(imageBitmap);
+                    images.add(imageBitmap);
+                }
             }
         }
         return images;

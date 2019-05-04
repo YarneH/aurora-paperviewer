@@ -26,16 +26,7 @@ public class PaperViewModel extends AndroidViewModel {
 
     public PaperViewModel(@NonNull Application application) {
         super(application);
-        mCommunicator = new PaperProcessorCommunicator();
-    }
-
-    /**
-     * Initialise the data from plain text.
-     *
-     * @param plainText where to extract recipe from.
-     */
-    public void initialiseWithPlainText(String plainText) {
-        mPaper.setValue((Paper) mCommunicator.process(plainText));
+        mCommunicator = new PaperProcessorCommunicator(application.getApplicationContext());
     }
 
     /**
@@ -44,7 +35,7 @@ public class PaperViewModel extends AndroidViewModel {
      * @param extractedText where to get recipe from.
      */
     public void initialiseWithExtractedText(ExtractedText extractedText) {
-        mPaper.setValue((Paper) mCommunicator.process(extractedText));
+        mPaper.setValue((Paper) mCommunicator.pipeline(extractedText));
     }
 
     public LiveData<Paper> getPaper() {

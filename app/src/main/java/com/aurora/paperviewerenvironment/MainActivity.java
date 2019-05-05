@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,13 +22,7 @@ import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.paper.Paper;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Objects;
 
 /**
  * <p>

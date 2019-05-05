@@ -15,7 +15,7 @@ public class Paper extends PluginObject {
     private String mTitle;
     private String mAbstract;
     private List<PaperSection> mSections;
-    private List<Bitmap> mImages;
+    private transient List<Bitmap> mImages = new ArrayList<>();
 
     public Paper(String fileName) {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
@@ -28,7 +28,6 @@ public class Paper extends PluginObject {
         this.mTitle = title;
         this.mAbstract = paperAbstract;
         this.mSections = sections;
-        this.mImages = new ArrayList<>();
     }
 
     public void setAuthor(String author) {
@@ -76,18 +75,23 @@ public class Paper extends PluginObject {
         return Objects.hash(mAuthor, mTitle, mAbstract, mSections, mImages);
     }
 
+    /**
+     * Currently ignoring the transient cache field
+     *
+     * @param o the object to compare to
+     * @return true if both objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
-            Boolean equalHeaderContent = paper.getAuthor().equals(mAuthor)
+            boolean equalHeaderContent = paper.getAuthor().equals(mAuthor)
                     && paper.getTitle().equals(mTitle);
-            Boolean equalAbstract = true;
+            boolean equalAbstract = true;
             if(paper.getAbstract() != null && mAbstract != null && !paper.getAbstract().equals(mAbstract)){
                 equalAbstract = false;
             }
-            Boolean equalContent = paper.getSections().equals(mSections)
-                    && paper.getImages().equals(mImages);
+            boolean equalContent = paper.getSections().equals(mSections);
             return  equalHeaderContent && equalAbstract && equalContent;
         }
         return false;

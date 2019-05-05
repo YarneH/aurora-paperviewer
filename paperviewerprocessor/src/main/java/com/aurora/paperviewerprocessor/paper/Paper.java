@@ -15,7 +15,7 @@ public class Paper extends PluginObject {
     private String mTitle;
     private String mAbstract;
     private List<PaperSection> mSections;
-    private List<Bitmap> mImages;
+    private transient List<Bitmap> mImages;
 
     public Paper(String fileName) {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);

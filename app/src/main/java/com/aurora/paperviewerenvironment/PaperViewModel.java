@@ -38,6 +38,10 @@ public class PaperViewModel extends AndroidViewModel {
         mPaper.setValue((Paper) mCommunicator.pipeline(extractedText));
     }
 
+    public void initialiseWithPaper(Paper paper) {
+        mPaper.setValue(paper);
+    }
+
     public LiveData<Paper> getPaper() {
         return mPaper;
     }

@@ -32,9 +32,6 @@ import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -62,6 +59,10 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    /**
+     * Tag for logging.
+     */
+    private static final String CLASS_TAG = MainActivity.class.getSimpleName();
     /**
      * {@link Toolbar} for displaying various functionality buttons at the top of the application
      */
@@ -159,22 +160,31 @@ public class MainActivity extends AppCompatActivity
         mPaperTitleView = headerView.findViewById(R.id.paper_title);
         mPaperAuthorView = headerView.findViewById(R.id.paper_author);
 
-        // Below is the code used to handle communication with aurora and plugins.
+        /*
+         * Handle Aurora starting the Plugin.
+         */
         Intent intentThatStartedThisActivity = getIntent();
-        if (Objects.equals(intentThatStartedThisActivity.getAction(), Constants.PLUGIN_ACTION)) {
 
-            if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_EXTRACTED_TEXT)) {
-                // Get the Uri to the transferred file
-                Uri fileUri = intentThatStartedThisActivity.getData();
+        boolean intentIsOkay = true;
 
-                // Convert the read file to an ExtractedText object
-                ExtractedText inputText = getExtractedTextFromFile(fileUri);
-                mPaperViewModel.initialiseWithExtractedText(inputText);
-            // TODO handle a BasicPluginObject that was cached (will come in Json format)
-            } else if (intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_OBJECT)) {
-                return;
-            }
+        if(intentThatStartedThisActivity.getAction() == null) {
+            Toast.makeText(this, "ERROR: The intent had no action.",
+                    Snackbar.LENGTH_LONG).show();
+            intentIsOkay = false;
+        } else if(!intentThatStartedThisActivity.getAction().equals(Constants.PLUGIN_ACTION)) {
+            Toast.makeText(this, "ERROR: The intent had incorrect action.",
+                    Snackbar.LENGTH_LONG).show();
+            intentIsOkay = false;
+        } else if(!intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_TYPE)) {
+            Toast.makeText(this, "ERROR: The intent had no specified input type.",
+                    Snackbar.LENGTH_LONG).show();
+            intentIsOkay = false;
         }
+
+        if (intentIsOkay){
+            handleIntentThatOpenedPlugin(intentThatStartedThisActivity);
+        }
+
 
         mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
             if(paper == null){
@@ -268,7 +278,7 @@ public class MainActivity extends AppCompatActivity
             mTableOfContentsSubMenu.getItem(i).setChecked(isCurrentSection);
         }
     }
-
+    
     /**
      * Retrieves the position in the Section {@link ViewPager}
      * based on the index of the section in the {@link Paper}.
@@ -281,6 +291,58 @@ public class MainActivity extends AppCompatActivity
             return sectionIndex + 1;
         } else{
             return sectionIndex;
+        }
+    }
+
+    /**
+     * Initializes mPaper according to the parameters in the Intent that opened the plugin
+     *
+     * @param intentThatStartedThisActivity Intent that opened the plugin
+     */
+    private void handleIntentThatOpenedPlugin(Intent intentThatStartedThisActivity){
+        // Get the Uri to the transferred file
+        Uri fileUri = intentThatStartedThisActivity.getData();
+        if(fileUri == null) {
+            Toast.makeText(this, "ERROR: The intent had no uri in the data field",
+                    Snackbar.LENGTH_LONG).show();
+        } else {
+            // Get the input type
+            String inputType = intentThatStartedThisActivity.getStringExtra(Constants.PLUGIN_INPUT_TYPE);
+            // Switch on the different kinds of input types that could be in the temp file
+            switch (inputType) {
+                case Constants.PLUGIN_INPUT_TYPE_EXTRACTED_TEXT:
+                    // Convert the read file to an ExtractedText object
+                    convertReadFileToExtractedText(fileUri);
+                    break;
+                case Constants.PLUGIN_INPUT_TYPE_OBJECT:
+                    // Convert the read file to an PluginObject
+                    convertReadFileToPaper(fileUri);
+                    break;
+                default:
+                    Toast.makeText(this, "ERROR: The intent had an unsupported input type.",
+                            Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    /**
+     * Convert the read file to an ExtractedText object
+     *
+     * @param fileUri Uri to the file
+     */
+    private void convertReadFileToExtractedText(Uri fileUri){
+        try {
+            ExtractedText extractedText = ExtractedText.getExtractedTextFromFile( fileUri,
+                    this);
+            if (extractedText != null) {
+                Log.d(CLASS_TAG, "Loading extracted text.");
+                mPaperViewModel.initialiseWithExtractedText(extractedText);
+            } else {
+                // Error in case ExtractedText was null.
+                Log.e(CLASS_TAG, "ExtractedText-object was null.");
+            }
+        } catch (IOException e) {
+            Log.e(CLASS_TAG, "IOException while loading data from aurora", e);
         }
     }
 
@@ -319,6 +381,23 @@ public class MainActivity extends AppCompatActivity
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+    
+    /**
+     * Convert the read file to an PluginObject
+     *
+     * @param fileUri Uri to the file
+     */
+    private void convertReadFileToPaper(Uri fileUri){
+        try {
+            Paper receivedObject = Paper.getPluginObjectFromFile(fileUri, this, Paper.class);
+
+            Log.d(CLASS_TAG, "Loading cashed Object.");
+            mPaperViewModel.initialiseWithPaper(receivedObject);
+
+        } catch (IOException e) {
+            Log.e(CLASS_TAG, "IOException while loading data from aurora", e);
         }
     }
 
@@ -364,69 +443,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * <p>
-     * Handles selection of options in NavigationView (Drawer layout).
-     * </p>
-     * <p>
-     * The NavigationView contains the settings and the table of contents.
-     * Selecting a section in the navigationview navigates to the
-     * corresponding section.
-     * </p>
-     *
-     * @param item Selected menu item.
-     * @return whether or not successful.
-     */
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_settings) {
-            // TODO implement settings redirect activity such as text font here.
-        }
-        // The listener for the table of content entries has already been configured
-        // in the creation of the menu items.
-        return true;
-    }
-
-
-    private ExtractedText getExtractedTextFromFile(Uri fileUri){
-        StringBuilder total = new StringBuilder();
-        ParcelFileDescriptor inputPFD = null;
-        if(fileUri != null) {
-            // Open the file
-            try {
-                inputPFD = getContentResolver().openFileDescriptor(fileUri, "r");
-            } catch (FileNotFoundException e) {
-                Log.e("MAIN", "There was a problem receiving the file from " +
-                        "the plugin", e);
-            }
-
-            // Read the file
-            if (inputPFD != null) {
-                InputStream fileStream = new FileInputStream(inputPFD.getFileDescriptor());
-
-
-                try (BufferedReader r = new BufferedReader(new InputStreamReader(fileStream))) {
-                    for (String line; (line = r.readLine()) != null; ) {
-                        total.append(line).append('\n');
-                    }
-                } catch (IOException e) {
-                    Log.e("MAIN", "There was a problem receiving the file from " +
-                            "the plugin", e);
-                }
-            } else {
-                Log.e("MAIN", "There was a problem receiving the file from " +
-                        "the plugin");
-            }
-        } else {
-                Log.e("MAIN", "There was a problem receiving the file from " +
-                        "the plugin");
-        }
-
-        // Convert the read file to an ExtractedText object
-        return ExtractedText.fromJson(total.toString());
     }
 
     /**

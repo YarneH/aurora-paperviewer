@@ -74,11 +74,15 @@ public class PaperParserUnitTest {
 
         // Assert
         PaperSection paperSection1 = paper.getSections().get(0);
-        assert(paperSection1.getHeader().equals("Section title1"));
+        List<String> header1 = new ArrayList<>();
+        header1.add("Section title1");
+        assert(paperSection1.getHeader().equals(header1));
         assert(paperSection1.getContent().equals("Section body1."));
 
         PaperSection paperSection2 = paper.getSections().get(1);
-        assert(paperSection2.getHeader().equals("Section title2"));
+        List<String> header2 = new ArrayList<>();
+        header2.add("Section title2");
+        assert(paperSection2.getHeader().equals(header2));
         assert(paperSection2.getContent().equals("Section body2."));
     }
 

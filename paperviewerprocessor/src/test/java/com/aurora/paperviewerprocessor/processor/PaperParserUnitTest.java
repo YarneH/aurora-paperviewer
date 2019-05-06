@@ -1,7 +1,5 @@
 package com.aurora.paperviewerprocessor.processor;
 
-import android.graphics.Bitmap;
-
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.Section;
 import com.aurora.paperviewerprocessor.paper.Paper;
@@ -13,8 +11,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Testing the functionality of the processing of a paper
@@ -47,7 +43,7 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_titleHasBeenSet() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         assert(paper.getTitle() != null);
@@ -56,7 +52,7 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_paperCorrectTitle() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         assert(paper.getTitle().equals("Paper title"));
@@ -65,7 +61,7 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_sectionsCorrectSize() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         assert(paper.getSections().size() == 2);
@@ -74,7 +70,7 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_sectionsCorrectHeaderAndContent() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         PaperSection paperSection1 = paper.getSections().get(0);

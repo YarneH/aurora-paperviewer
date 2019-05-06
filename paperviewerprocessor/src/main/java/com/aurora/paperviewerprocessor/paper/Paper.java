@@ -1,9 +1,12 @@
 package com.aurora.paperviewerprocessor.paper;
 
 import android.graphics.Bitmap;
+import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.aurora.auroralib.PluginObject;
@@ -11,7 +14,7 @@ import com.aurora.paperviewerprocessor.PluginConstants;
 
 public class Paper extends PluginObject {
 
-    private String mAuthor;
+    private List<String> mAuthors;
     private String mTitle;
     private String mAbstract;
     private List<PaperSection> mSections;
@@ -21,22 +24,22 @@ public class Paper extends PluginObject {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
     }
 
-    public Paper(String fileName, String author, String title,
+    public Paper(String fileName, List<String> authors, String title,
                  String paperAbstract, List<PaperSection> sections) {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
-        this.mAuthor = author;
+        this.mAuthors = authors;
         this.mTitle = title;
         this.mAbstract = paperAbstract;
         this.mSections = sections;
         this.mImages = new ArrayList<>();
     }
 
-    public void setAuthor(String author) {
-        this.mAuthor = author;
+    public void setAuthors(List<String> authors) {
+        this.mAuthors = authors;
     }
 
-    public String getAuthor() {
-        return this.mAuthor;
+    public List<String> getAuthors() {
+        return this.mAuthors;
     }
 
     public void setTitle(String title) {
@@ -73,14 +76,14 @@ public class Paper extends PluginObject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mAuthor, mTitle, mAbstract, mSections, mImages);
+        return Objects.hash(mAuthors, mTitle, mAbstract, mSections, mImages);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
-            Boolean equalHeaderContent = paper.getAuthor().equals(mAuthor)
+            Boolean equalHeaderContent = paper.getAuthors().equals(mAuthors)
                     && paper.getTitle().equals(mTitle);
             Boolean equalAbstract = true;
             if(paper.getAbstract() != null && mAbstract != null && !paper.getAbstract().equals(mAbstract)){
@@ -97,7 +100,7 @@ public class Paper extends PluginObject {
     public String toString() {
         StringBuilder ret = new StringBuilder("Paper{");
         ret.append("title=").append(mTitle);
-        ret.append(", author=").append(mAuthor);
+        ret.append(", author=").append(mAuthors);
         if(mAbstract != null){
             ret.append(",\nabstract=").append(mAbstract);
         }

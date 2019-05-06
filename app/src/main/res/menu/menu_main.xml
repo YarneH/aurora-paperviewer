@@ -12,14 +12,6 @@
         android:title="@string/search"
         app:showAsAction="always" />
 
-    <!-- Overview menu item. Should navigate to the document overview -->
-    <item
-        android:id="@+id/action_overview"
-        android:icon="@drawable/ic_menu_overview"
-        android:orderInCategory="300"
-        android:title="@string/overview"
-        app:showAsAction="always" />
-
     <!-- Image overview  -->
     <item
         android:id="@+id/action_images"

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <!-- Margins for the navigation view -->
+    <dimen name="nav_header_vertical_spacing">30dp</dimen>
+    <!-- Margin between the menu items in the navigation view -->
+    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">12dp</dimen>
 
     <!-- Margins for the section view -->
     <dimen name="section_header_vertical_margin">16dp</dimen>
@@ -23,7 +28,6 @@
     <dimen name="abstract_font_size">18px</dimen>
     <dimen name="section_font_size">18px</dimen>
 
-    <!-- TODO: maybe convert these to weights in a linearlayout instead -->
     <!-- Dimension for the images in the gallery -->
     <dimen name="image_gallery_height">180px</dimen>
     <!-- Dimension for the enlarged images -->

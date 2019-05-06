@@ -80,7 +80,7 @@ public final class PaperParser {
      */
     private static String parseAbstract(ExtractedText extractedText){
         for(Section section : extractedText.getSections()){
-            if(section.getTitle() != null && "abstract".equals(section.getTitle().toLowerCase())){
+            if(section.getTitle() != null && "abstract".equalsIgnoreCase(section.getTitle())){
                 return section.getBody();
             }
         }
@@ -110,19 +110,8 @@ public final class PaperParser {
             }
 
             // Prepare the sectionHeader
-            if (section.getTitle() != null) {
-                if(section.getLevel() > prevSectionLevel){
-                    prevSectionLevel = section.getLevel();
-                } else if(section.getLevel() == prevSectionLevel && !sectionHeader.isEmpty()){
-                    sectionHeader.remove(sectionHeader.size()-1);
-                } else if(section.getLevel() < prevSectionLevel){
-                    while(section.getLevel() <= prevSectionLevel && !sectionHeader.isEmpty()){
-                        sectionHeader.remove(sectionHeader.size()-1);
-                        prevSectionLevel--;
-                    }
-                    prevSectionLevel++;
-                }
-                sectionHeader.add(section.getTitle());
+            if(section.getTitle() != null){
+                prevSectionLevel = adaptSectionHeader(sectionHeader, section.getTitle(), section.getLevel(), prevSectionLevel);
             }
 
             if(section.getBody() != null){
@@ -150,11 +139,36 @@ public final class PaperParser {
         return paperSections;
     }
 
+    /**
+     * Changes the section header to contain the appropriate title hierarchy for to the current section being processed.
+     *
+     * @param sectionHeader The previous title hierarchy, this will be changed to the correct current title hierarchy
+     * @param sectionTitle The title of the section being processed
+     * @param currSectionLevel The hierarchy level of the current section
+     * @param prevSectionLevel The hierarchy level of the previous section
+     * @return an adapted previous section level based on the current section level, for processing of the next section
+     */
+    private static int adaptSectionHeader(List<String> sectionHeader, String sectionTitle, int currSectionLevel, int prevSectionLevel){
+        if(currSectionLevel > prevSectionLevel){
+            prevSectionLevel = currSectionLevel;
+        } else if(currSectionLevel == prevSectionLevel && !sectionHeader.isEmpty()){
+            sectionHeader.remove(sectionHeader.size()-1);
+        } else if(currSectionLevel < prevSectionLevel){
+            while(currSectionLevel <= prevSectionLevel && !sectionHeader.isEmpty()){
+                sectionHeader.remove(sectionHeader.size()-1);
+                prevSectionLevel--;
+            }
+            prevSectionLevel++;
+        }
+        sectionHeader.add(sectionTitle);
+        return prevSectionLevel;
+    }
+
     private static boolean validSection(Section section){
         boolean isAbstract = false;
         boolean isEmpty = false;
         if(section.getTitle() != null){
-            if("abstract".equals(section.getTitle().toLowerCase())){
+            if("abstract".equalsIgnoreCase(section.getTitle())){
                 isAbstract = true;
             }
             if("".equals(section.getTitle().trim())){

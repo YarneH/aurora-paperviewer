@@ -1,12 +1,9 @@
 package com.aurora.paperviewerprocessor.paper;
 
 import android.graphics.Bitmap;
-import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import com.aurora.auroralib.PluginObject;

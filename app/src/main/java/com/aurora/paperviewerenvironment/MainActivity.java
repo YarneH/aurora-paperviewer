@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
      * The table of contents of the {@link Paper}. Maps the table of content entry
      * to the hierarchy level and the section index of the entry.
      */
-    Map<String, Pair<Integer, Integer>> mTableOfContents;
+    private Map<String, Pair<Integer, Integer>> mTableOfContents;
 
     /**
      * Container for holding the gallery and the enlarged view for the images
@@ -190,8 +190,12 @@ public class MainActivity extends AppCompatActivity
             // Allocate retention buffers for the loaded section/abstract fragments
             mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                public void onPageScrollStateChanged(int state) {}
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+                public void onPageScrollStateChanged(int state) {
+                    // No additional behavior needed when scrolling
+                }
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    // No additional behavior needed when scrolling
+                }
                 public void onPageSelected(int position) {
                     // Upon changing to different section, check the appropriate section in table of contents
                     setCheckedTableOfContents();
@@ -224,7 +228,7 @@ public class MainActivity extends AppCompatActivity
                 MenuItem item = mTableOfContentsSubMenu.add(tocEntryBuilder.toString());
 
                 // Register listener for navigation within table of contents to correct section
-                item.setOnMenuItemClickListener(menuItem -> {
+                item.setOnMenuItemClickListener((MenuItem menuItem) -> {
                     mViewPager.setCurrentItem(getViewPagerPosition(tocEntry.getValue().second));
                     mDrawerLayout.closeDrawer(Gravity.START, false);
                     return true;
@@ -253,12 +257,8 @@ public class MainActivity extends AppCompatActivity
 
         for(int i = 0; i < tableOfContentValues.size(); i++){
             int sectionIndex = tableOfContentValues.get(i).second;
-            if(getViewPagerPosition(sectionIndex) == mViewPager.getCurrentItem()){
-                mTableOfContentsSubMenu.getItem(i).setChecked(true);
-            }
-            else{
-                mTableOfContentsSubMenu.getItem(i).setChecked(false);
-            }
+            boolean isCurrentSection = getViewPagerPosition(sectionIndex) == mViewPager.getCurrentItem();
+            mTableOfContentsSubMenu.getItem(i).setChecked(isCurrentSection);
         }
     }
 
@@ -272,8 +272,7 @@ public class MainActivity extends AppCompatActivity
     public int getViewPagerPosition(int sectionIndex){
         if(mPaperViewModel.hasAbstract()){
             return sectionIndex + 1;
-        }
-        else{
+        } else{
             return sectionIndex;
         }
     }
@@ -296,7 +295,7 @@ public class MainActivity extends AppCompatActivity
             int headerSize = section.getHeader().size();
             for(int h = 0; h < headerSize; h++){
                 if(!tableOfContents.containsKey(section.getHeader().get(h))){
-                    Pair<Integer, Integer> indices = new Pair<Integer, Integer>(h, sectionIndex);
+                    Pair<Integer, Integer> indices = new Pair<>(h, sectionIndex);
                     tableOfContents.put(section.getHeader().get(h), indices);
                 }
             }

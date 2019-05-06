@@ -85,7 +85,7 @@ public class Paper extends PluginObject {
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
-            boolean equalHeaderContent = paper.getAuthor().equals(mAuthor)
+            boolean equalHeaderContent = paper.getAuthors().equals(mAuthors)
                     && paper.getTitle().equals(mTitle);
             boolean equalAbstract = true;
             if(paper.getAbstract() != null && mAbstract != null && !paper.getAbstract().equals(mAbstract)){

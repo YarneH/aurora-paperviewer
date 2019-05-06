@@ -417,6 +417,29 @@ public class MainActivity extends AppCompatActivity
     public ViewPager getSectionViewPager(){
         return mViewPager;
     }
+    /**
+     * <p>
+     * Handles selection of options in NavigationView (Drawer layout).
+     * </p>
+     * <p>
+     * The NavigationView contains the settings and the table of contents.
+     * Selecting a section in the navigationview navigates to the
+     * corresponding section.
+     * </p>
+     *
+     * @param item Selected menu item.
+     * @return whether or not successful.
+     */
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_settings) {
+            // TODO implement settings redirect activity such as text font here.
+        }
+        // The listener for the table of content entries has already been configured
+        // in the creation of the menu items.
+        return true;
+    }
 
     /**
      * Called when a menu option is selected.

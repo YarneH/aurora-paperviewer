@@ -111,7 +111,8 @@ public final class PaperParser {
 
             // Prepare the sectionHeader
             if(section.getTitle() != null){
-                prevSectionLevel = adaptSectionHeader(sectionHeader, section.getTitle(), section.getLevel(), prevSectionLevel);
+                prevSectionLevel = adaptSectionHeader(sectionHeader, section.getTitle(),
+                        section.getLevel(), prevSectionLevel);
             }
 
             if(section.getBody() != null){
@@ -148,7 +149,8 @@ public final class PaperParser {
      * @param prevSectionLevel The hierarchy level of the previous section
      * @return an adapted previous section level based on the current section level, for processing of the next section
      */
-    private static int adaptSectionHeader(List<String> sectionHeader, String sectionTitle, int currSectionLevel, int prevSectionLevel){
+    private static int adaptSectionHeader(List<String> sectionHeader, String sectionTitle,
+                                          int currSectionLevel, int prevSectionLevel){
         if(currSectionLevel > prevSectionLevel){
             prevSectionLevel = currSectionLevel;
         } else if(currSectionLevel == prevSectionLevel && !sectionHeader.isEmpty()){

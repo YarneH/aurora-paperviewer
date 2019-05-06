@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity
             if(paper == null){
                 return;
             }
-
             // Create the adapter for loading the correct section fragment
             mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);
 
@@ -213,28 +212,7 @@ public class MainActivity extends AppCompatActivity
             // Set up the table of contents in the NavigationView
             Menu menu = mNavigationView.getMenu();
             mTableOfContentsSubMenu = menu.addSubMenu(R.string.table_of_contents);
-
-            mTableOfContents = toTableOfContents(paper);
-            Iterator<Map.Entry<String, Pair<Integer, Integer>>> itr = mTableOfContents.entrySet().iterator();
-            while(itr.hasNext()) {
-                Map.Entry<String, Pair<Integer, Integer>> tocEntry = itr.next();
-
-                // Apply indentation based on hierarchy level
-                StringBuilder tocEntryBuilder = new StringBuilder();
-                for(int i = 0; i < tocEntry.getValue().first; i++){
-                    tocEntryBuilder.append("\t  ");
-                }
-                tocEntryBuilder.append(tocEntry.getKey());
-                MenuItem item = mTableOfContentsSubMenu.add(tocEntryBuilder.toString());
-
-                // Register listener for navigation within table of contents to correct section
-                item.setOnMenuItemClickListener((MenuItem menuItem) -> {
-                    mViewPager.setCurrentItem(getViewPagerPosition(tocEntry.getValue().second));
-                    mDrawerLayout.closeDrawer(Gravity.START, false);
-                    return true;
-                });
-            }
-            setCheckedTableOfContents();
+            setUpTableOfContents(paper);
 
             // Prepare the image container
             mImageContainer = findViewById(R.id.image_container);
@@ -245,6 +223,35 @@ public class MainActivity extends AppCompatActivity
             ImageFragment imageFragment = ImageFragment.newInstance();
             fm.beginTransaction().add(R.id.image_container, imageFragment).commit();
         });
+    }
+
+    /**
+     * Fills up the table of content in the {@link NavigationView} with the header content of the sections.
+     *
+     * @param paper the current paper which contains the sections.
+     */
+    private void setUpTableOfContents(Paper paper){
+        mTableOfContents = toTableOfContents(paper);
+        Iterator<Map.Entry<String, Pair<Integer, Integer>>> itr = mTableOfContents.entrySet().iterator();
+        while(itr.hasNext()) {
+            Map.Entry<String, Pair<Integer, Integer>> tocEntry = itr.next();
+
+            // Apply indentation based on hierarchy level
+            StringBuilder tocEntryBuilder = new StringBuilder();
+            for(int i = 0; i < tocEntry.getValue().first; i++){
+                tocEntryBuilder.append("\t  ");
+            }
+            tocEntryBuilder.append(tocEntry.getKey());
+            MenuItem item = mTableOfContentsSubMenu.add(tocEntryBuilder.toString());
+
+            // Register listener for navigation within table of contents to correct section
+            item.setOnMenuItemClickListener((MenuItem menuItem) -> {
+                mViewPager.setCurrentItem(getViewPagerPosition(tocEntry.getValue().second));
+                mDrawerLayout.closeDrawer(Gravity.START, false);
+                return true;
+            });
+        }
+        setCheckedTableOfContents();
     }
 
     /**

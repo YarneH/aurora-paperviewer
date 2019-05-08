@@ -54,10 +54,7 @@ public class PaperSection {
     }
 
     public int getLevel(){
-        if(mHeader == null){
-            mHeader = new ArrayList<>();
-        }
-        if(mHeader.isEmpty()){
+        if(mHeader == null || mHeader.isEmpty()){
             return 0;
         }
         return (mHeader.size() - 1);

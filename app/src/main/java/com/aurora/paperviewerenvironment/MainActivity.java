@@ -213,6 +213,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Sets up the drawer layout and adds a listener for opening from the menu bar.
+     * The drawer layout includes the {@NavigationView} and the header which
+     * contains the {@link TextView}'s for the paper title and the authors.
+     */
     private void setUpDrawerLayout(){
         mDrawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -300,6 +305,8 @@ public class MainActivity extends AppCompatActivity
     /**
      * Sets the table of contents entry of the currently active section as checked. <br>
      * Un-checks the other table of content entries.
+     *
+     * @param tocViewPagerPositions the TOC entries mapped to their corresponding ViewPager positions
      */
     private void setCheckedTableOfContents(List<Integer> tocViewPagerPositions){
         for(int i = 0; i < tocViewPagerPositions.size(); i++) {

@@ -29,9 +29,11 @@ public class PaperParserUnitTest {
         authors.add("Author");
         List<Section> sections = new ArrayList<>();
         List<String> irrelevantImages = new ArrayList<>();
-        Section section1 = new Section("Section title1", "Section body1.", irrelevantImages);
+        Section section1 = new Section("Section body1.");
+        section1.setTitle("Section title1");
         sections.add(section1);
-        Section section2 = new Section("Section title2", "Section body2.", irrelevantImages);
+        Section section2 = new Section("Section body2.");
+        section2.setTitle("Section title2");
         sections.add(section2);
 
         String irrelevantFileName = "filename";

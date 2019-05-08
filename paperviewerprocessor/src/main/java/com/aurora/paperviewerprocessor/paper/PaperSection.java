@@ -1,5 +1,7 @@
 package com.aurora.paperviewerprocessor.paper;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,32 +34,37 @@ public class PaperSection {
      */
     private String mContent;
 
-    private List<MarkedText> mMarkedText;
-
-    public PaperSection(List<String> header, String content) {
+    public PaperSection(@NonNull List<String> header, String content) {
         this.mHeader = header;
         this.mContent = content;
-        this.mMarkedText = new ArrayList<>();
     }
 
     public List<String> getHeader() {
+        if(mHeader == null){
+            return new ArrayList<>();
+        }
         return mHeader;
     }
 
     public void addHeader(String header) {
+        if(mHeader == null){
+            mHeader = new ArrayList<>();
+        }
         mHeader.add(header);
+    }
+
+    public int getLevel(){
+        if(mHeader == null){
+            mHeader = new ArrayList<>();
+        }
+        if(mHeader.isEmpty()){
+            return 0;
+        }
+        return (mHeader.size() - 1);
     }
 
     public String getContent() {
         return mContent;
-    }
-
-    public List<MarkedText> getMarkedText(){
-        return mMarkedText;
-    }
-
-    public void addMarkedText(MarkedText markedText){
-        this.mMarkedText.add(markedText);
     }
 
     @Override

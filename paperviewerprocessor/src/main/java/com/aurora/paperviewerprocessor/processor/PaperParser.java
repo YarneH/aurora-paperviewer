@@ -42,7 +42,7 @@ public final class PaperParser {
         // Identify the sections
         List<PaperSection> paperSections = parseSections(extractedText);
         if(paperSections.isEmpty()){
-            throw new PaperDetectionException(TAG + ": Could not extract parse sections.");
+            throw new PaperDetectionException(TAG + ": Failed to extract the paper sections.");
         }
         processedPaper.setSections(parseSections(extractedText));
 

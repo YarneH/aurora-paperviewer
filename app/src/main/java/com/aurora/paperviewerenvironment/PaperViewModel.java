@@ -22,6 +22,10 @@ public class PaperViewModel extends AndroidViewModel {
      */
     private MutableLiveData<Paper> mPaper = new MutableLiveData<>();
 
+    private MutableLiveData<String> mFontFamily = new MutableLiveData<>();
+
+    private MutableLiveData<Integer> mFontSize = new MutableLiveData<>();
+
     private PaperProcessorCommunicator mCommunicator;
 
     public PaperViewModel(@NonNull Application application) {
@@ -36,6 +40,9 @@ public class PaperViewModel extends AndroidViewModel {
      */
     public void initialiseWithExtractedText(ExtractedText extractedText) {
         mPaper.setValue((Paper) mCommunicator.pipeline(extractedText));
+        // TODO change to common resource
+        mFontFamily.setValue("Arial");
+        mFontSize.setValue(16);
     }
 
     public void initialiseWithPaper(Paper paper) {
@@ -55,5 +62,17 @@ public class PaperViewModel extends AndroidViewModel {
     }
 
     public boolean hasImages(){ return !mPaper.getValue().getImages().isEmpty(); }
+
+    public void setFontFamily(String fontFamily){
+        mFontFamily.setValue(fontFamily);
+    }
+
+    public LiveData<String> getFontFamily(){
+        return mFontFamily;
+    }
+
+    public LiveData<Integer> getFontSize(){
+        return mFontSize;
+    }
 
 }

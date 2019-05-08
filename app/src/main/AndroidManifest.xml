@@ -9,15 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.aurora.paperviewerenvironment.MainActivity">
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.aurora.auroralib.AURORA_PLUGIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="*/*"/>
+
+                <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
     </application>

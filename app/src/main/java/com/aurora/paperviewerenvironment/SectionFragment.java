@@ -123,6 +123,28 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         // Initialize and configure navigation buttons
         setUpNavigationButtons(sectionIndex);
 
+        mPaperViewModel.getFontFamily().observe(this, (String fontFamily) -> {
+            if(fontFamily == null){
+                return;
+            }
+            Paper paper = mPaperViewModel.getPaper().getValue();
+            int fontSize = mPaperViewModel.getFontSize().getValue();
+            setContent(paper, sectionIndex, fontFamily, fontSize);
+        });
+
+        mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
+            if(paper == null){
+                return;
+            }
+            String fontFamily = mPaperViewModel.getFontFamily().getValue();
+            int fontSize = mPaperViewModel.getFontSize().getValue();
+            setContent(paper, sectionIndex, fontFamily, fontSize);
+        });
+
+        return mSectionView;
+    }
+
+    private void setContent(Paper paper, int sectionIndex, String fontFamily, int fontSize){
         // Set the text properties of the section content
         String htmlFront = "<html><head>" +
                 "<style type=\"text/css\">body {" +
@@ -133,33 +155,25 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 "}</style></head><body>";
         String htmlEnd = "</body></html>";
 
-        mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
-            if(paper == null){
-                return;
+        PaperSection section = paper.getSections().get(sectionIndex);
+        mSectionHeader.setText(section.getHeader());
+
+        String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
+        mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+
+        // Remove bottom navigation button in case the button is visible if positioned at the start view
+        mSectionView.post(() -> {
+            if(!isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
+                mBtnBottomNavRight.setVisibility(View.INVISIBLE);
+            } else{
+                mBtnBottomNavRight.setVisibility(View.VISIBLE);
             }
-            PaperSection section = paper.getSections().get(sectionIndex);
-            mSectionHeader.setText(section.getHeader());
-
-            String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
-            mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
-
-            // Remove bottom navigation button in case the button is visible if positioned at the start view
-            mSectionView.post(() -> {
-                if(!isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
-                    mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-                } else{
-                    mBtnBottomNavRight.setVisibility(View.VISIBLE);
-                }
-                if(!isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
-                    mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-                } else{
-                    mBtnBottomNavLeft.setVisibility(View.VISIBLE);
-                }
-            });
-
+            if(!isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
+                mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
+            } else{
+                mBtnBottomNavLeft.setVisibility(View.VISIBLE);
+            }
         });
-
-        return mSectionView;
     }
 
     private static String htmlFormatContent(String content){

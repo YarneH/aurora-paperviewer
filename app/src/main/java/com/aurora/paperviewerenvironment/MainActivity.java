@@ -239,9 +239,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        if (id == R.id.action_search || id == R.id.action_overview) {
+        if (id == R.id.action_search) {
             return true;
-        } else if (id == R.id.action_images) {
+        } else if(id == R.id.action_images) {
             if(!mPaperViewModel.hasImages()){
                 Toast.makeText(this, "No images were found for this paper.", Snackbar.LENGTH_LONG).show();
                 return false;
@@ -251,6 +251,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 mImageContainer.setVisibility(View.VISIBLE);
             }
+        } else if(id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

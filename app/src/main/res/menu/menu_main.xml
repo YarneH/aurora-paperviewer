@@ -14,10 +14,10 @@
 
     <!-- Overview menu item. Should navigate to the document overview -->
     <item
-        android:id="@+id/action_overview"
-        android:icon="@drawable/ic_menu_overview"
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_menu_settings"
         android:orderInCategory="300"
-        android:title="@string/overview"
+        android:title="@string/settings"
         app:showAsAction="always" />
 
     <!-- Image overview  -->
@@ -25,7 +25,7 @@
         android:id="@+id/action_images"
         android:icon="@drawable/ic_image_black_24dp"
         android:orderInCategory="200"
-        android:title="@string/overview"
+        android:title="@string/images"
         app:showAsAction="always" />
 
 </menu>

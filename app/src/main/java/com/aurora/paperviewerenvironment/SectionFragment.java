@@ -133,7 +133,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         setUpNavigationButtons(sectionIndex);
 
         // Listen to changes in the settings, listener cannot be an inner anonymous or lambda method to prevent GC
-        mSettingsListener = (prefs, key) -> {
+        mSettingsListener = (SharedPreferences prefs, String key) -> {
             Paper paper = mPaperViewModel.getPaper().getValue();
             setContent(paper, sectionIndex, prefs);
         };

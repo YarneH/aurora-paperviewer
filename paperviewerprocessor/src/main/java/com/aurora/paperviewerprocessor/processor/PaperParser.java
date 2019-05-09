@@ -1,8 +1,6 @@
 package com.aurora.paperviewerprocessor.processor;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 
 import com.aurora.auroralib.ExtractedImage;
 import com.aurora.auroralib.ExtractedText;
@@ -10,8 +8,6 @@ import com.aurora.auroralib.Section;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 

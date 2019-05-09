@@ -442,12 +442,6 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_settings) {
-            // TODO implement settings redirect activity such as text font here.
-        }
-        // The listener for the table of content entries has already been configured
-        // in the creation of the menu items.
         return true;
     }
 

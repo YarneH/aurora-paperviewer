@@ -1,31 +1,11 @@
 package com.aurora.paperviewerenvironment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.preference.ListPreference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SettingsActivity extends AppCompatActivity {
-
-    // String[] panelFontOptions = getResources().getStringArray(R.array....);
-    private List<String> fontOptions = new ArrayList<>();
-
-    private RadioGroup mFontFamilyGroup;
-
-    /**
-     * The {@link android.arch.lifecycle.AndroidViewModel}
-     * for maintaining the paper it's data and state
-     * across the lifecycles of the activity
-     */
-    private PaperViewModel mPaperViewModel;
+public class SettingsActivity extends PreferenceActivity {
 
     /**
      * Called upon creation of this activity. See android lifecycle for more info.
@@ -34,34 +14,36 @@ public class SettingsActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mPaperViewModel = ViewModelProviders.of(this).get(PaperViewModel.class);
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
+                new MyPreferenceFragment()).commit();
+    }
 
-        mFontFamilyGroup = findViewById(R.id.radio_group_font_family);
+    /**
+     * The fragment which inflates the available preferences from an XML resource.
+     */
+    public static class MyPreferenceFragment extends PreferenceFragment {
 
-        // TODO put in resources
-        fontOptions.add("Arial");
-        fontOptions.add("Helvetica");
-        fontOptions.add("Times New Roman");
-        fontOptions.add("Verdana");
+        /**
+         * Called upon creation of the preference fragment
+         *
+         * @param savedInstanceState State to load
+         */
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
 
-        for(int i = 0; i < fontOptions.size(); i++){
-            String fontFamily = fontOptions.get(i);
+            // Load the preferences from an XML resource
+            addPreferencesFromResource(R.xml.preferences);
 
-            RadioButton btn = new RadioButton(this);
-            btn.setText(fontFamily);
+            ListPreference fontFamily = (ListPreference) findPreference("fontFamily");
+            if(fontFamily.getValue() == null){
+                fontFamily.setValue(getResources().getString(R.string.default_font_family));
+            }
 
-            btn.setOnClickListener((View view) -> {
-                mPaperViewModel.setFontFamily(fontFamily);
-                // mPaperViewModel.setTextSize();
-            });
-
-            mFontFamilyGroup.addView(btn);
         }
     }
 
+
 }
+

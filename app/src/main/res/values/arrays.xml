@@ -1,0 +1,19 @@
+<resources>
+    <!-- font family -->
+    <string-array name="font_family">
+        <item>Arial</item>
+        <item>Helvetica</item>
+        <item>Times New Roman</item>
+        <item>Times</item>
+        <item>Courier New</item>
+        <item>Courier</item>
+        <item>Verdana</item>
+        <item>Georgia</item>
+        <item>Palatino</item>
+        <item>Garamond</item>
+        <item>Bookman</item>
+        <item>Trebuchet MS</item>
+        <item>Arial Black</item>
+        <item>Impact</item>
+    </string-array>
+</resources>

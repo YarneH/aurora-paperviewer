@@ -9,7 +9,7 @@
     <!-- Margins for the navigation view -->
     <dimen name="nav_header_vertical_spacing">30dp</dimen>
     <!-- Margin between the menu items in the navigation view -->
-    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">12dp</dimen>
+    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">16dp</dimen>
 
     <!-- Margins for the section view -->
     <dimen name="section_header_vertical_margin">16dp</dimen>
@@ -24,9 +24,8 @@
     <dimen name="button_nav_size">32dp</dimen>
     <dimen name="button_minimize">24dp</dimen>
 
-    <!-- Font size for the section and abstract content in the webview -->
+    <!-- Font size for the abstract content in the webview -->
     <dimen name="abstract_font_size">18px</dimen>
-    <dimen name="section_font_size">18px</dimen>
 
     <!-- Dimension for the images in the gallery -->
     <dimen name="image_gallery_height">180px</dimen>

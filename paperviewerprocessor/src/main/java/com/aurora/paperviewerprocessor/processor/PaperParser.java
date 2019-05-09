@@ -57,7 +57,11 @@ public final class PaperParser {
      */
     private static List<Bitmap> parseImages(ExtractedText extractedText){
         List<Bitmap> images = new ArrayList<>();
+        System.out.println("Total amount of images: " + extractedText.getImages().size());
+
         for(Section section : extractedText.getSections()){
+            System.out.println("extracted amount of images: " + section.getExtractedImages().size());
+            System.out.println("normal amount of images: " + section.getImages().size());
             if(section.getImages() == null){
                 continue;
             }

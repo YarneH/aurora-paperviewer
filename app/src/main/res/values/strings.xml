@@ -10,7 +10,6 @@
     <string name="nav_right">Section to the right</string>
 
     <!-- NavigationView items & default strings -->
-    <string name="settings">Settings</string>
     <string name="table_of_contents">Table of contents</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -23,12 +22,22 @@
     <!-- Header content for the abstract -->
     <string name="abstract_header_content">Abstract</string>
 
-    <!-- Font properties for the section and abstract content in the webview -->
+    <!-- Font properties for the section and abstract content in the webview,
+         section fonts are controlled by the settings -->
     <string name="abstract_font_family">Times New Roman, serif</string>
     <string name="abstract_font_weight">bold</string>
     <string name="abstract_text_align">left</string>
-    <string name="section_font_family">Arial, sans-serif</string>
     <string name="section_font_weight">normal</string>
     <string name="section_text_align">justify</string>
     <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Settings activity -->
+    <string name="font">Font</string>
+    <string name="font_size">Font size</string>
+    <string name="font_size_summary">Pick a font size</string>
+    <string name="font_family">Font family</string>
+    <string name="font_family_summary">Click to show a list to choose from</string>
+    <!-- This should be a font family from the font_family list in the arrays.xml resource file -->
+    <string name="default_font_family">Arial</string>
+
 </resources>

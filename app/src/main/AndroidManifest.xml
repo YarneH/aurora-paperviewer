@@ -31,6 +31,8 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <activity android:name="com.aurora.paperviewerenvironment.SettingsActivity"
+            android:parentActivityName="com.aurora.paperviewerenvironment.MainActivity"></activity>
     </application>
 
 </manifest>

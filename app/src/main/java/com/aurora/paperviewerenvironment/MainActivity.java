@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity
                 String headerTitle = section.getHeader().get(level);
                 // Equal titles on the same level with the previous section should be skipped
                 if(!(level <= prevSection.getLevel() &&
+                        !prevSection.getHeader().isEmpty() &&
                         prevSection.getHeader().get(level).equals(headerTitle))){
                     addTableOfContentEntry(tocViewPagerPositions, headerTitle, level,
                             (level == section.getLevel()), getViewPagerPosition(sectionIndex));

@@ -11,7 +11,7 @@ import com.aurora.paperviewerprocessor.PluginConstants;
 
 public class Paper extends PluginObject {
 
-    private String mAuthor;
+    private List<String> mAuthors;
     private String mTitle;
     private String mAbstract;
     private List<PaperSection> mSections;
@@ -21,21 +21,21 @@ public class Paper extends PluginObject {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
     }
 
-    public Paper(String fileName, String author, String title,
+    public Paper(String fileName, List<String> authors, String title,
                  String paperAbstract, List<PaperSection> sections) {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
-        this.mAuthor = author;
+        this.mAuthors = authors;
         this.mTitle = title;
         this.mAbstract = paperAbstract;
         this.mSections = sections;
     }
 
-    public void setAuthor(String author) {
-        this.mAuthor = author;
+    public void setAuthors(List<String> authors) {
+        this.mAuthors = authors;
     }
 
-    public String getAuthor() {
-        return this.mAuthor;
+    public List<String> getAuthors() {
+        return this.mAuthors;
     }
 
     public void setTitle(String title) {
@@ -72,7 +72,7 @@ public class Paper extends PluginObject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mAuthor, mTitle, mAbstract, mSections, mImages);
+        return Objects.hash(mAuthors, mTitle, mAbstract, mSections, mImages);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Paper extends PluginObject {
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
-            boolean equalHeaderContent = paper.getAuthor().equals(mAuthor)
+            boolean equalHeaderContent = paper.getAuthors().equals(mAuthors)
                     && paper.getTitle().equals(mTitle);
             boolean equalAbstract = true;
             if(paper.getAbstract() != null && mAbstract != null && !paper.getAbstract().equals(mAbstract)){
@@ -101,7 +101,7 @@ public class Paper extends PluginObject {
     public String toString() {
         StringBuilder ret = new StringBuilder("Paper{");
         ret.append("title=").append(mTitle);
-        ret.append(", author=").append(mAuthor);
+        ret.append(", author=").append(mAuthors);
         if(mAbstract != null){
             ret.append(",\nabstract=").append(mAbstract);
         }

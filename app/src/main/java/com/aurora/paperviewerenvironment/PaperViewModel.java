@@ -56,4 +56,5 @@ public class PaperViewModel extends AndroidViewModel {
 
     public boolean hasImages(){ return !mPaper.getValue().getImages().isEmpty(); }
 
+
 }

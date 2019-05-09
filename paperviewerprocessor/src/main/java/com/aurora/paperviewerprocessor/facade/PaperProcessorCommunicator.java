@@ -26,7 +26,7 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
      */
     @Override
     protected PluginObject process(ExtractedText extractedText) {
-        return PaperParser.parsePaper(extractedText);
+        return PaperParser.parse(extractedText);
     }
 
 }

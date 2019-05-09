@@ -4,25 +4,35 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.paperviewerprocessor.paper.Paper;
+import com.aurora.paperviewerprocessor.paper.PaperSection;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -38,7 +48,8 @@ import java.io.IOException;
  * {@link ViewPager} to allow for scrolling between the sections.
  * </p>
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     /**
      * Tag for logging.
@@ -48,6 +59,32 @@ public class MainActivity extends AppCompatActivity {
      * {@link Toolbar} for displaying various functionality buttons at the top of the application
      */
     private Toolbar mToolbar;
+
+    /**
+     * {@link NavigationView} for navigating to the settings and the table of contents
+     */
+    private NavigationView mNavigationView;
+
+    /**
+     * {@link DrawerLayout} containing the NavigationView, can be opened by swiping
+     * from the left or clicking the drawer icon in the {@link Toolbar}
+     */
+    private DrawerLayout mDrawerLayout;
+
+    /**
+     * {@link SubMenu} for representing the items in the table of contents
+     */
+    private SubMenu mTableOfContentsSubMenu;
+
+    /**
+     * {@link TextView} which contains the title of the paper if present
+     */
+    private TextView mPaperTitleView;
+
+    /**
+     * {@link TextView} which contains the authors of the paper if present
+     */
+    private TextView mPaperAuthorView;
 
     /**
      * Container for holding the gallery and the enlarged view for the images
@@ -87,11 +124,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set the NavigationView
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
         // Set the toolbar as supportActionBar
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         // Disable the display of the app title in the toolbar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // Listener and sync are for NavigationView functionality
+        setUpDrawerLayout();
 
         /*
          * Handle Aurora starting the Plugin.
@@ -126,21 +170,164 @@ public class MainActivity extends AppCompatActivity {
             // Create the adapter for loading the correct section fragment
             mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), paper);
 
+            // Set up the table of contents in the NavigationView
+            Menu menu = mNavigationView.getMenu();
+            mTableOfContentsSubMenu = menu.addSubMenu(R.string.table_of_contents);
+            List<Integer> tocViewPagerPositions = setUpTableOfContents(paper);
+
             // Set up the ViewPager with the section adapter
             mViewPager = findViewById(R.id.vp_sections);
             mViewPager.setAdapter(mSectionPagerAdapter);
             // Allocate retention buffers for the loaded section/abstract fragments
             mViewPager.setOffscreenPageLimit(mSectionPagerAdapter.getCount());
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                public void onPageScrollStateChanged(int state) {
+                    // No additional behavior needed when scrolling
+                }
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    // No additional behavior needed when scrolling
+                }
+                public void onPageSelected(int position) {
+                    // Upon changing to different section, check the appropriate section in table of contents
+                    setCheckedTableOfContents(tocViewPagerPositions);
+                }
+            });
+            setCheckedTableOfContents(tocViewPagerPositions);
+
+            // Set up  the paper title and authors in the NavigationView
+            mPaperTitleView.setText(paper.getTitle());
+            StringBuilder authorBuilder = new StringBuilder();
+            for(String author : paper.getAuthors()){
+                authorBuilder.append(author).append("\n");
+            }
+            mPaperAuthorView.setText(authorBuilder.toString());
 
             // Prepare the image container
             mImageContainer = findViewById(R.id.image_container);
-            mImageContainer.setVisibility(View.GONE);
+            mImageContainer.setVisibility(View.VISIBLE);
 
             // Add the fragment for the gallery / enlarged image to the image container
             FragmentManager fm = getSupportFragmentManager();
             ImageFragment imageFragment = ImageFragment.newInstance();
             fm.beginTransaction().add(R.id.image_container, imageFragment).commit();
         });
+    }
+
+    /**
+     * Sets up the drawer layout and adds a listener for opening from the menu bar.
+     * The drawer layout includes the {@NavigationView} and the header which
+     * contains the {@link TextView}'s for the paper title and the authors.
+     */
+    private void setUpDrawerLayout(){
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // The header in the NavigationView
+        View headerView = mNavigationView.getHeaderView(0);
+        mPaperTitleView = headerView.findViewById(R.id.paper_title);
+        mPaperAuthorView = headerView.findViewById(R.id.paper_author);
+    }
+
+    /**
+     * Fills up the table of content in the {@link NavigationView} with the header content of the sections.
+     *
+     * @param paper the current paper which contains the sections.
+     * @return list mapping the TOC entries to their position in the ViewPager.
+     */
+    private List<Integer> setUpTableOfContents(Paper paper){
+        List<Integer> tocViewPagerPositions = new ArrayList<>();
+        if(paper.getAbstract() != null){
+            addTableOfContentEntry(tocViewPagerPositions, getString(R.string.abstract_header), 0,true,0);
+        }
+
+        PaperSection prevSection = paper.getSections().get(0);
+        for(int i = 0; i < prevSection.getHeader().size(); i++){
+            addTableOfContentEntry(tocViewPagerPositions, prevSection.getHeader().get(i), i,
+                    (i == prevSection.getLevel()), getViewPagerPosition(0));
+        }
+        for(int sectionIndex = 1; sectionIndex < paper.getSections().size(); sectionIndex++){
+            PaperSection section = paper.getSections().get(sectionIndex);
+
+            for(int level = 0; level < section.getHeader().size(); level++){
+                String headerTitle = section.getHeader().get(level);
+                // Equal titles on the same level with the previous section should be skipped
+                if(!(level <= prevSection.getLevel() &&
+                        prevSection.getHeader().get(level).equals(headerTitle))){
+                    addTableOfContentEntry(tocViewPagerPositions, headerTitle, level,
+                            (level == section.getLevel()), getViewPagerPosition(sectionIndex));
+                }
+            }
+            prevSection = section;
+        }
+        return tocViewPagerPositions;
+    }
+
+    /**
+     * Adds a table of content entry to the table of contents (TOC) {@link SubMenu} in the {@link NavigationView}. <br>
+     * This includes configuration of the listener for navigating to the correct section and
+     * configuration for checking the correct TOC entry based on the active section in the {@link ViewPager}. <br>
+     *
+     * @param tocViewPagerPositions stores the checking configuration, it maps the TOC entries to their
+     *                              corresponding ViewPager positions
+     * @param title the title of the TOC entry
+     * @param level the level of the title, used for indentation of the TOC entry
+     * @param lowestLevel boolean indicating whether the TOC entry is on the lowest hierarchical level
+     * @param position the corresponding position in the ViewPager for this TOC entry
+     */
+    private void addTableOfContentEntry(List<Integer> tocViewPagerPositions, String title, int level,
+                                        boolean lowestLevel, int position){
+        // If a TOC entry is not on the lowest hierarchical level, it should never be checked hence the -1
+        if(lowestLevel){
+            tocViewPagerPositions.add(position);
+        }
+        else{
+            tocViewPagerPositions.add(-1);
+        }
+
+        StringBuilder tocEntry = new StringBuilder();
+        for(int i = 0; i < level; i++){
+            tocEntry.append("\t  ");
+        }
+        tocEntry.append(title);
+        MenuItem item = mTableOfContentsSubMenu.add(tocEntry.toString());
+
+        // Register listener for navigation to the abstract
+        item.setOnMenuItemClickListener((MenuItem menuItem) -> {
+            mViewPager.setCurrentItem(position);
+            mDrawerLayout.closeDrawer(Gravity.START, false);
+            return true;
+        });
+    }
+
+    /**
+     * Sets the table of contents entry of the currently active section as checked. <br>
+     * Un-checks the other table of content entries.
+     *
+     * @param tocViewPagerPositions the TOC entries mapped to their corresponding ViewPager positions
+     */
+    private void setCheckedTableOfContents(List<Integer> tocViewPagerPositions){
+        for(int i = 0; i < tocViewPagerPositions.size(); i++) {
+            boolean isCurrentPage = (tocViewPagerPositions.get(i) == mViewPager.getCurrentItem());
+            mTableOfContentsSubMenu.getItem(i).setChecked(isCurrentPage);
+        }
+    }
+
+    /**
+     * Retrieves the position in the Section {@link ViewPager}
+     * based on the index of the section in the {@link Paper}.
+     *
+     * @param sectionIndex the index of the section in the {@link Paper}
+     * @return the position in the {@link ViewPager}
+     */
+    public int getViewPagerPosition(int sectionIndex){
+        if(mPaperViewModel.hasAbstract()){
+            return sectionIndex + 1;
+        } else{
+            return sectionIndex;
+        }
     }
 
     /**
@@ -196,6 +383,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Handles when leaving NavigationView (Drawer). Go back to main view.
+     */
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
      * Convert the read file to an PluginObject
      *
      * @param fileUri Uri to the file
@@ -228,6 +427,29 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager getSectionViewPager(){
         return mViewPager;
     }
+    /**
+     * <p>
+     * Handles selection of options in NavigationView (Drawer layout).
+     * </p>
+     * <p>
+     * The NavigationView contains the settings and the table of contents.
+     * Selecting a section in the navigationview navigates to the
+     * corresponding section.
+     * </p>
+     *
+     * @param item Selected menu item.
+     * @return whether or not successful.
+     */
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_settings) {
+            // TODO implement settings redirect activity such as text font here.
+        }
+        // The listener for the table of content entries has already been configured
+        // in the creation of the menu items.
+        return true;
+    }
 
     /**
      * Called when a menu option is selected.
@@ -239,7 +461,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        if (id == R.id.action_search || id == R.id.action_overview) {
+        if (id == R.id.action_search) {
+            // TODO implement searching content here
             return true;
         } else if (id == R.id.action_images) {
             if(!mPaperViewModel.hasImages()){
@@ -254,7 +477,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -292,4 +514,5 @@ public class MainActivity extends AppCompatActivity {
             return mPaper.getSections().size();
         }
     }
+
 }

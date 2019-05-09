@@ -138,7 +138,12 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 return;
             }
             PaperSection section = paper.getSections().get(sectionIndex);
-            mSectionHeader.setText(section.getHeader());
+
+            StringBuilder headerBuilder = new StringBuilder();
+            for(String title : section.getHeader()){
+                headerBuilder.append(title).append("\n");
+            }
+            mSectionHeader.setText(headerBuilder.toString());
 
             String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
             mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
@@ -163,12 +168,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     private static String htmlFormatContent(String content){
-        String formattedContent;
-        formattedContent = content.replace("\n\n\n", "<br><br>");
-        formattedContent = formattedContent.replace("\n\n", "<br><br>");
-        formattedContent = formattedContent.replace("\n", "<br><br>");
-
-        return formattedContent;
+        return content.replace("\n", "<br><br>");
     }
 
     /**

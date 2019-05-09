@@ -1,6 +1,7 @@
 <resources>
-    <!-- Application name -->
+    <!-- Application info -->
     <string name="app_name">Paperviewer</string>
+    <string name="description">Making papers finally readable on your smartphone.</string>
 
     <!-- Action bar menu items -->
     <string name="settings">Settings</string>

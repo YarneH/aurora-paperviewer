@@ -6,9 +6,17 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:description="@string/description"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
+        <!-- Required internal services -->
+        <meta-data android:name="TEXT_EXTRACTION"
+            android:value="true" />
+        <meta-data android:name="IMAGE_EXTRACTION"
+            android:value="true" />
+
         <activity android:name="com.aurora.paperviewerenvironment.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

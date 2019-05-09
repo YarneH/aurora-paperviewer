@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- The dimension of the NavigationView -->
+        <item name="listPreferredItemHeightSmall">30dp</item>
     </style>
 
     <!-- Theme of the application, used in the android manifest -->

@@ -177,12 +177,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     private static String htmlFormatContent(String content){
-        String formattedContent;
-        formattedContent = content.replace("\n\n\n", "<br><br>");
-        formattedContent = formattedContent.replace("\n\n", "<br><br>");
-        formattedContent = formattedContent.replace("\n", "<br><br>");
-
-        return formattedContent;
+        return content.replace("\n", "<br><br>");
     }
 
     /**

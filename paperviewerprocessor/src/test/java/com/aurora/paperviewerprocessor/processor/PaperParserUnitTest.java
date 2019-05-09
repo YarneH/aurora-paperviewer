@@ -1,7 +1,5 @@
 package com.aurora.paperviewerprocessor.processor;
 
-import android.graphics.Bitmap;
-
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.Section;
 import com.aurora.paperviewerprocessor.paper.Paper;
@@ -13,8 +11,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Testing the functionality of the processing of a paper
@@ -33,9 +29,11 @@ public class PaperParserUnitTest {
         authors.add("Author");
         List<Section> sections = new ArrayList<>();
         List<String> irrelevantImages = new ArrayList<>();
-        Section section1 = new Section("Section title1", "Section body1.", irrelevantImages);
+        Section section1 = new Section("Section body1.");
+        section1.setTitle("Section title1");
         sections.add(section1);
-        Section section2 = new Section("Section title2", "Section body2.", irrelevantImages);
+        Section section2 = new Section("Section body2.");
+        section2.setTitle("Section title2");
         sections.add(section2);
 
         String irrelevantFileName = "filename";
@@ -47,7 +45,7 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_titleHasBeenSet() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         assert(paper.getTitle() != null);
@@ -56,7 +54,7 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_paperCorrectTitle() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         assert(paper.getTitle().equals("Paper title"));
@@ -65,7 +63,7 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_sectionsCorrectSize() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         assert(paper.getSections().size() == 2);
@@ -74,15 +72,19 @@ public class PaperParserUnitTest {
     @Test
     public void PaperParser_parsePaper_sectionsCorrectHeaderAndContent() {
         // Act
-        Paper paper = PaperParser.parsePaper(extractedText);
+        Paper paper = PaperParser.parse(extractedText);
 
         // Assert
         PaperSection paperSection1 = paper.getSections().get(0);
-        assert(paperSection1.getHeader().equals("Section title1"));
+        List<String> header1 = new ArrayList<>();
+        header1.add("Section title1");
+        assert(paperSection1.getHeader().equals(header1));
         assert(paperSection1.getContent().equals("Section body1."));
 
         PaperSection paperSection2 = paper.getSections().get(1);
-        assert(paperSection2.getHeader().equals("Section title2"));
+        List<String> header2 = new ArrayList<>();
+        header2.add("Section title2");
+        assert(paperSection2.getHeader().equals(header2));
         assert(paperSection2.getContent().equals("Section body2."));
     }
 

@@ -1,10 +1,23 @@
 package com.aurora.paperviewerenvironment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
+/**
+ * <p>
+ *     Activity class that is shown upon clicking the settings button in the toolbar.
+ *     This Activity is responsible for inflating the available preferences from an xml file.
+ *     These preferences are inflated within a {@link PreferenceFragment}.
+ * </p>
+ * <p>
+ *     The preferences are automatically saved in the {@link SharedPreferences},
+ *     these can then be accessed from anywhere in the program.
+ * </p>
+ *
+ */
 public class SettingsActivity extends PreferenceActivity {
 
     /**

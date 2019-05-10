@@ -3,22 +3,22 @@ package com.aurora.paperviewerenvironment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A fragment containing the view for a section of the paper
@@ -48,6 +48,13 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final int ABSTRACT_SIZE = 1;
 
     /**
+     * Reduction factor for subsequent titles in the header. This reduction factor
+     * is multiplied with the base title size obtained from the resources to retrieve
+     * the size for this particular header title
+     */
+    private static final double TITLE_SIZE_FACTOR = 0.15;
+
+    /**
      * The {@link android.arch.lifecycle.AndroidViewModel}
      * for maintaining the paper it's data and state
      * across the lifecycles of the activity
@@ -62,7 +69,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     /**
      * The {@link TextView} for displaying the header of the section
      */
-    private TextView mSectionHeader;
+    // private TextView mSectionHeader;
+    private LinearLayout mSectionHeader;
 
     /**
      * The {@link WebView} for displaying the content of the section
@@ -72,22 +80,18 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     /**
      * Button for navigating to the previous section at the top of the fragment
      */
-    private ImageButton mBtnTopNavLeft;
-
-    /**
-     * Button for navigating to the previous section at the top of the fragment
-     */
-    private ImageButton mBtnBottomNavLeft;
-
-    /**
-     * Button for navigating to the next section at the top of the fragment
-     */
-    private ImageButton mBtnTopNavRight;
+    private ImageButton mBtnNavigateLeft;
 
     /**
      * Button for navigating to the next section at the bottom of the fragment
      */
-    private ImageButton mBtnBottomNavRight;
+    private ImageButton mBtnNavigateRight;
+
+    /**
+     * Button for navigating to the top of the {@link android.support.v4.widget.NestedScrollView}
+     */
+    private ImageButton mBtnNavigateTop;
+
 
     /**
      * Listener for changes in the settings, such as font family and font type
@@ -151,6 +155,13 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         return mSectionView;
     }
 
+    /**
+     * Set the content of the section.
+     *
+     * @param paper the current paper which contains the section
+     * @param sectionIndex the index of the current section
+     * @param sharedPref the current {@link SharedPreferences}
+     */
     private void setContent(Paper paper, int sectionIndex, SharedPreferences sharedPref){
         // Obtain the current font settings
         String defaultFontFamily = getActivity().getResources().getString(R.string.default_font_family);
@@ -169,30 +180,45 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         String htmlEnd = "</body></html>";
 
         PaperSection section = paper.getSections().get(sectionIndex);
-        StringBuilder headerBuilder = new StringBuilder();
-        for(String header : section.getHeader()){
-            headerBuilder.append(header).append("\n");
-        }
-        mSectionHeader.setText(headerBuilder.toString());
+
+        // Set up the header with the title hierarchy for this section
+        setUpSectionHeader(section);
 
         String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
         mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
-
-        // Remove bottom navigation button in case the button is visible if positioned at the start view
-        mSectionView.post(() -> {
-            if(!isVisibleInRootView(mSectionView, mBtnBottomNavRight)){
-                mBtnBottomNavRight.setVisibility(View.INVISIBLE);
-            } else{
-                mBtnBottomNavRight.setVisibility(View.VISIBLE);
-            }
-            if(!isVisibleInRootView(mSectionView, mBtnBottomNavLeft)){
-                mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
-            } else{
-                mBtnBottomNavLeft.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
+    private void setUpSectionHeader(PaperSection section){
+        // Clear header
+        if(mSectionHeader.getChildCount() > 0){
+            mSectionHeader.removeAllViews();
+        }
+        for(int h = 0; h < section.getHeader().size(); h++){
+            String title = section.getHeader().get(h);
+            TextView titleView = new TextView(getActivity());
+            titleView.setText(title);
+            titleView.setTypeface(null, Typeface.BOLD);
+            titleView.setTextColor(Color.BLACK);
+            int baseSize = getResources().getInteger(R.integer.root_header_font_size);
+            double resizeFactor = (1 - (h * TITLE_SIZE_FACTOR));
+            if(resizeFactor < 0){
+                resizeFactor = 0.0;
+            }
+            int size = (int) Math.round(baseSize * resizeFactor);
+            titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+            titleView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            mSectionHeader.addView(titleView);
+        }
+    }
+
+    /**
+     * Format the content with the appropriate html tags.
+     *
+     * @param content The content to format
+     * @return the content formatted with the html tags
+     */
     private static String htmlFormatContent(String content){
         return content.replace("\n", "<br><br>");
     }
@@ -210,14 +236,15 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         if(sectionViewPager != null){
             switch(view.getId()){
-                case R.id.btn_section_top_nav_left:
-                case R.id.btn_section_bottom_nav_left:
+                case R.id.btn_section_nav_top:
+                    mSectionView.scrollTo(0, 0);
+                    break;
+                case R.id.btn_section_nav_left:
                     if(canNavigateLeft(sectionIndex)) {
                         sectionViewPager.setCurrentItem(prevSectionPosition(sectionIndex));
                     }
                     break;
-                case R.id.btn_section_top_nav_right:
-                case R.id.btn_section_bottom_nav_right:
+                case R.id.btn_section_nav_right:
                     if(canNavigateRight(sectionIndex)) {
                         sectionViewPager.setCurrentItem(nextSectionPosition(sectionIndex));
                     }
@@ -284,43 +311,23 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @param sectionIndex The index of the current section
      */
     private void setUpNavigationButtons(int sectionIndex) {
-        mBtnTopNavLeft = mSectionView.findViewById(R.id.btn_section_top_nav_left);
-        mBtnBottomNavLeft = mSectionView.findViewById(R.id.btn_section_bottom_nav_left);
-        mBtnTopNavRight = mSectionView.findViewById(R.id.btn_section_top_nav_right);
-        mBtnBottomNavRight = mSectionView.findViewById(R.id.btn_section_bottom_nav_right);
-        mBtnTopNavLeft.setOnClickListener(this);
-        mBtnBottomNavLeft.setOnClickListener(this);
-        mBtnTopNavRight.setOnClickListener(this);
-        mBtnBottomNavRight.setOnClickListener(this);
+        mBtnNavigateTop = mSectionView.findViewById(R.id.btn_section_nav_top);
+        mBtnNavigateTop.setOnClickListener(this);
+        mBtnNavigateLeft = mSectionView.findViewById(R.id.btn_section_nav_left);
+        mBtnNavigateRight = mSectionView.findViewById(R.id.btn_section_nav_right);
+        mBtnNavigateLeft.setOnClickListener(this);
+        mBtnNavigateRight.setOnClickListener(this);
         if(canNavigateLeft(sectionIndex)){
-            mBtnTopNavLeft.setVisibility(View.VISIBLE);
-            mBtnBottomNavLeft.setVisibility(View.VISIBLE);
+            mBtnNavigateLeft.setVisibility(View.VISIBLE);
         } else{
-            mBtnTopNavLeft.setVisibility(View.INVISIBLE);
-            mBtnBottomNavLeft.setVisibility(View.INVISIBLE);
+            mBtnNavigateLeft.setVisibility(View.INVISIBLE);
         }
         if(canNavigateRight(sectionIndex)){
-            mBtnTopNavRight.setVisibility(View.VISIBLE);
-            mBtnBottomNavRight.setVisibility(View.VISIBLE);
+            mBtnNavigateRight.setVisibility(View.VISIBLE);
         } else{
-            mBtnTopNavRight.setVisibility(View.INVISIBLE);
-            mBtnBottomNavRight.setVisibility(View.INVISIBLE);
+            mBtnNavigateRight.setVisibility(View.INVISIBLE);
         }
     }
-
-    /**
-     * Checks whether the view is (partially) visible in the given root view
-     *
-     * @param rootView The root view in which to check the visibility
-     * @param view The view to check it's visibility in the root view
-     * @return Boolean indicating the visibility of the view in the root view
-     */
-    private boolean isVisibleInRootView(View rootView, View view){
-        Rect scrollBounds = new Rect();
-        rootView.getHitRect(scrollBounds);
-        return view.getLocalVisibleRect(scrollBounds);
-    }
-
 
 }
 

@@ -11,9 +11,6 @@
 
     <android.support.constraint.ConstraintLayout
         android:clipToPadding="false"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_gravity="start|top"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -23,52 +20,33 @@
         android:layout_height="match_parent"
         android:id="@+id/constraintLayout_section">
 
-        <ImageButton
-            android:id="@+id/btn_section_top_nav_left"
-            android:layout_width="@dimen/button_nav_size"
-            android:layout_height="@dimen/button_nav_size"
-            android:layout_gravity="start|top"
-            android:background="@drawable/ic_nav_left"
-            android:drawSelectorOnTop="true"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintRight_toLeftOf="@+id/section_header"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread" />
-
-        <ImageButton
-            android:id="@+id/btn_section_top_nav_right"
-            android:layout_width="@dimen/button_nav_size"
-            android:layout_height="@dimen/button_nav_size"
-            android:layout_gravity="end|top"
-            android:background="@drawable/ic_nav_right"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/section_header"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:id="@+id/section_header"
-            android:layout_width="0dp"
+            app:layout_constraintVertical_bias="0"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/section_header_horizontal_margin"
             android:layout_marginEnd="@dimen/section_header_horizontal_margin"
             android:layout_marginTop="@dimen/section_header_vertical_margin"
             android:layout_marginBottom="@dimen/section_header_vertical_margin"
-            android:gravity="start"
+            android:gravity="start|top"
             android:textAppearance="@style/SectionHeader"
             app:layout_constraintBottom_toTopOf="@+id/section_webview"
-            app:layout_constraintLeft_toRightOf="@+id/btn_section_top_nav_left"
-            app:layout_constraintRight_toLeftOf="@+id/btn_section_top_nav_right"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:layout_constraintVertical_chainStyle="spread"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1" />
+            tools:layout_constraintTop_creator="1">
+        </LinearLayout>
 
         <WebView
             android:id="@+id/section_webview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/section_content_horizontal_margin"
             android:layout_marginTop="@dimen/section_content_vertical_margin"
+            android:layout_marginEnd="@dimen/section_content_horizontal_margin"
+            android:layout_marginBottom="@dimen/section_content_vertical_margin"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/section_header"
@@ -78,26 +56,45 @@
             android:overScrollMode="never"/>
 
         <ImageButton
-            android:id="@+id/btn_section_bottom_nav_left"
+            android:id="@+id/btn_section_nav_left"
             android:layout_width="@dimen/button_nav_size"
             android:layout_height="@dimen/button_nav_size"
             android:layout_gravity="start|bottom"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/ic_nav_left"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/section_webview"
-            />
+            app:layout_constraintVertical_bias="1"
+            android:contentDescription="@string/btn_section_nav_left_description"/>
 
         <ImageButton
-            android:id="@+id/btn_section_bottom_nav_right"
+            android:id="@+id/btn_section_nav_top"
             android:layout_width="@dimen/button_nav_size"
             android:layout_height="@dimen/button_nav_size"
-            android:gravity="end|bottom"
-            android:background="@drawable/ic_nav_right"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_nav_top"
+            android:gravity="center|bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_section_nav_right"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_section_nav_left"
             app:layout_constraintTop_toBottomOf="@+id/section_webview"
-            />
+            app:layout_constraintVertical_bias="1"
+            android:contentDescription="@string/btn_section_nav_top_description"/>
 
-        <!-- TODO add contentdescription for images -->
+        <ImageButton
+            android:id="@+id/btn_section_nav_right"
+            android:layout_width="@dimen/button_nav_size"
+            android:layout_height="@dimen/button_nav_size"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_nav_right"
+            android:gravity="end|bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintTop_toBottomOf="@+id/section_webview"
+            android:contentDescription="@string/btn_section_nav_right_description"/>
 
     </android.support.constraint.ConstraintLayout>
 

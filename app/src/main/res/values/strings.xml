@@ -41,4 +41,9 @@
     <!-- This should be a font family from the font_family list in the arrays.xml resource file -->
     <string name="default_font_family">Arial</string>
 
+    <string name="btn_abstract_nav_top_description">Navigate to the top of the abstract</string>
+    <string name="btn_abstract_nav_right_description">Navigate to the sections</string>
+    <string name="btn_section_nav_left_description">Navigate to the previous section</string>
+    <string name="btn_section_nav_right_description">Navigate to the next section</string>
+    <string name="btn_section_nav_top_description">Navigate to the top of this section page</string>
 </resources>

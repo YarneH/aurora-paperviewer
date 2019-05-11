@@ -2,12 +2,14 @@ package com.aurora.paperviewerprocessor.paper;
 
 import android.graphics.Bitmap;
 
+import com.aurora.auroralib.BitmapListAdapter;
+import com.aurora.auroralib.PluginObject;
+import com.aurora.paperviewerprocessor.PluginConstants;
+import com.google.gson.annotations.JsonAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import com.aurora.auroralib.PluginObject;
-import com.aurora.paperviewerprocessor.PluginConstants;
 
 public class Paper extends PluginObject {
 
@@ -15,7 +17,8 @@ public class Paper extends PluginObject {
     private String mTitle;
     private String mAbstract;
     private List<PaperSection> mSections;
-    private transient List<Bitmap> mImages = new ArrayList<>();
+    @JsonAdapter(BitmapListAdapter.class)
+    private List<Bitmap> mImages = new ArrayList<>();
 
     public Paper(String fileName) {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);

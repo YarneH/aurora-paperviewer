@@ -1,16 +1,13 @@
 package com.aurora.paperviewerprocessor.processor;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 
+import com.aurora.auroralib.ExtractedImage;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.Section;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,15 +55,8 @@ public final class PaperParser {
     private static List<Bitmap> parseImages(ExtractedText extractedText){
         List<Bitmap> images = new ArrayList<>();
         for(Section section : extractedText.getSections()){
-            if(section.getImages() == null){
-                continue;
-            }
-            for(String base64Image : section.getImages()){
-                InputStream stream = new ByteArrayInputStream(Base64.decode(base64Image.getBytes(),
-                        Base64.DEFAULT));
-                Bitmap imageBitmap = BitmapFactory.decodeStream(stream);
-
-                images.add(imageBitmap);
+            for(ExtractedImage img : section.getExtractedImages()){
+                images.add(img.getBitmap());
             }
         }
         return images;

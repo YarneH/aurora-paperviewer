@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity
                 String headerTitle = section.getHeader().get(level);
                 // Equal titles on the same level with the previous section should be skipped
                 if(!(level <= prevSection.getLevel() &&
+                        !prevSection.getHeader().isEmpty() &&
                         prevSection.getHeader().get(level).equals(headerTitle))){
                     addTableOfContentEntry(tocViewPagerPositions, headerTitle, level,
                             (level == section.getLevel()), getViewPagerPosition(sectionIndex));
@@ -442,12 +443,6 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_settings) {
-            // TODO implement settings redirect activity such as text font here.
-        }
-        // The listener for the table of content entries has already been configured
-        // in the creation of the menu items.
         return true;
     }
 
@@ -464,7 +459,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_search) {
             // TODO implement searching content here
             return true;
-        } else if (id == R.id.action_images) {
+        } else if(id == R.id.action_images) {
             if(!mPaperViewModel.hasImages()){
                 Toast.makeText(this, "No images were found for this paper.", Snackbar.LENGTH_LONG).show();
                 return false;
@@ -474,6 +469,9 @@ public class MainActivity extends AppCompatActivity
             } else {
                 mImageContainer.setVisibility(View.VISIBLE);
             }
+        } else if(id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

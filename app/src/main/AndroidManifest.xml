@@ -25,9 +25,11 @@
             <intent-filter>
                 <action android:name="com.aurora.auroralib.AURORA_PLUGIN" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="*/*"/>
+                <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <activity android:name="com.aurora.paperviewerenvironment.SettingsActivity"
+            android:parentActivityName="com.aurora.paperviewerenvironment.MainActivity"></activity>
     </application>
 
 </manifest>

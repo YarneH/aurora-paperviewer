@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- default abstract and section root title font size -->
+    <integer name="root_header_font_size">26</integer>
+
+    <!-- Default section font size -->
+    <integer name="default_section_font_size">18</integer>
+
+</resources>

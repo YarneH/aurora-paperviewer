@@ -22,6 +22,9 @@ public class PaperViewModel extends AndroidViewModel {
      */
     private MutableLiveData<Paper> mPaper = new MutableLiveData<>();
 
+    /**
+     * Handles the communication with the paperviewerprocessor module
+     */
     private PaperProcessorCommunicator mCommunicator;
 
     public PaperViewModel(@NonNull Application application) {
@@ -32,7 +35,7 @@ public class PaperViewModel extends AndroidViewModel {
     /**
      * Initialise the data with {@link ExtractedText}.
      *
-     * @param extractedText where to get recipe from.
+     * @param extractedText where to extract the paper from
      */
     public void initialiseWithExtractedText(ExtractedText extractedText) {
         mPaper.setValue((Paper) mCommunicator.pipeline(extractedText));
@@ -55,6 +58,5 @@ public class PaperViewModel extends AndroidViewModel {
     }
 
     public boolean hasImages(){ return !mPaper.getValue().getImages().isEmpty(); }
-
 
 }

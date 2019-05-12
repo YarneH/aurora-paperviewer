@@ -52,6 +52,13 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     /**
+     * Indication for a table of content entry that this entry does not
+     * redirect to a certain section. The chosen value is -1 because
+     * the index of a section can never be negative
+     */
+    private static final int NO_NAVIGATION = -1;
+
+    /**
      * Tag for logging.
      */
     private static final String CLASS_TAG = MainActivity.class.getSimpleName();
@@ -285,7 +292,7 @@ public class MainActivity extends AppCompatActivity
             tocViewPagerPositions.add(position);
         }
         else{
-            tocViewPagerPositions.add(-1);
+            tocViewPagerPositions.add(NO_NAVIGATION);
         }
 
         StringBuilder tocEntry = new StringBuilder();

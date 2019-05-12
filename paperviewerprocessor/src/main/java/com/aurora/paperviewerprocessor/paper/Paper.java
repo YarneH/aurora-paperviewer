@@ -11,12 +11,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Paper object for the enhanced representation of a paper.
+ */
 public class Paper extends PluginObject {
 
+    /**
+     * The authors the paper
+     */
     private List<String> mAuthors;
+
+    /**
+     * The title of the paper
+     */
     private String mTitle;
+
+    /**
+     * The content of the abstract
+     */
     private String mAbstract;
+
+    /**
+     * The sections of the paper, index by occurrence
+     */
     private List<PaperSection> mSections;
+
+    /**
+     * The images contained in the paper
+     */
     @JsonAdapter(BitmapListAdapter.class)
     private List<Bitmap> mImages = new ArrayList<>();
 
@@ -50,6 +72,9 @@ public class Paper extends PluginObject {
     }
 
     public void setAbstract(String abstractContent) {
+        if(abstractContent == null){
+            this.mAbstract = "";
+        }
         this.mAbstract = abstractContent;
     }
 
@@ -88,12 +113,12 @@ public class Paper extends PluginObject {
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
+            if(!paper.getAbstract().equals(mAbstract)){
+                return false;
+            }
             boolean equalHeaderContent = paper.getAuthors().equals(mAuthors)
                     && paper.getTitle().equals(mTitle);
             boolean equalAbstract = true;
-            if(paper.getAbstract() != null && mAbstract != null && !paper.getAbstract().equals(mAbstract)){
-                equalAbstract = false;
-            }
             boolean equalContent = paper.getSections().equals(mSections);
             return  equalHeaderContent && equalAbstract && equalContent;
         }
@@ -105,9 +130,11 @@ public class Paper extends PluginObject {
         StringBuilder ret = new StringBuilder("Paper{");
         ret.append("title=").append(mTitle);
         ret.append(", author=").append(mAuthors);
+
         if(mAbstract != null){
             ret.append(",\nabstract=").append(mAbstract);
         }
+
         ret.append(",\nsections=").append(mSections);
         ret.append("}");
         return ret.toString();

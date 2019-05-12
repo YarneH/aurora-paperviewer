@@ -11,7 +11,9 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
 /**
- * A {@link android.preference.Preference} that displays a number picker as a dialog. <br>
+ * A {@link android.preference.Preference} that displays a number mFontSizePicker as a dialog. <br>
+ * The result is a font size preference that can be set in the {@link android.content.SharedPreferences}. <br>
+ * The font size preference can be set in the {@link SettingsActivity}. <br>
  * For more information see to the following link: <br>
  * @see <a href="https://stackoverflow.com/questions/20758986/android-preferenceactivity-dialog-with-number-picker">
  *     https://stackoverflow.com/questions/20758986/android-preferenceactivity-dialog-with-number-picker</a>
@@ -19,36 +21,36 @@ import android.widget.NumberPicker;
 public class NumberPickerPreference extends DialogPreference {
 
     /**
-     * Upper range of the picker
+     * Upper range of the mFontSizePicker
      */
-    public static final int MAX_VALUE = 100;
+    public static final int MAX_FONT_SIZE = 100;
 
     /**
-     * Lower range for the picker
+     * Lower range for the mFontSizePicker
      */
-    public static final int MIN_VALUE = 0;
+    public static final int MIN_FONT_SIZE = 0;
 
     /**
-     * Enable or disable the circular behavior of the picker
+     * Enable or disable the circular behavior of the mFontSizePicker
      */
     public static final boolean WRAP_SELECTOR_WHEEL = true;
 
     /**
-     * The number picker in the dialog box
+     * The number mFontSizePicker in the dialog box
      */
-    private NumberPicker picker;
+    private NumberPicker mFontSizePicker;
 
     /**
-     * The current value represented in the NumberPicker
+     * The current mFontSize represented in the NumberPicker
      */
-    private int value;
+    private int mFontSize;
 
-    public NumberPickerPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public NumberPickerPreference(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
     }
 
-    public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public NumberPickerPreference(Context context, AttributeSet attributeSet, int defStyleAttribute) {
+        super(context, attributeSet, defStyleAttribute);
     }
 
     /**
@@ -62,11 +64,11 @@ public class NumberPickerPreference extends DialogPreference {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER;
 
-        picker = new NumberPicker(getContext());
-        picker.setLayoutParams(layoutParams);
+        mFontSizePicker = new NumberPicker(getContext());
+        mFontSizePicker.setLayoutParams(layoutParams);
 
         FrameLayout dialogView = new FrameLayout(getContext());
-        dialogView.addView(picker);
+        dialogView.addView(mFontSizePicker);
 
         return dialogView;
     }
@@ -79,22 +81,22 @@ public class NumberPickerPreference extends DialogPreference {
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        picker.setMinValue(MIN_VALUE);
-        picker.setMaxValue(MAX_VALUE);
-        picker.setWrapSelectorWheel(WRAP_SELECTOR_WHEEL);
-        picker.setValue(getValue());
+        mFontSizePicker.setMinValue(MIN_FONT_SIZE);
+        mFontSizePicker.setMaxValue(MAX_FONT_SIZE);
+        mFontSizePicker.setWrapSelectorWheel(WRAP_SELECTOR_WHEEL);
+        mFontSizePicker.setValue(getValue());
     }
 
     /**
      * Called upon closing the dialog view
      *
-     * @param positiveResult whether or not the value has been altered
+     * @param positiveResult whether or not the mFontSize has been altered
      */
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-            picker.clearFocus();
-            int newValue = picker.getValue();
+            mFontSizePicker.clearFocus();
+            int newValue = mFontSizePicker.getValue();
             if (callChangeListener(newValue)) {
                 setValue(newValue);
             }
@@ -102,46 +104,46 @@ public class NumberPickerPreference extends DialogPreference {
     }
 
     /**
-     * Called when the default value is fetched, can be overridden
-     * by specifying custom default value in the NumberPicker xml.
+     * Called when the default mFontSize is fetched, can be overridden
+     * by specifying custom default mFontSize in the NumberPicker xml.
      *
-     * @param a the values in the picker
+     * @param a the values in the mFontSizePicker
      * @param index the index that should be set as default
      */
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
-        return a.getInteger(index, MIN_VALUE);
+        return a.getInteger(index, MAX_FONT_SIZE);
     }
 
     /**
-     * Called upon setting the initial value for the dialog view.
+     * Called upon setting the initial mFontSize for the dialog view.
      *
-     * @param restorePersistedValue whether or not a previous value should be fetched
-     * @param defaultValue the default value for the picker
+     * @param restorePersistedValue whether or not a previous mFontSize should be fetched
+     * @param defaultValue the default mFontSize for the mFontSizePicker
      */
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         if(restorePersistedValue){
-            setValue(getPersistedInt(MIN_VALUE));
+            setValue(getPersistedInt(MAX_FONT_SIZE));
         } else {
             setValue((int) defaultValue);
         }
     }
 
     /**
-     * Sets the picker to the given value
+     * Sets the mFontSizePicker to the given mFontSize
      *
-     * @param value the value for the picker
+     * @param value the mFontSize for the mFontSizePicker
      */
     public void setValue(int value) {
-        this.value = value;
-        persistInt(this.value);
+        this.mFontSize = value;
+        persistInt(this.mFontSize);
     }
 
     /**
-     * @return the value for the picker
+     * @return the mFontSize for the mFontSizePicker
       */
     public int getValue() {
-        return this.value;
+        return this.mFontSize;
     }
 }

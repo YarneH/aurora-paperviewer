@@ -21,6 +21,11 @@ import android.preference.PreferenceFragment;
 public class SettingsActivity extends PreferenceActivity {
 
     /**
+     * The key for accessing the font family in the {@link SharedPreferences}
+     */
+    private static final String FONT_FAMILY_KEY = "fontFamily";
+
+    /**
      * Called upon creation of this activity. See android lifecycle for more info.
      *
      * @param savedInstanceState State to load
@@ -49,7 +54,7 @@ public class SettingsActivity extends PreferenceActivity {
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
 
-            ListPreference fontFamily = (ListPreference) findPreference("fontFamily");
+            ListPreference fontFamily = (ListPreference) findPreference(FONT_FAMILY_KEY);
             if(fontFamily.getValue() == null){
                 fontFamily.setValue(getResources().getString(R.string.default_font_family));
             }

@@ -51,6 +51,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    private static final int NO_NAVIGATION = -1;
+
     /**
      * Tag for logging.
      */
@@ -285,7 +288,7 @@ public class MainActivity extends AppCompatActivity
             tocViewPagerPositions.add(position);
         }
         else{
-            tocViewPagerPositions.add(-1);
+            tocViewPagerPositions.add(NO_NAVIGATION);
         }
 
         StringBuilder tocEntry = new StringBuilder();

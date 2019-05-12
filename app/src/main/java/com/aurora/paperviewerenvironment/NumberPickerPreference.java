@@ -11,7 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
 /**
- * A {@link android.preference.Preference} that displays a number picker as a dialog. <br>
+ * A {@link android.preference.Preference} that displays a number mPicker as a dialog. <br>
+ * The result is a mValue preference that will be set <br>
  * For more information see to the following link: <br>
  * @see <a href="https://stackoverflow.com/questions/20758986/android-preferenceactivity-dialog-with-number-picker">
  *     https://stackoverflow.com/questions/20758986/android-preferenceactivity-dialog-with-number-picker</a>
@@ -19,36 +20,36 @@ import android.widget.NumberPicker;
 public class NumberPickerPreference extends DialogPreference {
 
     /**
-     * Upper range of the picker
+     * Upper range of the mPicker
      */
     public static final int MAX_VALUE = 100;
 
     /**
-     * Lower range for the picker
+     * Lower range for the mPicker
      */
     public static final int MIN_VALUE = 0;
 
     /**
-     * Enable or disable the circular behavior of the picker
+     * Enable or disable the circular behavior of the mPicker
      */
     public static final boolean WRAP_SELECTOR_WHEEL = true;
 
     /**
-     * The number picker in the dialog box
+     * The number mPicker in the dialog box
      */
-    private NumberPicker picker;
+    private NumberPicker mPicker;
 
     /**
-     * The current value represented in the NumberPicker
+     * The current mValue represented in the NumberPicker
      */
-    private int value;
+    private int mValue;
 
-    public NumberPickerPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public NumberPickerPreference(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
     }
-
-    public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    
+    public NumberPickerPreference(Context context, AttributeSet attributeSet, int defStyleAttribute) {
+        super(context, attributeSet, defStyleAttribute);
     }
 
     /**
@@ -62,11 +63,11 @@ public class NumberPickerPreference extends DialogPreference {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER;
 
-        picker = new NumberPicker(getContext());
-        picker.setLayoutParams(layoutParams);
+        mPicker = new NumberPicker(getContext());
+        mPicker.setLayoutParams(layoutParams);
 
         FrameLayout dialogView = new FrameLayout(getContext());
-        dialogView.addView(picker);
+        dialogView.addView(mPicker);
 
         return dialogView;
     }
@@ -79,22 +80,22 @@ public class NumberPickerPreference extends DialogPreference {
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        picker.setMinValue(MIN_VALUE);
-        picker.setMaxValue(MAX_VALUE);
-        picker.setWrapSelectorWheel(WRAP_SELECTOR_WHEEL);
-        picker.setValue(getValue());
+        mPicker.setMinValue(MIN_VALUE);
+        mPicker.setMaxValue(MAX_VALUE);
+        mPicker.setWrapSelectorWheel(WRAP_SELECTOR_WHEEL);
+        mPicker.setValue(getValue());
     }
 
     /**
      * Called upon closing the dialog view
      *
-     * @param positiveResult whether or not the value has been altered
+     * @param positiveResult whether or not the mValue has been altered
      */
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-            picker.clearFocus();
-            int newValue = picker.getValue();
+            mPicker.clearFocus();
+            int newValue = mPicker.getValue();
             if (callChangeListener(newValue)) {
                 setValue(newValue);
             }
@@ -102,10 +103,10 @@ public class NumberPickerPreference extends DialogPreference {
     }
 
     /**
-     * Called when the default value is fetched, can be overridden
-     * by specifying custom default value in the NumberPicker xml.
+     * Called when the default mValue is fetched, can be overridden
+     * by specifying custom default mValue in the NumberPicker xml.
      *
-     * @param a the values in the picker
+     * @param a the values in the mPicker
      * @param index the index that should be set as default
      */
     @Override
@@ -114,10 +115,10 @@ public class NumberPickerPreference extends DialogPreference {
     }
 
     /**
-     * Called upon setting the initial value for the dialog view.
+     * Called upon setting the initial mValue for the dialog view.
      *
-     * @param restorePersistedValue whether or not a previous value should be fetched
-     * @param defaultValue the default value for the picker
+     * @param restorePersistedValue whether or not a previous mValue should be fetched
+     * @param defaultValue the default mValue for the mPicker
      */
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
@@ -129,19 +130,19 @@ public class NumberPickerPreference extends DialogPreference {
     }
 
     /**
-     * Sets the picker to the given value
+     * Sets the mPicker to the given mValue
      *
-     * @param value the value for the picker
+     * @param value the mValue for the mPicker
      */
     public void setValue(int value) {
-        this.value = value;
-        persistInt(this.value);
+        this.mValue = value;
+        persistInt(this.mValue);
     }
 
     /**
-     * @return the value for the picker
+     * @return the mValue for the mPicker
       */
     public int getValue() {
-        return this.value;
+        return this.mValue;
     }
 }

@@ -104,10 +104,18 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         return mAbstractView;
     }
 
+    /**
+     * Determines if it possible to navigate to the sections.
+     *
+     * @return boolean indicating if navigation to the sections is possible
+     */
     private boolean canNavigateRight(){
         return mPaperViewModel.getNumberOfSections() > 0;
     }
 
+    /**
+     * Setup the navigation button to navigate to the sections.
+     */
     private void setUpNavigationButton(){
         mBtnNavigateRight = mAbstractView.findViewById(R.id.btn_abstract_nav_right);
         mBtnNavigateRight.setOnClickListener(this);

@@ -19,6 +19,8 @@ import static android.content.ContentValues.TAG;
  */
 public final class PaperParser {
 
+    private final static String ABSTRACT_TITLE = "abstract";
+
     private PaperParser() {
         throw new IllegalStateException("Utility class");
     }
@@ -70,7 +72,7 @@ public final class PaperParser {
      */
     private static String parseAbstract(ExtractedText extractedText){
         for(Section section : extractedText.getSections()){
-            if(section.getTitle() != null && "abstract".equalsIgnoreCase(section.getTitle())){
+            if(section.getTitle() != null && ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
                 return section.getBody();
             }
         }
@@ -156,19 +158,25 @@ public final class PaperParser {
         return prevSectionLevel;
     }
 
+    /**
+     * Returns whether this is a valid section.
+     *
+     * @param section the section to validate
+     * @return boolean indicating whether the section is valid
+     */
     private static boolean validSection(Section section){
         boolean isAbstract = false;
         boolean isEmpty = false;
         if(section.getTitle() != null){
-            if("abstract".equalsIgnoreCase(section.getTitle())){
+            if(ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
                 isAbstract = true;
             }
-            if("".equals(section.getTitle().trim())){
+            if(section.getTitle().trim().isEmpty()){
                 isEmpty = true;
             }
         }
         else{
-            if("".equals(section.getBody().trim())){
+            if(section.getBody().trim().isEmpty()){
                 isEmpty = true;
             }
         }

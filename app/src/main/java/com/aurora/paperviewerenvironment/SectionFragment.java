@@ -137,9 +137,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         setUpNavigationButtons(sectionIndex);
 
         // Listen to changes in the settings, listener cannot be an inner anonymous or lambda method to prevent GC
-        mSettingsListener = (SharedPreferences prefs, String key) -> {
+        mSettingsListener = (SharedPreferences preferences, String key) -> {
             Paper paper = mPaperViewModel.getPaper().getValue();
-            setContent(paper, sectionIndex, prefs);
+            setContent(paper, sectionIndex, preferences);
         };
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sharedPreferences.registerOnSharedPreferenceChangeListener(mSettingsListener);
@@ -193,14 +193,18 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         if(mSectionHeader.getChildCount() > 0){
             mSectionHeader.removeAllViews();
         }
-        for(int h = 0; h < section.getHeader().size(); h++){
-            String title = section.getHeader().get(h);
+        for(int headerIndex = 0; headerIndex < section.getHeader().size(); headerIndex++){
+            String title = section.getHeader().get(headerIndex);
             TextView titleView = new TextView(getActivity());
+
+            // Set the title font
             titleView.setText(title);
             titleView.setTypeface(null, Typeface.BOLD);
             titleView.setTextColor(Color.BLACK);
             int baseSize = getResources().getInteger(R.integer.root_header_font_size);
-            double resizeFactor = (1 - (h * TITLE_SIZE_FACTOR));
+
+            // rescale the title size based on the index in the header
+            double resizeFactor = (1 - (headerIndex * TITLE_SIZE_FACTOR));
             if(resizeFactor < 0){
                 resizeFactor = 0.0;
             }

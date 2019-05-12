@@ -1,12 +1,22 @@
 package com.aurora.paperviewerprocessor.facade;
 
+import android.content.Context;
+
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.PluginObject;
-import com.aurora.paperviewerprocessor.ProcessorCommunicator;
-import com.aurora.paperviewerprocessor.paper.Paper;
+import com.aurora.auroralib.ProcessorCommunicator;
+import com.aurora.paperviewerprocessor.PluginConstants;
 import com.aurora.paperviewerprocessor.processor.PaperParser;
 
 public class PaperProcessorCommunicator extends ProcessorCommunicator {
+
+    public PaperProcessorCommunicator(Context context){
+        /*
+         * A UNIQUE_PLUGIN_NAME needs to be passed to the constructor of ProcessorCommunicator for
+         * proper configuration of the cache
+         */
+        super(PluginConstants.UNIQUE_PLUGIN_NAME, context);
+    }
 
     /**
      * Very simple process function that just adds some text to extractedText
@@ -15,23 +25,8 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
      * @return A string that consists of standard text and the result of extractedText.toString()
      */
     @Override
-    public PluginObject process(ExtractedText extractedText) {
-        return PaperParser.parsePaper(extractedText);
-    }
-
-    // TODO depending on whether we will also allow regular Strings to be passed: either remove this
-    // or include this as an abstract method maybe
-    // Maybe also include it as an abstract method in the superclass  then because then it should
-    // also always be implemented
-    /**
-     * Very simple process function that just adds some text to a String
-     *
-     * @param inputText The string that has to be processed
-     * @return A string that consists of standard text and the inputText
-     */
-    public PluginObject process(String inputText) {
-        // TODO change this dummy paper to extracted and processed paper
-        return new Paper();
+    protected PluginObject process(ExtractedText extractedText) {
+        return PaperParser.parse(extractedText);
     }
 
 }

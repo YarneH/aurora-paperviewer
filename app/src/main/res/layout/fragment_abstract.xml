@@ -2,68 +2,42 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/section_scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
-    android:scrollbars="vertical"
-    android:id="@+id/section_scrollview">
+    android:scrollbars="vertical">
 
     <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/constraintLayout_abstract"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|top"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/constraintLayout_abstract">
-
-        <!-- Invisible button for correct alignment of the other components
-        compared to the SectionFragment components -->
-        <ImageButton
-            android:id="@+id/btn_abstract_top_nav_left"
-            android:layout_width="@dimen/button_nav_size"
-            android:layout_height="@dimen/button_nav_size"
-            android:layout_gravity="start|top"
-            android:background="@drawable/ic_nav_left"
-            android:visibility="invisible"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintRight_toLeftOf="@+id/abstract_header"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread" />
-
-        <ImageButton
-            android:id="@+id/btn_abstract_top_nav_right"
-            android:layout_width="@dimen/button_nav_size"
-            android:layout_height="@dimen/button_nav_size"
-            android:layout_gravity="end|top"
-            android:background="@drawable/ic_nav_right"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/abstract_header"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread"
-            />
+        android:clipToPadding="false">
 
         <TextView
             android:id="@+id/abstract_header"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/section_header_horizontal_margin"
             android:layout_marginTop="@dimen/section_header_vertical_margin"
             android:layout_marginEnd="@dimen/section_header_horizontal_margin"
             android:layout_marginBottom="@dimen/section_header_vertical_margin"
-            android:textAppearance="@style/SectionHeader"
-            android:gravity="start"
-            app:layout_constraintLeft_toRightOf="@+id/btn_abstract_top_nav_left"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/btn_abstract_top_nav_right"
+            android:gravity="start|top"
+            android:textColor="@color/black"
+            android:textSize="@dimen/root_header_font_size_abstract"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/abstract_webview"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="spread"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1"/>
+            tools:layout_constraintTop_creator="1" />
 
         <WebView
             android:id="@+id/abstract_webview"
@@ -73,28 +47,40 @@
             android:layout_marginTop="@dimen/section_content_vertical_margin"
             android:layout_marginEnd="@dimen/section_content_horizontal_margin"
             android:layout_marginBottom="@dimen/section_content_vertical_margin"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/btn_abstract_nav_right"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/abstract_header"
-            app:layout_constraintBottom_toTopOf="@+id/btn_abstract_bottom_nav_right"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1"
-            android:scrollbars="none"
-            android:overScrollMode="never"/>
+            tools:layout_constraintTop_creator="1" />
 
         <ImageButton
-            android:id="@+id/btn_abstract_bottom_nav_right"
+            android:id="@+id/btn_abstract_nav_top"
             android:layout_width="@dimen/button_nav_size"
             android:layout_height="@dimen/button_nav_size"
-            android:layout_gravity="end|bottom"
-            android:background="@drawable/ic_nav_right"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/abstract_webview"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_nav_top"
+            android:contentDescription="@string/btn_abstract_nav_top_description"
+            android:gravity="center|bottom"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_chainStyle="spread"
-            />
+            app:layout_constraintEnd_toStartOf="@+id/btn_abstract_nav_right"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/abstract_webview"
+            app:layout_constraintVertical_bias="1" />
 
-        <!-- TODO add contentdescription for images -->
+        <ImageButton
+            android:id="@+id/btn_abstract_nav_right"
+            android:layout_width="@dimen/button_nav_size"
+            android:layout_height="@dimen/button_nav_size"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_nav_right"
+            android:contentDescription="@string/btn_abstract_nav_right_description"
+            android:gravity="end|bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

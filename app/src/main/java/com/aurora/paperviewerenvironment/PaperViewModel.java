@@ -22,29 +22,27 @@ public class PaperViewModel extends AndroidViewModel {
      */
     private MutableLiveData<Paper> mPaper = new MutableLiveData<>();
 
+    /**
+     * Handles the communication with the paperviewerprocessor module
+     */
     private PaperProcessorCommunicator mCommunicator;
 
     public PaperViewModel(@NonNull Application application) {
         super(application);
-        mCommunicator = new PaperProcessorCommunicator();
-    }
-
-    /**
-     * Initialise the data from plain text.
-     *
-     * @param plainText where to extract recipe from.
-     */
-    public void initialiseWithPlainText(String plainText) {
-        mPaper.setValue((Paper) mCommunicator.process(plainText));
+        mCommunicator = new PaperProcessorCommunicator(application.getApplicationContext());
     }
 
     /**
      * Initialise the data with {@link ExtractedText}.
      *
-     * @param extractedText where to get recipe from.
+     * @param extractedText where to extract the paper from
      */
     public void initialiseWithExtractedText(ExtractedText extractedText) {
-        mPaper.setValue((Paper) mCommunicator.process(extractedText));
+        mPaper.setValue((Paper) mCommunicator.pipeline(extractedText));
+    }
+
+    public void initialiseWithPaper(Paper paper) {
+        mPaper.setValue(paper);
     }
 
     public LiveData<Paper> getPaper() {

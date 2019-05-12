@@ -72,6 +72,9 @@ public class Paper extends PluginObject {
     }
 
     public void setAbstract(String abstractContent) {
+        if(abstractContent == null){
+            this.mAbstract = "";
+        }
         this.mAbstract = abstractContent;
     }
 
@@ -113,8 +116,8 @@ public class Paper extends PluginObject {
             boolean equalHeaderContent = paper.getAuthors().equals(mAuthors)
                     && paper.getTitle().equals(mTitle);
             boolean equalAbstract = true;
-            if(paper.getAbstract() != null && mAbstract != null && !paper.getAbstract().equals(mAbstract)){
-                equalAbstract = false;
+            if(!paper.getAbstract().equals(mAbstract)){
+                return false;
             }
             boolean equalContent = paper.getSections().equals(mSections);
             return  equalHeaderContent && equalAbstract && equalContent;

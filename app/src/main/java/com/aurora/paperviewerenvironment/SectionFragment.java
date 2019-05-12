@@ -55,6 +55,60 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final double TITLE_SIZE_FACTOR = 0.15;
 
     /**
+     * HTML formatted  start of the start page
+     */
+    private static final String HTML_HEAD = "<html><head><style type=\"text/css\">body {";
+
+    /**
+     * HTML formatted  font family
+     */
+    private static final String HTML_FONT_FAMILY = "font-family: ";
+
+    /**
+     * HTML formatted  font size
+     */
+    private static final String HTML_FONT_SIZE = "font-size: ";
+
+    /**
+     * HTML formatted  font text align
+     */
+    private static final String HTML_TEXT_ALIGN = "text-align: ";
+
+    /**
+     * HTML format font text weight
+     */
+    private static final String HTML_FONT_WEIGHT = "font-weight: ";
+
+    /**
+     * HTML formatted  body ending
+     */
+    private static final String HTML_BODY_END = "\"}</style></head><body>\"";
+
+    /**
+     * HTML formatted end of the page
+     */
+    private static final String HTML_END = "</body></html>";
+
+    /**
+     * Sans serif statement for the content font family
+     */
+    private static final String HTML_SANS_SERIF = ", sans serif";
+
+    /**
+     * Separator in css style html page heading
+     */
+    private static final String CSS_SEPARATOR = ";";
+
+    /**
+     * Html formatted newline
+     */
+    private static final String HTML_NEWLINE = "<br><br>";
+
+    /**
+     * normal newline
+     */
+    private static final String NEWLINE = "<br><br>";
+    /**
      * The {@link android.arch.lifecycle.AndroidViewModel}
      * for maintaining the paper it's data and state
      * across the lifecycles of the activity
@@ -69,7 +123,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     /**
      * The {@link TextView} for displaying the header of the section
      */
-    // private TextView mSectionHeader;
     private LinearLayout mSectionHeader;
 
     /**
@@ -78,7 +131,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private WebView mSectionWebView;
 
     /**
-     * Button for navigating to the previous section at the top of the fragment
+     * Button for navigating to the previous section at the bottom of the fragment
      */
     private ImageButton mBtnNavigateLeft;
 
@@ -163,31 +216,49 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @param sharedPref the current {@link SharedPreferences}
      */
     private void setContent(Paper paper, int sectionIndex, SharedPreferences sharedPref){
+        PaperSection section = paper.getSections().get(sectionIndex);
+
+        // Set up the header with the title hierarchy for this section
+        setUpSectionHeader(section);
+
         // Obtain the current font settings
         String defaultFontFamily = getActivity().getResources().getString(R.string.default_font_family);
         String fontFamily = sharedPref.getString("fontFamily", defaultFontFamily);
         int defaultFontSize = getActivity().getResources().getInteger(R.integer.default_section_font_size);
         int fontSize = sharedPref.getInt("fontSize", defaultFontSize);
 
-        // Set the text properties of the section content
-        String htmlFront = "<html><head>" +
-                "<style type=\"text/css\">body {" +
-                "font-family: " + fontFamily + ", sans serif;" +
-                "font-size: " + fontSize + ";" +
-                "font-weight: " + getResources().getString(R.string.section_font_weight) + ";" +
-                "text-align: " + getResources().getString(R.string.section_text_align) + ";" +
-                "}</style></head><body>";
-        String htmlEnd = "</body></html>";
-
-        PaperSection section = paper.getSections().get(sectionIndex);
-
-        // Set up the header with the title hierarchy for this section
-        setUpSectionHeader(section);
-
-        String myHtmlString = htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
-        mSectionWebView.loadDataWithBaseURL(null, myHtmlString, "text/html", "UTF-8", null);
+        // Convert the section content to html page and add to the webview
+        String htmlSectionString = createHtmlWebView(section, fontFamily, fontSize);
+        mSectionWebView.loadDataWithBaseURL(null, htmlSectionString, "text/html", "UTF-8", null);
     }
 
+    /**
+     * Creates a html formatted web page
+     * for representing the section content in the {@link WebView}.
+     *
+     * @param section the section to represent in the webview
+     * @param fontFamily the font family for the content
+     * @param fontSize the font size for the content
+     * @return
+     */
+    private String createHtmlWebView(PaperSection section, String fontFamily, int fontSize){
+        // Set the text properties of the section content
+        String htmlFront = HTML_HEAD +
+                HTML_FONT_FAMILY + fontFamily + HTML_SANS_SERIF + CSS_SEPARATOR +
+                HTML_FONT_SIZE + fontSize + CSS_SEPARATOR +
+                HTML_FONT_WEIGHT+ getResources().getString(R.string.section_font_weight) + CSS_SEPARATOR +
+                HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) + CSS_SEPARATOR +
+                HTML_BODY_END;
+        String htmlEnd = HTML_END;
+
+        return htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
+    }
+
+    /**
+     * Creates the section header for this section.
+     *
+     * @param section the current section
+     */
     private void setUpSectionHeader(PaperSection section){
         // Clear header
         if(mSectionHeader.getChildCount() > 0){
@@ -224,7 +295,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @return the content formatted with the html tags
      */
     private static String htmlFormatContent(String content){
-        return content.replace("\n", "<br><br>");
+        return content.replace(NEWLINE, HTML_NEWLINE);
     }
 
     /**

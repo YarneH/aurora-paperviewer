@@ -244,7 +244,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private String createHtmlWebView(PaperSection section, String fontFamily, int fontSize){
         // Set the text properties of the section content
         String htmlFront = HTML_HEAD +
-                HTML_FONT_FAMILY + fontFamily + HTML_SANS_SERIF + CSS_SEPARATOR +
+                HTML_FONT_FAMILY + fontFamily +
+                HTML_SANS_SERIF + CSS_SEPARATOR +
                 HTML_FONT_SIZE + fontSize + CSS_SEPARATOR +
                 HTML_FONT_WEIGHT+ getResources().getString(R.string.section_font_weight) + CSS_SEPARATOR +
                 HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) + CSS_SEPARATOR +

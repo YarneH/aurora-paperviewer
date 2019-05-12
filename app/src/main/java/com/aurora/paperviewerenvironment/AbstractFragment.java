@@ -151,7 +151,8 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     private String createHtmlWebView(Paper paper){
         // Set the text properties of the abstract content
         String htmlFront = HTML_HEAD +
-                HTML_FONT_FAMILY + getResources().getString(R.string.abstract_font_family) + HTML_SANS_SERIF + CSS_SEPARATOR +
+                HTML_FONT_FAMILY + getResources().getString(R.string.abstract_font_family) +
+                HTML_SANS_SERIF + CSS_SEPARATOR +
                 HTML_FONT_SIZE + getResources().getDimension(R.dimen.abstract_font_size) + CSS_SEPARATOR +
                 HTML_FONT_WEIGHT+ getResources().getString(R.string.abstract_font_weight) + CSS_SEPARATOR +
                 HTML_TEXT_ALIGN + getResources().getString(R.string.abstract_text_align) + CSS_SEPARATOR +

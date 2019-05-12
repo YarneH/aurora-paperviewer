@@ -51,7 +51,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    /**
+     * Indication for a table of content entry that this entry does not
+     * redirect to a certain section. The chosen value is -1 because
+     * the index of a section can never be negative
+     */
     private static final int NO_NAVIGATION = -1;
 
     /**

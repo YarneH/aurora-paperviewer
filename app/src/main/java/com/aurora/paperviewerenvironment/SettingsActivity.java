@@ -20,6 +20,9 @@ import android.preference.PreferenceFragment;
  */
 public class SettingsActivity extends PreferenceActivity {
 
+    /**
+     * The key for accessing the font family in the {@link SharedPreferences}
+     */
     private static final String FONT_FAMILY_KEY = "fontFamily";
 
     /**

@@ -12,7 +12,8 @@ import android.widget.NumberPicker;
 
 /**
  * A {@link android.preference.Preference} that displays a number mPicker as a dialog. <br>
- * The result is a mValue preference that will be set <br>
+ * The result is a mValue preference that can be set in the {@link android.content.SharedPreferences}. <br>
+ * This picker is used in the {@link SettingsActivity} for selecting the font size of the content in the current paper. <br>
  * For more information see to the following link: <br>
  * @see <a href="https://stackoverflow.com/questions/20758986/android-preferenceactivity-dialog-with-number-picker">
  *     https://stackoverflow.com/questions/20758986/android-preferenceactivity-dialog-with-number-picker</a>

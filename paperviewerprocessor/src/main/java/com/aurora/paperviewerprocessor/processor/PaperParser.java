@@ -19,6 +19,9 @@ import static android.content.ContentValues.TAG;
  */
 public final class PaperParser {
 
+    /**
+     * The lower case title of an abstract
+     */
     private final static String ABSTRACT_TITLE = "abstract";
 
     private PaperParser() {

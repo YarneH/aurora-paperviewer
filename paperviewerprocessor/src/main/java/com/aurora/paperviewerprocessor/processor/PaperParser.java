@@ -174,8 +174,7 @@ public final class PaperParser {
             if(section.getTitle().trim().isEmpty()){
                 isEmpty = true;
             }
-        }
-        else{
+        } else{
             if(section.getBody().trim().isEmpty()){
                 isEmpty = true;
             }

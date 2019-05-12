@@ -47,7 +47,7 @@ public class NumberPickerPreference extends DialogPreference {
     public NumberPickerPreference(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
     }
-    
+
     public NumberPickerPreference(Context context, AttributeSet attributeSet, int defStyleAttribute) {
         super(context, attributeSet, defStyleAttribute);
     }

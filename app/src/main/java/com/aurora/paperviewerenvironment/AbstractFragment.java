@@ -2,7 +2,6 @@ package com.aurora.paperviewerenvironment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;

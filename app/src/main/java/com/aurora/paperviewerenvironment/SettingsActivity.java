@@ -20,7 +20,7 @@ import android.preference.PreferenceFragment;
  */
 public class SettingsActivity extends PreferenceActivity {
 
-    private final static String FONT_FAMILY_KEY = "fontFamily";
+    private static final String FONT_FAMILY_KEY = "fontFamily";
 
     /**
      * Called upon creation of this activity. See android lifecycle for more info.

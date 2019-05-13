@@ -79,7 +79,7 @@ public final class PaperParser {
                 return section.getBody();
             }
         }
-        return "";
+        return null;
     }
 
     /**

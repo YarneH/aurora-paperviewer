@@ -72,9 +72,6 @@ public class Paper extends PluginObject {
     }
 
     public void setAbstract(String abstractContent) {
-        if(abstractContent == null){
-            this.mAbstract = "";
-        }
         this.mAbstract = abstractContent;
     }
 

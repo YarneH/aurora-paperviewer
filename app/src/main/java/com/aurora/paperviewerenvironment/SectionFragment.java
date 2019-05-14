@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
+import java.util.regex.Pattern;
+
 /**
  * A fragment containing the view for a section of the paper
  */
@@ -27,9 +29,15 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     /**
      * The fragment argument representing the index of this section in the paper
-     * for this fragment.
+     * for this fragment
      */
     private static final String ARG_SECTION_INDEX = "section_index";
+
+    /**
+     * Placeholder in the content representing the approximated
+     * location of an image in the section
+     */
+    private static final String IMG_PLACEHOLDER = "[IMG]";
 
     /**
      * Offset to previous section in the {@link ViewPager}
@@ -55,59 +63,19 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final double TITLE_SIZE_FACTOR = 0.15;
 
     /**
-     * HTML formatted  start of the start page
+     * The key for accessing the font family in the {@link SharedPreferences}
      */
-    private static final String HTML_HEAD = "<html><head><style type=\"text/css\">body {";
+    private static final String FONT_FAMILY_KEY = "fontFamily";
 
     /**
-     * HTML formatted  font family
+     * The key for accessing the font size in the {@link SharedPreferences}
      */
-    private static final String HTML_FONT_FAMILY = "font-family: ";
+    private static final String FONT_SIZE_KEY = "fontSize";
 
     /**
-     * HTML formatted  font size
+     * The key for accessing if images should be represented in the {@link SharedPreferences}
      */
-    private static final String HTML_FONT_SIZE = "font-size: ";
-
-    /**
-     * HTML formatted  font text align
-     */
-    private static final String HTML_TEXT_ALIGN = "text-align: ";
-
-    /**
-     * HTML format font text weight
-     */
-    private static final String HTML_FONT_WEIGHT = "font-weight: ";
-
-    /**
-     * HTML formatted  body ending
-     */
-    private static final String HTML_BODY_END = "}</style></head><body>";
-
-    /**
-     * HTML formatted end of the page
-     */
-    private static final String HTML_END = "</body></html>";
-
-    /**
-     * Sans serif statement for the content font family
-     */
-    private static final String HTML_SANS_SERIF = ", sans serif";
-
-    /**
-     * Separator in css style html page heading
-     */
-    private static final String CSS_SEPARATOR = ";";
-
-    /**
-     * Html formatted newline
-     */
-    private static final String HTML_NEWLINE = "<br><br>";
-
-    /**
-     * normal newline
-     */
-    private static final String NEWLINE = "\n";
+    private static final String IMAGE_TOGGLE_KEY = "imageToggle";
 
     /**
      * The {@link android.arch.lifecycle.AndroidViewModel}
@@ -224,12 +192,15 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         // Obtain the current font settings
         String defaultFontFamily = getActivity().getResources().getString(R.string.default_font_family);
-        String fontFamily = sharedPref.getString("fontFamily", defaultFontFamily);
+        String fontFamily = sharedPref.getString(FONT_FAMILY_KEY, defaultFontFamily);
         int defaultFontSize = getActivity().getResources().getInteger(R.integer.default_section_font_size);
-        int fontSize = sharedPref.getInt("fontSize", defaultFontSize);
+        int fontSize = sharedPref.getInt(FONT_SIZE_KEY, defaultFontSize);
+
+        // Obtain whether or not to visualize images
+        boolean displayImages = sharedPref.getBoolean(IMAGE_TOGGLE_KEY, false);
 
         // Convert the section content to html page and add to the webview
-        String htmlSectionString = createHtmlWebView(section, fontFamily, fontSize);
+        String htmlSectionString = createHtmlWebView(section, fontFamily, fontSize, displayImages);
         mSectionWebView.loadDataWithBaseURL(null, htmlSectionString, "text/html", "UTF-8", null);
     }
 
@@ -240,20 +211,59 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @param section the section to represent in the webview
      * @param fontFamily the font family for the content
      * @param fontSize the font size for the content
-     * @return
+     * @param displayImages indicates if images should be displayed in the content
+     * @return the html page string for the content of this section
      */
-    private String createHtmlWebView(PaperSection section, String fontFamily, int fontSize){
+    private String createHtmlWebView(PaperSection section, String fontFamily, int fontSize, boolean displayImages){
         // Set the text properties of the section content
-        String htmlFront = HTML_HEAD +
-                HTML_FONT_FAMILY + fontFamily +
-                HTML_SANS_SERIF + CSS_SEPARATOR +
-                HTML_FONT_SIZE + fontSize + CSS_SEPARATOR +
-                HTML_FONT_WEIGHT + getResources().getString(R.string.section_font_weight) + CSS_SEPARATOR +
-                HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) + CSS_SEPARATOR +
-                HTML_BODY_END;
-        String htmlEnd = HTML_END;
+        String htmlFront = HtmlHelper.HTML_HEAD + HtmlHelper.HTML_STYLE_IMAGE + HtmlHelper.HTML_STYLE_BODY +
+                HtmlHelper.HTML_FONT_FAMILY + fontFamily +
+                HtmlHelper.HTML_SANS_SERIF + HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_SIZE + fontSize +
+                HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_WEIGHT + getResources().getString(R.string.section_font_weight) +
+                HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) +
+                HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_BODY_END;
+        String htmlEnd = HtmlHelper.HTML_END;
 
-        return htmlFront + htmlFormatContent(section.getContent()) + htmlEnd;
+        return htmlFront + htmlFormatSection(section, displayImages) + htmlEnd;
+    }
+
+    /**
+     * Format the content with the appropriate html tags.
+     *
+     * @param section The section to format
+     * @param displayImages indicates if images should be displayed in the content
+     * @return the content formatted with the html tags
+     */
+    private String htmlFormatSection(PaperSection section, boolean displayImages){
+        String formattedContent = section.getContent().replace(HtmlHelper.NEWLINE, HtmlHelper.HTML_NEWLINE);
+
+        for(String base64Image : section.getImages()){
+            if(displayImages){
+                formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER),
+                        htmlFormatImage(base64Image));
+            } else{
+                formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER), "");
+            }
+        }
+
+        return formattedContent;
+    }
+
+    /**
+     * Creates a html formatted image.
+     *
+     * @param base64Image the image to format
+     * @return html formatted string representing the image
+     */
+    private String htmlFormatImage(String base64Image){
+        String htmlImageSrc = "data:image/png;base64," + base64Image;
+
+        // Set the image source parameter
+        return (HtmlHelper.HTML_IMAGE_HEAD + htmlImageSrc + HtmlHelper.HTML_IMAGE_END);
     }
 
     /**
@@ -288,16 +298,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             mSectionHeader.addView(titleView);
         }
-    }
-
-    /**
-     * Format the content with the appropriate html tags.
-     *
-     * @param content The content to format
-     * @return the content formatted with the html tags
-     */
-    private static String htmlFormatContent(String content){
-        return content.replace(NEWLINE, HTML_NEWLINE);
     }
 
     /**

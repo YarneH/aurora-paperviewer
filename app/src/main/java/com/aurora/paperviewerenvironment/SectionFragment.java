@@ -66,82 +66,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final double TITLE_SIZE_FACTOR = 0.15;
 
     /**
-     * HTML formatted  start of the start page
-     */
-    private static final String HTML_HEAD = "<html><head><style type=\"text/css\">";
-
-    /**
-     * The header for the HTML style section. The header configures the size of the
-     * images in the WebView to fit the screen and initializes the font styling of the body
-     */
-    private static final String HTML_STYLE_HEAD = "img{display: inline;height: auto;max-width: 100%;}body {";
-
-    /**
-     * HTML formatted  font family
-     */
-    private static final String HTML_FONT_FAMILY = "font-family: ";
-
-    /**
-     * HTML formatted  font size
-     */
-    private static final String HTML_FONT_SIZE = "font-size: ";
-
-    /**
-     * HTML formatted  font text align
-     */
-    private static final String HTML_TEXT_ALIGN = "text-align: ";
-
-    /**
-     * HTML format font text weight
-     */
-    private static final String HTML_FONT_WEIGHT = "font-weight: ";
-
-    /**
-     * HTML formatted  body ending
-     */
-    private static final String HTML_HEAD_END = "}</style></head><body>";
-
-    /**
-     * HTML formatted end of the page
-     */
-    private static final String HTML_END = "</body></html>";
-
-    /**
-     * Sans serif statement for the content font family
-     */
-    private static final String HTML_SANS_SERIF = ", sans serif";
-
-    /**
-     * Separator in css style html page heading
-     */
-    private static final String CSS_SEPARATOR = ";";
-
-    /**
-     * Html formatted newline
-     */
-    private static final String HTML_NEWLINE = "<br><br>";
-
-    /**
-     * Normal newline
-     */
-    private static final String NEWLINE = "\n";
-
-    /**
-     * The head of a HTML image
-     */
-    private static final String HTML_IMAGE_HEAD = "<br><center><img src='";
-
-    /**
-     * The end of a HTML image
-     */
-    private static final String HTML_IMAGE_END = "' /></center><br>";
-
-    /**
-     * Image quality when compressing the bitmap images for the WebView
-     */
-    private static final int IMAGE_PNG_QUALITY = 100;
-
-    /**
      * The key for accessing the font family in the {@link SharedPreferences}
      */
     private static final String FONT_FAMILY_KEY = "fontFamily";
@@ -290,18 +214,19 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * @param section the section to represent in the webview
      * @param fontFamily the font family for the content
      * @param fontSize the font size for the content
-     * @return
+     * @param displayImages indicates if images should be displayed in the content
+     * @return the html page string for the content of this section
      */
     private String createHtmlWebView(PaperSection section, String fontFamily, int fontSize, boolean displayImages){
         // Set the text properties of the section content
-        String htmlFront = HTML_HEAD + HTML_STYLE_HEAD +
-                HTML_FONT_FAMILY + fontFamily +
-                HTML_SANS_SERIF + CSS_SEPARATOR +
-                HTML_FONT_SIZE + fontSize + CSS_SEPARATOR +
-                HTML_FONT_WEIGHT + getResources().getString(R.string.section_font_weight) + CSS_SEPARATOR +
-                HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) + CSS_SEPARATOR +
-                HTML_HEAD_END;
-        String htmlEnd = HTML_END;
+        String htmlFront = HtmlHelper.HTML_HEAD + HtmlHelper.HTML_STYLE_IMAGE + HtmlHelper.HTML_STYLE_BODY +
+                HtmlHelper.HTML_FONT_FAMILY + fontFamily +
+                HtmlHelper.HTML_SANS_SERIF + HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_SIZE + fontSize + HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_WEIGHT + getResources().getString(R.string.section_font_weight) + HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) + HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_BODY_END;
+        String htmlEnd = HtmlHelper.HTML_END;
 
         return htmlFront + htmlFormatSection(section, displayImages) + htmlEnd;
     }
@@ -310,14 +235,15 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * Format the content with the appropriate html tags.
      *
      * @param section The section to format
+     * @param displayImages indicates if images should be displayed in the content
      * @return the content formatted with the html tags
      */
     private String htmlFormatSection(PaperSection section, boolean displayImages){
-        String formattedContent = section.getContent().replace(NEWLINE, HTML_NEWLINE);
+        String formattedContent = section.getContent().replace(HtmlHelper.NEWLINE, HtmlHelper.HTML_NEWLINE);
 
-        for(Bitmap img : section.getImages()){
+        for(String base64Image : section.getImages()){
             if(displayImages){
-                formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER), htmlFormatImage(img));
+                formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER), htmlFormatImage(base64Image));
             } else{
                 formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER), "");
             }
@@ -326,17 +252,17 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         return formattedContent;
     }
 
-    private String htmlFormatImage(Bitmap image){
-
-        // Convert bitmap to Base64 encoded image for WebView
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, IMAGE_PNG_QUALITY, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        String imageBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        String htmlImageSrc = "data:image/png;base64," + imageBase64;
+    /**
+     * Creates a html formatted image.
+     *
+     * @param base64Image the image to format
+     * @return html formatted string representing the image
+     */
+    private String htmlFormatImage(String base64Image){
+        String htmlImageSrc = "data:image/png;base64," + base64Image;
 
         // Set the image source parameter
-        return (HTML_IMAGE_HEAD + htmlImageSrc + HTML_IMAGE_END);
+        return (HtmlHelper.HTML_IMAGE_HEAD + htmlImageSrc + HtmlHelper.HTML_IMAGE_END);
     }
 
     /**

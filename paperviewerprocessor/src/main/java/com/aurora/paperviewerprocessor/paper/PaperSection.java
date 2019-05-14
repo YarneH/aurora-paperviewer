@@ -35,14 +35,14 @@ public class PaperSection {
      * Their positions are referenced in the content with a placeholder
      * tag
      */
-    private List<Bitmap> mImages;
+    private List<String> mImages;
 
     /**
      * The content of the paper.
      */
     private String mContent;
 
-    public PaperSection(@NonNull List<String> header, @NonNull String content, @NonNull List<Bitmap> images) {
+    public PaperSection(@NonNull List<String> header, @NonNull String content, @NonNull List<String> images) {
         this.mHeader = header;
         this.mContent = content;
         this.mImages = images;
@@ -70,7 +70,7 @@ public class PaperSection {
         return mContent;
     }
 
-    public List<Bitmap> getImages(){
+    public List<String> getImages(){
         return mImages;
     }
 

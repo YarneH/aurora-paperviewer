@@ -27,7 +27,7 @@ public final class PaperParser {
     /**
      * Placeholder tag for the images in the content
      */
-     private static final String IMG_PLACEHOLDER = "[IMG]";
+    private static final String IMG_PLACEHOLDER = "[IMG]";
 
     private PaperParser() {
         throw new IllegalStateException("Utility class");
@@ -102,7 +102,7 @@ public final class PaperParser {
         // Keeps track of the previous section level
         int prevSectionLevel = 0;
         List<String> sectionHeader = new ArrayList<>();
-        List<Bitmap> sectionImages = new ArrayList<>();
+        List<String> sectionImages = new ArrayList<>();
         StringBuilder sectionContent = new StringBuilder();
         for(Section section : extractedText.getSections()){
             if(validSection(section)) {
@@ -146,12 +146,12 @@ public final class PaperParser {
      * @param content the current content for the section in progress
      * @param images the current images for the section in progress
      */
-    private static void appendContent(Section section, StringBuilder content, List<Bitmap> images){
+    private static void appendContent(Section section, StringBuilder content, List<String> images){
         content.append(section.getBody());
 
         // Add the image to the section and add placeholder for the image in the content
-        for(ExtractedImage img : section.getExtractedImages()){
-            images.add(img.getBitmap());
+        for(ExtractedImage image : section.getExtractedImages()){
+            images.add(image.getBase64EncodedImage());
             content.append(IMG_PLACEHOLDER);
         }
     }

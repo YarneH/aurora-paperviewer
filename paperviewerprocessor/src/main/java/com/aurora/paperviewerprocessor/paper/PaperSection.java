@@ -34,15 +34,12 @@ public class PaperSection {
      */
     private String mContent;
 
-    public PaperSection(@NonNull List<String> header, String content) {
+    public PaperSection(@NonNull List<String> header, @NonNull String content) {
         this.mHeader = header;
         this.mContent = content;
     }
 
     public List<String> getHeader() {
-        if(mHeader == null){
-            return new ArrayList<>();
-        }
         return mHeader;
     }
 

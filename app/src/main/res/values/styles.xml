@@ -11,6 +11,11 @@
         <item name="listPreferredItemHeightSmall">30dp</item>
     </style>
 
+    <!-- Style for the table of content entries -->
+    <style name="TableOfContentAppearance">
+        <item name="android:ellipsize">end</item>
+    </style>
+
     <!-- Theme of the application, used in the android manifest -->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

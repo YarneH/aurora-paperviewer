@@ -82,7 +82,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     /**
      * HTML formatted  body ending
      */
-    private static final String HTML_BODY_END = "\"}</style></head><body>\"";
+    private static final String HTML_BODY_END = "}</style></head><body>";
 
     /**
      * HTML formatted end of the page
@@ -107,7 +107,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     /**
      * normal newline
      */
-    private static final String NEWLINE = "<br><br>";
+    private static final String NEWLINE = "\n";
+
     /**
      * The {@link android.arch.lifecycle.AndroidViewModel}
      * for maintaining the paper it's data and state
@@ -247,7 +248,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 HTML_FONT_FAMILY + fontFamily +
                 HTML_SANS_SERIF + CSS_SEPARATOR +
                 HTML_FONT_SIZE + fontSize + CSS_SEPARATOR +
-                HTML_FONT_WEIGHT+ getResources().getString(R.string.section_font_weight) + CSS_SEPARATOR +
+                HTML_FONT_WEIGHT + getResources().getString(R.string.section_font_weight) + CSS_SEPARATOR +
                 HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) + CSS_SEPARATOR +
                 HTML_BODY_END;
         String htmlEnd = HTML_END;

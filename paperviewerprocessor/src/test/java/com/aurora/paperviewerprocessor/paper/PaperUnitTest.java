@@ -1,5 +1,7 @@
 package com.aurora.paperviewerprocessor.paper;
 
+import android.graphics.Bitmap;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -22,8 +24,9 @@ public class PaperUnitTest {
         header1.add("Section1 header");
         List<String> header2 = new ArrayList<>();
         header1.add("Section2 header");
-        PaperSection section1 = new PaperSection(header1, "Section1 content");
-        PaperSection section2 = new PaperSection(header2, "Section2 content");
+        List<Bitmap> irrelevantImages = new ArrayList<>();
+        PaperSection section1 = new PaperSection(header1, "Section1 content", irrelevantImages);
+        PaperSection section2 = new PaperSection(header2, "Section2 content", irrelevantImages);
         paperSections.add(section1);
         paperSections.add(section2);
 

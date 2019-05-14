@@ -129,12 +129,17 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     /**
      * The head of a HTML image
      */
-    String HTML_IMAGE_HEAD = "<br><center><img src='";
+    private static final String HTML_IMAGE_HEAD = "<br><center><img src='";
 
     /**
      * The end of a HTML image
      */
-    String HTML_IMAGE_END = "' /></center><br>";
+    private static final String HTML_IMAGE_END = "' /></center><br>";
+
+    /**
+     * Image quality when compressing the bitmap images for the WebView
+     */
+    private static final int IMAGE_PNG_QUALITY = 100;
 
     /**
      * The key for accessing the font family in the {@link SharedPreferences}
@@ -325,7 +330,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         // Convert bitmap to Base64 encoded image for WebView
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        image.compress(Bitmap.CompressFormat.PNG, IMAGE_PNG_QUALITY, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         String imageBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         String htmlImageSrc = "data:image/png;base64," + imageBase64;

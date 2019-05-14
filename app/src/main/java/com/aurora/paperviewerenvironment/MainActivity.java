@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity
      */
     private List<Integer> setUpTableOfContents(Paper paper){
         List<Integer> tocViewPagerPositions = new ArrayList<>();
-        if(paper.getAbstract() != null){
+        if(!paper.getAbstract().isEmpty()){
             addTableOfContentEntry(tocViewPagerPositions, getString(R.string.abstract_header), 0,true,0);
         }
 
@@ -502,7 +502,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given section/abstract
-            if (mPaper.getAbstract() != null) {
+            if (!mPaper.getAbstract().isEmpty()) {
                 if (position == 0) {
                     return AbstractFragment.newInstance();
                 }
@@ -513,7 +513,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            if (mPaper.getAbstract() != null) {
+            if (!mPaper.getAbstract().isEmpty()) {
                 return (1 + mPaper.getSections().size());
             }
             return mPaper.getSections().size();

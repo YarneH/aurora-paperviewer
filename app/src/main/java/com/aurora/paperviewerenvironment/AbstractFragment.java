@@ -80,7 +80,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
     /**
      * HTML formatted  body ending
      */
-    private static final String HTML_BODY_END = "\"}</style></head><body>\"";
+    private static final String HTML_BODY_END = "}</style></head><body>";
 
     /**
      * HTML formatted end of the page
@@ -154,7 +154,7 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
                 HTML_FONT_FAMILY + getResources().getString(R.string.abstract_font_family) +
                 HTML_SANS_SERIF + CSS_SEPARATOR +
                 HTML_FONT_SIZE + getResources().getDimension(R.dimen.abstract_font_size) + CSS_SEPARATOR +
-                HTML_FONT_WEIGHT+ getResources().getString(R.string.abstract_font_weight) + CSS_SEPARATOR +
+                HTML_FONT_WEIGHT + getResources().getString(R.string.abstract_font_weight) + CSS_SEPARATOR +
                 HTML_TEXT_ALIGN + getResources().getString(R.string.abstract_text_align) + CSS_SEPARATOR +
                 HTML_BODY_END;
         String htmlEnd = HTML_END;

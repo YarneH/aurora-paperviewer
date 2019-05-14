@@ -108,6 +108,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
      * normal newline
      */
     private static final String NEWLINE = "\n";
+
     /**
      * The {@link android.arch.lifecycle.AndroidViewModel}
      * for maintaining the paper it's data and state

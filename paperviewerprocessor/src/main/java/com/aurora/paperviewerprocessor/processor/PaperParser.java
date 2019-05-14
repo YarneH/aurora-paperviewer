@@ -79,7 +79,7 @@ public final class PaperParser {
                 return section.getBody();
             }
         }
-        return null;
+        return "";
     }
 
     /**
@@ -100,31 +100,29 @@ public final class PaperParser {
         List<String> sectionHeader = new ArrayList<>();
         StringBuilder sectionContent = new StringBuilder();
         for(Section section : extractedText.getSections()){
-            if(!validSection(section)){
-                continue;
-            }
+            if(validSection(section)) {
+                // Prepare the sectionHeader
+                if (section.getTitle() != null) {
+                    prevSectionLevel = adaptSectionHeader(sectionHeader, section.getTitle(),
+                            section.getLevel(), prevSectionLevel);
+                }
 
-            // Prepare the sectionHeader
-            if(section.getTitle() != null){
-                prevSectionLevel = adaptSectionHeader(sectionHeader, section.getTitle(),
-                        section.getLevel(), prevSectionLevel);
-            }
-
-            if(section.getBody() != null){
-                // Wrongfully split up sections, append to previous section content
-                if(section.getTitle() == null){
-                    sectionContent.append(section.getBody());
-                } else{
-                    // Reached new section
-                    if(sectionContent.length() > 0){
-                        PaperSection paperSection = new PaperSection(currentSectionHeader,
-                                sectionContent.toString());
-                        paperSections.add(paperSection);
+                if (section.getBody() != null) {
+                    // Wrongfully split up sections, append to previous section content
+                    if (section.getTitle() == null) {
+                        sectionContent.append(section.getBody());
+                    } else {
+                        // Reached new section
+                        if (sectionContent.length() > 0) {
+                            PaperSection paperSection = new PaperSection(currentSectionHeader,
+                                    sectionContent.toString());
+                            paperSections.add(paperSection);
+                        }
+                        // Prepare for new section
+                        currentSectionHeader = new ArrayList<>(sectionHeader);
+                        sectionContent = new StringBuilder();
+                        sectionContent.append(section.getBody());
                     }
-                    // Prepare for new section
-                    currentSectionHeader = new ArrayList<>(sectionHeader);
-                    sectionContent = new StringBuilder();
-                    sectionContent.append(section.getBody());
                 }
             }
         }

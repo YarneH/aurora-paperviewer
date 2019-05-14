@@ -1,6 +1,7 @@
 package com.aurora.paperviewerprocessor.paper;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.aurora.auroralib.BitmapListAdapter;
 import com.aurora.auroralib.PluginObject;
@@ -46,8 +47,8 @@ public class Paper extends PluginObject {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
     }
 
-    public Paper(String fileName, List<String> authors, String title,
-                 String paperAbstract, List<PaperSection> sections) {
+    public Paper(String fileName, @NonNull List<String> authors,@NonNull String title,
+                 @NonNull String paperAbstract, @NonNull List<PaperSection> sections) {
         super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
         this.mAuthors = authors;
         this.mTitle = title;
@@ -55,7 +56,7 @@ public class Paper extends PluginObject {
         this.mSections = sections;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(@NonNull List<String> authors) {
         this.mAuthors = authors;
     }
 
@@ -63,7 +64,7 @@ public class Paper extends PluginObject {
         return this.mAuthors;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.mTitle = title;
     }
 
@@ -71,20 +72,20 @@ public class Paper extends PluginObject {
         return this.mTitle;
     }
 
-    public void setAbstract(String abstractContent) {
+    public void setAbstract(@NonNull String abstractContent) {
         this.mAbstract = abstractContent;
     }
 
-    public void setSections(List<PaperSection> sections) {
+    public String getAbstract() {
+        return this.mAbstract;
+    }
+
+    public void setSections(@NonNull List<PaperSection> sections) {
         this.mSections = sections;
     }
 
     public List<PaperSection> getSections() {
         return this.mSections;
-    }
-
-    public String getAbstract() {
-        return this.mAbstract;
     }
 
     public void setImages(List<Bitmap> images) {

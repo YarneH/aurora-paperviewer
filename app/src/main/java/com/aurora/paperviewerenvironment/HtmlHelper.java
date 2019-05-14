@@ -82,7 +82,4 @@ public final class HtmlHelper {
         throw new IllegalStateException("Utility class");
     }
 
-
-
-
 }

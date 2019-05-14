@@ -2,14 +2,12 @@ package com.aurora.paperviewerenvironment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Base64;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
-import java.io.ByteArrayOutputStream;
 import java.util.regex.Pattern;
 
 /**
@@ -222,9 +219,12 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         String htmlFront = HtmlHelper.HTML_HEAD + HtmlHelper.HTML_STYLE_IMAGE + HtmlHelper.HTML_STYLE_BODY +
                 HtmlHelper.HTML_FONT_FAMILY + fontFamily +
                 HtmlHelper.HTML_SANS_SERIF + HtmlHelper.CSS_SEPARATOR +
-                HtmlHelper.HTML_FONT_SIZE + fontSize + HtmlHelper.CSS_SEPARATOR +
-                HtmlHelper.HTML_FONT_WEIGHT + getResources().getString(R.string.section_font_weight) + HtmlHelper.CSS_SEPARATOR +
-                HtmlHelper.HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) + HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_SIZE + fontSize +
+                HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_WEIGHT + getResources().getString(R.string.section_font_weight) +
+                HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_TEXT_ALIGN + getResources().getString(R.string.section_text_align) +
+                HtmlHelper.CSS_SEPARATOR +
                 HtmlHelper.HTML_BODY_END;
         String htmlEnd = HtmlHelper.HTML_END;
 
@@ -243,7 +243,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         for(String base64Image : section.getImages()){
             if(displayImages){
-                formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER), htmlFormatImage(base64Image));
+                formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER),
+                        htmlFormatImage(base64Image));
             } else{
                 formattedContent = formattedContent.replaceFirst(Pattern.quote(IMG_PLACEHOLDER), "");
             }

@@ -106,9 +106,12 @@ public class AbstractFragment extends Fragment implements View.OnClickListener{
         String htmlFront = HtmlHelper.HTML_HEAD + HtmlHelper.HTML_STYLE_BODY +
                 HtmlHelper.HTML_FONT_FAMILY + getResources().getString(R.string.abstract_font_family) +
                 HtmlHelper.HTML_SANS_SERIF + HtmlHelper.CSS_SEPARATOR +
-                HtmlHelper.HTML_FONT_SIZE + getResources().getDimension(R.dimen.abstract_font_size) + HtmlHelper.CSS_SEPARATOR +
-                HtmlHelper.HTML_FONT_WEIGHT + getResources().getString(R.string.abstract_font_weight) + HtmlHelper.CSS_SEPARATOR +
-                HtmlHelper.HTML_TEXT_ALIGN + getResources().getString(R.string.abstract_text_align) + HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_SIZE + getResources().getDimension(R.dimen.abstract_font_size) +
+                HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_FONT_WEIGHT + getResources().getString(R.string.abstract_font_weight) +
+                HtmlHelper.CSS_SEPARATOR +
+                HtmlHelper.HTML_TEXT_ALIGN + getResources().getString(R.string.abstract_text_align) +
+                HtmlHelper.CSS_SEPARATOR +
                 HtmlHelper.HTML_BODY_END;
         String htmlEnd = HtmlHelper.HTML_END;
 

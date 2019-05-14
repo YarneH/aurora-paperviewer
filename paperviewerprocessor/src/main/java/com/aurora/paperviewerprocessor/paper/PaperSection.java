@@ -1,6 +1,5 @@
 package com.aurora.paperviewerprocessor.paper;
 
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;

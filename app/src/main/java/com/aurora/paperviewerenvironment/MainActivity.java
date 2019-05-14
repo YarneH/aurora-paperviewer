@@ -463,10 +463,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        if (id == R.id.action_search) {
-            // TODO implement searching content here
-            return true;
-        } else if(id == R.id.action_images) {
+        if(id == R.id.action_images) {
             if(!mPaperViewModel.hasImages()){
                 Toast.makeText(this, "No images were found for this paper.", Snackbar.LENGTH_LONG).show();
                 return false;

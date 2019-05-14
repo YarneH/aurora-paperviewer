@@ -22,7 +22,7 @@ public final class PaperParser {
     /**
      * The lower case title of an abstract
      */
-    private final static String ABSTRACT_TITLE = "abstract";
+    private static final String ABSTRACT_TITLE = "abstract";
 
     private PaperParser() {
         throw new IllegalStateException("Utility class");
@@ -87,7 +87,6 @@ public final class PaperParser {
      *
      * @param extractedText The extractedText passed by aurora
      * @return a list containing all the sections and their content of the {@link Paper}
-     * TODO generalize if statements
      */
     private static List<PaperSection> parseSections(ExtractedText extractedText){
         List<PaperSection> paperSections = new ArrayList<>();
@@ -95,34 +94,30 @@ public final class PaperParser {
         // Keeps track of the previous header
         List<String> currentSectionHeader = new ArrayList<>();
 
-        // Keeps track of the section level
+        // Keeps track of the previous section level
         int prevSectionLevel = 0;
         List<String> sectionHeader = new ArrayList<>();
         StringBuilder sectionContent = new StringBuilder();
         for(Section section : extractedText.getSections()){
             if(validSection(section)) {
                 // Prepare the sectionHeader
-                if (section.getTitle() != null) {
-                    prevSectionLevel = adaptSectionHeader(sectionHeader, section.getTitle(),
-                            section.getLevel(), prevSectionLevel);
-                }
+                prevSectionLevel = adaptSectionHeader(sectionHeader, section.getTitle(),
+                        section.getLevel(), prevSectionLevel);
 
-                if (section.getBody() != null) {
-                    // Wrongfully split up sections, append to previous section content
-                    if (section.getTitle() == null) {
-                        sectionContent.append(section.getBody());
-                    } else {
-                        // Reached new section
-                        if (sectionContent.length() > 0) {
-                            PaperSection paperSection = new PaperSection(currentSectionHeader,
-                                    sectionContent.toString());
-                            paperSections.add(paperSection);
-                        }
-                        // Prepare for new section
-                        currentSectionHeader = new ArrayList<>(sectionHeader);
-                        sectionContent = new StringBuilder();
-                        sectionContent.append(section.getBody());
+                // Wrongfully split up sections, append to previous section content
+                if(section.getBody() != null && section.getTitle() == null){
+                    sectionContent.append(section.getBody());
+                }
+                // Reached new section
+                else if (section.getBody() != null && section.getTitle() != null){
+                    if (sectionContent.length() > 0) {
+                        PaperSection paperSection = new PaperSection(currentSectionHeader,
+                                sectionContent.toString());
+                        paperSections.add(paperSection);
                     }
+                    // Prepare for new section
+                    currentSectionHeader = new ArrayList<>(sectionHeader);
+                    sectionContent = new StringBuilder(section.getBody());
                 }
             }
         }
@@ -144,18 +139,20 @@ public final class PaperParser {
      */
     private static int adaptSectionHeader(List<String> sectionHeader, String sectionTitle,
                                           int currSectionLevel, int prevSectionLevel){
-        if(currSectionLevel > prevSectionLevel){
-            prevSectionLevel = currSectionLevel;
-        } else if(currSectionLevel == prevSectionLevel && !sectionHeader.isEmpty()){
-            sectionHeader.remove(sectionHeader.size()-1);
-        } else if(currSectionLevel < prevSectionLevel){
-            while(currSectionLevel <= prevSectionLevel && !sectionHeader.isEmpty()){
+        if(sectionTitle != null){
+            if(currSectionLevel > prevSectionLevel){
+                prevSectionLevel = currSectionLevel;
+            } else if(currSectionLevel == prevSectionLevel && !sectionHeader.isEmpty()){
                 sectionHeader.remove(sectionHeader.size()-1);
-                prevSectionLevel--;
+            } else if(currSectionLevel < prevSectionLevel){
+                while(currSectionLevel <= prevSectionLevel && !sectionHeader.isEmpty()){
+                    sectionHeader.remove(sectionHeader.size()-1);
+                    prevSectionLevel--;
+                }
+                prevSectionLevel++;
             }
-            prevSectionLevel++;
+            sectionHeader.add(sectionTitle);
         }
-        sectionHeader.add(sectionTitle);
         return prevSectionLevel;
     }
 

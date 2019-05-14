@@ -1,5 +1,6 @@
 package com.aurora.paperviewerprocessor.paper;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -30,13 +31,21 @@ public class PaperSection {
     private List<String> mHeader;
 
     /**
+     * The images in this PaperSection.
+     * Their positions are referenced in the content with a placeholder
+     * tag
+     */
+    private List<Bitmap> mImages;
+
+    /**
      * The content of the paper.
      */
     private String mContent;
 
-    public PaperSection(@NonNull List<String> header, @NonNull String content) {
+    public PaperSection(@NonNull List<String> header, @NonNull String content, @NonNull List<Bitmap> images) {
         this.mHeader = header;
         this.mContent = content;
+        this.mImages = images;
     }
 
     public List<String> getHeader() {
@@ -59,6 +68,10 @@ public class PaperSection {
 
     public String getContent() {
         return mContent;
+    }
+
+    public List<Bitmap> getImages(){
+        return mImages;
     }
 
     @Override

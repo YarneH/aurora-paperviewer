@@ -24,6 +24,11 @@ public final class PaperParser {
      */
     private static final String ABSTRACT_TITLE = "abstract";
 
+    /**
+     * Placeholder tag for the images in the content
+     */
+     private static final String IMG_PLACEHOLDER = "[IMG]";
+
     private PaperParser() {
         throw new IllegalStateException("Utility class");
     }
@@ -97,6 +102,7 @@ public final class PaperParser {
         // Keeps track of the previous section level
         int prevSectionLevel = 0;
         List<String> sectionHeader = new ArrayList<>();
+        List<Bitmap> sectionImages = new ArrayList<>();
         StringBuilder sectionContent = new StringBuilder();
         for(Section section : extractedText.getSections()){
             if(validSection(section)) {
@@ -106,26 +112,48 @@ public final class PaperParser {
 
                 // Wrongfully split up sections, append to previous section content
                 if(section.getBody() != null && section.getTitle() == null){
-                    sectionContent.append(section.getBody());
+                    appendContent(section, sectionContent, sectionImages);
                 }
                 // Reached new section
                 else if (section.getBody() != null && section.getTitle() != null){
                     if (sectionContent.length() > 0) {
                         PaperSection paperSection = new PaperSection(currentSectionHeader,
-                                sectionContent.toString());
+                                sectionContent.toString(), sectionImages);
                         paperSections.add(paperSection);
                     }
                     // Prepare for new section
                     currentSectionHeader = new ArrayList<>(sectionHeader);
-                    sectionContent = new StringBuilder(section.getBody());
+                    sectionContent = new StringBuilder();
+                    sectionImages = new ArrayList<>();
+                    appendContent(section, sectionContent, sectionImages);
                 }
             }
         }
         // Add last section to the list
-        PaperSection paperSection = new PaperSection(currentSectionHeader, sectionContent.toString());
+        PaperSection paperSection = new PaperSection(currentSectionHeader, sectionContent.toString(), sectionImages);
         paperSections.add(paperSection);
 
         return paperSections;
+    }
+
+    /**
+     * Add the content and images of this aurora {@link Section}
+     * to the content of the currently being processed {@link PaperSection}. <br>
+     * For images a placeholder is introduced in the content of the {@link PaperSection}
+     * to retrieve their location afterwards.
+     *
+     * @param section the current aurora section
+     * @param content the current content for the section in progress
+     * @param images the current images for the section in progress
+     */
+    private static void appendContent(Section section, StringBuilder content, List<Bitmap> images){
+        content.append(section.getBody());
+
+        // Add the image to the section and add placeholder for the image in the content
+        for(ExtractedImage img : section.getExtractedImages()){
+            images.add(img.getBitmap());
+            content.append(IMG_PLACEHOLDER);
+        }
     }
 
     /**
@@ -170,10 +198,6 @@ public final class PaperParser {
                 isAbstract = true;
             }
             if(section.getTitle().trim().isEmpty()){
-                isEmpty = true;
-            }
-        } else{
-            if(section.getBody().trim().isEmpty()){
                 isEmpty = true;
             }
         }

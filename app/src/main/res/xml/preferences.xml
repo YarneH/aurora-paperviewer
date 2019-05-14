@@ -23,4 +23,12 @@
             android:title="@string/font_family"
             android:defaultValue="@string/default_font_family"/>
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/images">
+        <SwitchPreference
+            android:key="imageToggle"
+            android:title="@string/image"
+            android:summary="@string/image_summary"
+            android:defaultValue="@string/default_image_toggle"/>
+    </PreferenceCategory>
 </PreferenceScreen>

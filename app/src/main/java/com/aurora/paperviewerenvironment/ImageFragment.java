@@ -84,8 +84,8 @@ public class ImageFragment extends Fragment implements View.OnClickListener {
             mImagesGallery = mView.findViewById(R.id.linear_image_gallery);
             for (int i = 0; i < paper.getImages().size(); i++) {
                 mImagesGallery.addView(getGalleryImageView(i, paper.getImages()));
-            mImagesGallery.setVisibility(View.VISIBLE);
             }
+            mImagesGallery.setVisibility(View.VISIBLE);
         });
 
         return mView;

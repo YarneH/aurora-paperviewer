@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,19 +26,18 @@ public class PaperParserUnitTest {
         String title = "Paper title";
         List<String> authors = new ArrayList<>();
         authors.add("Author");
-        List<Section> sections = new ArrayList<>();
-        List<String> irrelevantImages = new ArrayList<>();
         Section section1 = new Section("Section body1.");
         section1.setTitle("Section title1");
-        sections.add(section1);
         Section section2 = new Section("Section body2.");
         section2.setTitle("Section title2");
-        sections.add(section2);
 
         String irrelevantFileName = "filename";
-        Date irrelevantDateLastEdit = new Date(0);
-        extractedText = new ExtractedText(irrelevantFileName, irrelevantDateLastEdit,
-                title, authors, sections);
+
+        extractedText = new ExtractedText(irrelevantFileName);
+        extractedText.setTitle(title);
+        extractedText.setAuthors(authors);
+        extractedText.addSection(section1);
+        extractedText.addSection(section2);
     }
 
     @Test

@@ -80,7 +80,7 @@ public final class PaperParser {
      */
     private static String parseAbstract(ExtractedText extractedText){
         for(Section section : extractedText.getSections()){
-            if(section.getTitle() != null && ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
+            if(ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
                 return section.getBody();
             }
         }
@@ -111,11 +111,11 @@ public final class PaperParser {
                         section.getLevel(), prevSectionLevel);
 
                 // Wrongfully split up sections, append to previous section content
-                if(section.getBody() != null && section.getTitle() == null){
+                if(section.getTitle().isEmpty()){
                     appendContent(section, sectionContent, sectionImages);
                 }
                 // Reached new section
-                else if (section.getBody() != null && section.getTitle() != null){
+                else {
                     if (sectionContent.length() > 0) {
                         PaperSection paperSection = new PaperSection(currentSectionHeader,
                                 sectionContent.toString(), sectionImages);
@@ -193,13 +193,11 @@ public final class PaperParser {
     private static boolean validSection(Section section){
         boolean isAbstract = false;
         boolean isEmpty = false;
-        if(section.getTitle() != null){
-            if(ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
-                isAbstract = true;
-            }
-            if(section.getTitle().trim().isEmpty()){
-                isEmpty = true;
-            }
+        if(ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
+            isAbstract = true;
+        }
+        if(section.getTitle().trim().isEmpty()){
+            isEmpty = true;
         }
         return !(isAbstract || isEmpty);
     }

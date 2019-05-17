@@ -147,7 +147,12 @@ public final class PaperParser {
      * @param images the current images for the section in progress
      */
     private static void appendContent(Section section, StringBuilder content, List<String> images){
-        content.append(section.getBody());
+        // Remove long sequences of newlines
+        String adaptedContent = section.getBody().replaceAll("[\n *?]*\n", "\n");
+        // Remove newlines that are not at a proper ending of a sentence
+        adaptedContent = adaptedContent.replaceAll("([^\\?\\!\\.]) ?\n","$1 ");
+
+        content.append(adaptedContent);
 
         // Add the image to the section and add placeholder for the image in the content
         for(ExtractedImage image : section.getExtractedImages()){
@@ -167,7 +172,7 @@ public final class PaperParser {
      */
     private static int adaptSectionHeader(List<String> sectionHeader, String sectionTitle,
                                           int currSectionLevel, int prevSectionLevel){
-        if(sectionTitle != null){
+        if(!sectionTitle.isEmpty()){
             if(currSectionLevel > prevSectionLevel){
                 prevSectionLevel = currSectionLevel;
             } else if(currSectionLevel == prevSectionLevel && !sectionHeader.isEmpty()){
@@ -196,7 +201,7 @@ public final class PaperParser {
         if(ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
             isAbstract = true;
         }
-        if(section.getTitle().trim().isEmpty()){
+        if(section.getTitle().trim().isEmpty() && section.getBody().trim().isEmpty()){
             isEmpty = true;
         }
         return !(isAbstract || isEmpty);

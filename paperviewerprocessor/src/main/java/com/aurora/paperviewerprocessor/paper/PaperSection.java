@@ -51,13 +51,6 @@ public class PaperSection {
         return mHeader;
     }
 
-    public void addHeader(String header) {
-        if(mHeader == null){
-            mHeader = new ArrayList<>();
-        }
-        mHeader.add(header);
-    }
-
     public int getLevel(){
         if(mHeader == null || mHeader.isEmpty()){
             return 0;

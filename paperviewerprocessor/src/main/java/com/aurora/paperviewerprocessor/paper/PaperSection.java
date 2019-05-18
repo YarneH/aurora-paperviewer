@@ -2,7 +2,6 @@ package com.aurora.paperviewerprocessor.paper;
 
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +31,7 @@ public class PaperSection {
     /**
      * The images in this PaperSection.
      * Their positions are referenced in the content with a placeholder
-     * tag
+     * tag.
      */
     private List<String> mImages;
 
@@ -47,10 +46,22 @@ public class PaperSection {
         this.mImages = images;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the header of this paper
+     */
     public List<String> getHeader() {
         return mHeader;
     }
 
+    /**
+     * Retrieves the hierarchical level of this paper section.
+     * If there is no header content or only empty titles,
+     * the assigned level will be 0.
+     *
+     * @return the hierarchical level of this paper section
+     */
     public int getLevel(){
         if(mHeader == null || mHeader.isEmpty()){
             return 0;
@@ -58,10 +69,20 @@ public class PaperSection {
         return (mHeader.size() - 1);
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the content of this section
+     */
     public String getContent() {
         return mContent;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the images contained in this paper section
+     */
     public List<String> getImages(){
         return mImages;
     }

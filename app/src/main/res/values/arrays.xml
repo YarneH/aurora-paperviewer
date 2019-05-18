@@ -1,5 +1,7 @@
 <resources>
     <!-- font family -->
+    <!-- Upon deletion in this table, do not forget to update
+    the default font family in the strings resources -->
     <string-array name="font_family">
         <item>Arial</item>
         <item>Helvetica</item>

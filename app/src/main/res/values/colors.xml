@@ -7,6 +7,6 @@
     <!-- Color of menu items -->
     <color name="menuItem">#FFFFFF</color>
 
-    <!-- The color black -->
+    <!-- The color black to recolor text -->
     <color name="black">#000000</color>
 </resources>

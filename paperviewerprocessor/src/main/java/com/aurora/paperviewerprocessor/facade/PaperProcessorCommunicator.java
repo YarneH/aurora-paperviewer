@@ -8,6 +8,9 @@ import com.aurora.auroralib.ProcessorCommunicator;
 import com.aurora.paperviewerprocessor.PluginConstants;
 import com.aurora.paperviewerprocessor.processor.PaperParser;
 
+/**
+ * Communicates with the kernel and the UI of PaperViewer.
+ */
 public class PaperProcessorCommunicator extends ProcessorCommunicator {
 
     public PaperProcessorCommunicator(Context context){
@@ -25,7 +28,7 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
      * @return A string that consists of standard text and the result of extractedText.toString()
      */
     @Override
-    protected PluginObject process(ExtractedText extractedText) {
+    protected PluginObject process(ExtractedText extractedText)throws PaperDetectionException {
         return PaperParser.parse(extractedText);
     }
 

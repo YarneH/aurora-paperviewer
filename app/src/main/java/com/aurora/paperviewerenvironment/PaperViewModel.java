@@ -41,22 +41,47 @@ public class PaperViewModel extends AndroidViewModel {
         mPaper.setValue((Paper) mCommunicator.pipeline(extractedText));
     }
 
+    /**
+     * Initialise the data with {@link Paper}.
+     *
+     * @param paper the paper to load the data from
+     */
     public void initialiseWithPaper(Paper paper) {
         mPaper.setValue(paper);
     }
 
+    /**
+     * Get the paper LiveData object.
+     *
+     * @return live paper
+     */
     public LiveData<Paper> getPaper() {
         return mPaper;
     }
 
+    /**
+     * Get the number of sections in the current LiveData {@Paper} object.
+     *
+     * @return number of sections
+     */
     public int getNumberOfSections(){
         return mPaper.getValue().getSections().size();
     }
 
+    /**
+     * Indication if the current LiveData {@Paper} object has an abstract.
+     *
+     * @return number of sections
+     */
     public boolean hasAbstract(){
         return !mPaper.getValue().getAbstract().isEmpty();
     }
 
+    /**
+     * Indication if the current LiveData {@Paper} object contains any images.
+     *
+     * @return boolean indicating if there are images present
+     */
     public boolean hasImages(){ return !mPaper.getValue().getImages().isEmpty(); }
 
 }

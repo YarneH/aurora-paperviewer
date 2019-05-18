@@ -17,11 +17,12 @@
         <meta-data android:name="IMAGE_EXTRACTION"
             android:value="true" />
 
-        <activity android:name="com.aurora.paperviewerenvironment.MainActivity">
-            <intent-filter>
+        <activity android:name="com.aurora.paperviewerenvironment.MainActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
             <intent-filter>
                 <action android:name="com.aurora.auroralib.AURORA_PLUGIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -29,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.aurora.paperviewerenvironment.SettingsActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.aurora.paperviewerenvironment.MainActivity"></activity>
     </application>
 

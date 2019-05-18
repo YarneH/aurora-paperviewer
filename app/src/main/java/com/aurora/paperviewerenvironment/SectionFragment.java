@@ -51,7 +51,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Size of the abstract in terms of occupied {@link ViewPager} positions
-     * TODO set this to the appropriate size based on the content of the abstract
      */
     private static final int ABSTRACT_SIZE = 1;
 

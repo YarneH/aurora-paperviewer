@@ -56,42 +56,92 @@ public class Paper extends PluginObject {
         this.mSections = sections;
     }
 
+    /**
+     * Default setter.
+     *
+     * @param authors the authors for this paper
+     */
     public void setAuthors(@NonNull List<String> authors) {
         this.mAuthors = authors;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the authors of this paper
+     */
     public List<String> getAuthors() {
         return this.mAuthors;
     }
 
+    /**
+     * Default setter.
+     *
+     * @param title the title for this paper
+     */
     public void setTitle(@NonNull String title) {
         this.mTitle = title;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the authors of this paper
+     */
     public String getTitle() {
         return this.mTitle;
     }
 
+    /**
+     * Default setter.
+     *
+     * @param abstractContent the abstract for this paper
+     */
     public void setAbstract(@NonNull String abstractContent) {
         this.mAbstract = abstractContent;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the authors of this paper
+     */
     public String getAbstract() {
         return this.mAbstract;
     }
 
+    /**
+     * Default setter.
+     *
+     * @param sections the sections for this paper
+     */
     public void setSections(@NonNull List<PaperSection> sections) {
         this.mSections = sections;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the sections of this paper
+     */
     public List<PaperSection> getSections() {
         return this.mSections;
     }
 
+    /**
+     * Default setter.
+     *
+     * @param images the images for this paper
+     */
     public void setImages(List<Bitmap> images) {
         this.mImages = images;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return all the images contained in this paper
+     */
     public List<Bitmap> getImages() {
         return this.mImages;
     }

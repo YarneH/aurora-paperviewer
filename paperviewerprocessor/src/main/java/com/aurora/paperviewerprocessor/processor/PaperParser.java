@@ -5,13 +5,12 @@ import android.graphics.Bitmap;
 import com.aurora.auroralib.ExtractedImage;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.Section;
+import com.aurora.paperviewerprocessor.facade.PaperDetectionException;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Utility class for parsing the {@link ExtractedText} received from aurora
@@ -39,7 +38,7 @@ public final class PaperParser {
      * @param extractedText The {@link ExtractedText} received from aurora
      * @return A parsed {@link Paper}
      */
-    public static Paper parse(ExtractedText extractedText){
+    public static Paper parse(ExtractedText extractedText) throws PaperDetectionException {
         Paper processedPaper = new Paper(extractedText.getFilename());
         processedPaper.setAuthors(extractedText.getAuthors());
         processedPaper.setTitle(extractedText.getTitle());
@@ -48,9 +47,7 @@ public final class PaperParser {
 
         // Identify the sections
         List<PaperSection> paperSections = parseSections(extractedText);
-        if(paperSections.isEmpty()){
-            throw new PaperDetectionException(TAG + ": Failed to extract the paper sections.");
-        }
+        validatePaperSections(paperSections);
         processedPaper.setSections(parseSections(extractedText));
 
         return processedPaper;
@@ -147,7 +144,12 @@ public final class PaperParser {
      * @param images the current images for the section in progress
      */
     private static void appendContent(Section section, StringBuilder content, List<String> images){
-        content.append(section.getBody());
+        // Remove long sequences of newlines
+        String adaptedContent = section.getBody().replaceAll("[\n *?]*\n", "\n");
+        // Remove newlines that are not at a proper ending of a sentence
+        adaptedContent = adaptedContent.replaceAll("([^\\?\\!\\.]) ?\n","$1 ");
+
+        content.append(adaptedContent);
 
         // Add the image to the section and add placeholder for the image in the content
         for(ExtractedImage image : section.getExtractedImages()){
@@ -167,7 +169,7 @@ public final class PaperParser {
      */
     private static int adaptSectionHeader(List<String> sectionHeader, String sectionTitle,
                                           int currSectionLevel, int prevSectionLevel){
-        if(sectionTitle != null){
+        if(!sectionTitle.isEmpty()){
             if(currSectionLevel > prevSectionLevel){
                 prevSectionLevel = currSectionLevel;
             } else if(currSectionLevel == prevSectionLevel && !sectionHeader.isEmpty()){
@@ -191,15 +193,34 @@ public final class PaperParser {
      * @return boolean indicating whether the section is valid
      */
     private static boolean validSection(Section section){
-        boolean isAbstract = false;
-        boolean isEmpty = false;
         if(ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
-            isAbstract = true;
+            return false;
         }
-        if(section.getTitle().trim().isEmpty()){
-            isEmpty = true;
+        return true;
+    }
+
+    /**
+     * Validates the parsed sections.
+     *
+     * @param sections the sections of this paper to validate
+     * @throws PaperDetectionException if there are no sections detected or if the section's have no content
+     */
+    private static void validatePaperSections(List<PaperSection> sections) throws PaperDetectionException {
+        if(sections.isEmpty()){
+            throw new PaperDetectionException("Failed to parse the sections for this paper. " +
+                    "Please make sure this is a valid paper.");
+        } else {
+            boolean hasContent = false;
+            for(PaperSection section : sections){
+                if(!section.getContent().trim().isEmpty()){
+                    hasContent = true;
+                }
+            }
+            if(!hasContent){
+                throw new PaperDetectionException("The parsed sections do not contain any content. " +
+                        "Please make sure this isn't an empty paper.");
+            }
         }
-        return !(isAbstract || isEmpty);
     }
 
 }

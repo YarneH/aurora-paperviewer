@@ -2,6 +2,7 @@ package com.aurora.paperviewerprocessor.processor;
 
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.Section;
+import com.aurora.paperviewerprocessor.facade.PaperDetectionException;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
@@ -58,7 +59,7 @@ public class PaperParserUnitTest {
     }
 
     @Test
-    public void PaperParser_parsePaper_titleHasBeenSet() {
+    public void PaperParser_parsePaper_titleHasBeenSet() throws PaperDetectionException {
         // Act
         Paper paper = PaperParser.parse(extractedText);
 
@@ -67,7 +68,7 @@ public class PaperParserUnitTest {
     }
 
     @Test
-    public void PaperParser_parsePaper_paperCorrectTitle() {
+    public void PaperParser_parsePaper_paperCorrectTitle() throws PaperDetectionException {
         // Act
         Paper paper = PaperParser.parse(extractedText);
 
@@ -76,7 +77,7 @@ public class PaperParserUnitTest {
     }
 
     @Test
-    public void PaperParser_parsePaper_sectionsCorrectSize() {
+    public void PaperParser_parsePaper_sectionsCorrectSize() throws PaperDetectionException {
         // Act
         Paper paper = PaperParser.parse(extractedText);
 
@@ -85,7 +86,7 @@ public class PaperParserUnitTest {
     }
 
     @Test
-    public void PaperParser_parsePaper_sectionsCorrectHeaderAndContent() {
+    public void PaperParser_parsePaper_sectionsCorrectHeaderAndContent() throws PaperDetectionException {
         // Act
         Paper paper = PaperParser.parse(extractedText);
 
@@ -105,7 +106,7 @@ public class PaperParserUnitTest {
     }
 
     @Test
-    public void PaperParser_parsePaper_sectionsCorrectLevel() {
+    public void PaperParser_parsePaper_sectionsCorrectLevel() throws PaperDetectionException {
         // Act
         Paper paper = PaperParser.parse(extractedText);
 
@@ -120,7 +121,7 @@ public class PaperParserUnitTest {
     }
 
     @Test
-    public void PaperParser_parsePaper_abstractCorrectlyDetected() {
+    public void PaperParser_parsePaper_abstractCorrectlyDetected() throws PaperDetectionException {
         // Act
         Paper paper = PaperParser.parse(extractedText);
 
@@ -129,4 +130,13 @@ public class PaperParserUnitTest {
         assert(abstractContent.equals("Abstract body."));
     }
 
+    @Test(expected = PaperDetectionException.class)
+    public void PaperParser_parsePaper_exceptionThrownForEmptyPaper() throws PaperDetectionException {
+        // Initialize
+        String irrelevantFileName = "filename";
+        ExtractedText extractedText = new ExtractedText(irrelevantFileName);
+
+        // Act
+        PaperParser.parse(extractedText);
+    }
 }

@@ -63,7 +63,10 @@ public final class PaperParser {
         List<Bitmap> images = new ArrayList<>();
         for(Section section : extractedText.getSections()){
             for(ExtractedImage img : section.getExtractedImages()){
-                images.add(img.getBitmap());
+                Bitmap image = img.getBitmap();
+                if(image != null) {
+                    images.add(image);
+                }
             }
         }
         return images;
@@ -153,8 +156,10 @@ public final class PaperParser {
 
         // Add the image to the section and add placeholder for the image in the content
         for(ExtractedImage image : section.getExtractedImages()){
-            images.add(image.getBase64EncodedImage());
-            content.append(IMG_PLACEHOLDER);
+            if(image.getBitmap() != null) {
+                images.add(image.getBase64EncodedImage());
+                content.append(IMG_PLACEHOLDER);
+            }
         }
     }
 

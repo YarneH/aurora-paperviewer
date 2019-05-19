@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.aurora.auroralib.BitmapListAdapter;
 import com.aurora.auroralib.PluginObject;
-import com.aurora.paperviewerprocessor.PluginConstants;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.util.ArrayList;
@@ -44,12 +43,12 @@ public class Paper extends PluginObject {
     private List<Bitmap> mImages = new ArrayList<>();
 
     public Paper(String fileName) {
-        super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
+        super(fileName);
     }
 
     public Paper(String fileName, @NonNull List<String> authors,@NonNull String title,
                  @NonNull String paperAbstract, @NonNull List<PaperSection> sections) {
-        super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
+        super(fileName);
         this.mAuthors = authors;
         this.mTitle = title;
         this.mAbstract = paperAbstract;
@@ -143,6 +142,9 @@ public class Paper extends PluginObject {
      * @return all the images contained in this paper
      */
     public List<Bitmap> getImages() {
+        if(mImages == null) {
+            return new ArrayList<>();
+        }
         return this.mImages;
     }
 

@@ -23,12 +23,12 @@ public class NumberPickerPreference extends DialogPreference {
     /**
      * Upper range of the mFontSizePicker
      */
-    public static final int MAX_FONT_SIZE = 100;
+    public static final int MAX_FONT_SIZE = 48;
 
     /**
      * Lower range for the mFontSizePicker
      */
-    public static final int MIN_FONT_SIZE = 0;
+    public static final int MIN_FONT_SIZE = 1;
 
     /**
      * Enable or disable the circular behavior of the mFontSizePicker

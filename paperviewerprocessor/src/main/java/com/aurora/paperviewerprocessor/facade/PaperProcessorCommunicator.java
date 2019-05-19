@@ -6,7 +6,6 @@ import android.util.Log;
 import com.aurora.auroralib.ExtractedText;
 import com.aurora.auroralib.PluginObject;
 import com.aurora.auroralib.ProcessorCommunicator;
-import com.aurora.paperviewerprocessor.PluginConstants;
 import com.aurora.paperviewerprocessor.processor.PaperParser;
 
 /**
@@ -20,11 +19,7 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
     private static final String TAG = PaperProcessorCommunicator.class.getSimpleName();
 
     public PaperProcessorCommunicator(Context context){
-        /*
-         * A UNIQUE_PLUGIN_NAME needs to be passed to the constructor of ProcessorCommunicator for
-         * proper configuration of the cache
-         */
-        super(PluginConstants.UNIQUE_PLUGIN_NAME, context);
+        super(context);
     }
 
     /**

@@ -1,5 +1,9 @@
 package com.aurora.paperviewerenvironment;
 
+/**
+ * The helper class providing constants for html tags and formatting
+ * of a html page.
+ */
 public final class HtmlHelper {
 
     /**

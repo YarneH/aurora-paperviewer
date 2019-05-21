@@ -27,6 +27,7 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
      *
      * @param extractedText The text that was extracted after Aurora's internal processing
      * @return A string that consists of standard text and the result of extractedText.toString()
+     * @throws PaperDetectionException an indication that something went wrong during the processing of the paper
      */
     @Override
     protected PluginObject process(ExtractedText extractedText)throws PaperDetectionException {
@@ -36,7 +37,7 @@ public class PaperProcessorCommunicator extends ProcessorCommunicator {
             // if something went wrong with the detection rethrow the error and let the
             // environment decide what to do in this case
             Log.e(TAG, "Detection failure", pde);
-            throw new PaperDetectionException(pde.getMessage());
+            throw pde;
         } catch (Exception e){
             // something else went wrong
             Log.e(TAG, "unexpected exception", e);

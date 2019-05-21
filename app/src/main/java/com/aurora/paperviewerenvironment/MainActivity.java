@@ -151,27 +151,27 @@ public class MainActivity extends AppCompatActivity
 
         boolean intentIsOkay = true;
 
-        if(intentThatStartedThisActivity.getAction() == null) {
+        if (intentThatStartedThisActivity.getAction() == null) {
             Toast.makeText(this, "ERROR: The intent had no action.",
                     Snackbar.LENGTH_LONG).show();
             intentIsOkay = false;
-        } else if(!intentThatStartedThisActivity.getAction().equals(Constants.PLUGIN_ACTION)) {
+        } else if (!intentThatStartedThisActivity.getAction().equals(Constants.PLUGIN_ACTION)) {
             Toast.makeText(this, "ERROR: The intent had incorrect action.",
                     Snackbar.LENGTH_LONG).show();
             intentIsOkay = false;
-        } else if(!intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_TYPE)) {
+        } else if (!intentThatStartedThisActivity.hasExtra(Constants.PLUGIN_INPUT_TYPE)) {
             Toast.makeText(this, "ERROR: The intent had no specified input type.",
                     Snackbar.LENGTH_LONG).show();
             intentIsOkay = false;
         }
 
-        if (intentIsOkay){
+        if (intentIsOkay) {
             handleIntentThatOpenedPlugin(intentThatStartedThisActivity);
         }
 
 
         mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
-            if(paper == null){
+            if (paper == null) {
                 return;
             }
             // Create the adapter for loading the correct section fragment
@@ -191,9 +191,11 @@ public class MainActivity extends AppCompatActivity
                 public void onPageScrollStateChanged(int state) {
                     // No additional behavior needed when scrolling
                 }
+
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     // No additional behavior needed when scrolling
                 }
+
                 public void onPageSelected(int position) {
                     // Upon changing to different section, check the appropriate section in table of contents
                     setCheckedTableOfContents(tocViewPagerPositions);
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity
             // Set up  the paper title and authors in the NavigationView
             mPaperTitleView.setText(paper.getTitle());
             StringBuilder authorBuilder = new StringBuilder();
-            for(String author : paper.getAuthors()){
+            for (String author : paper.getAuthors()) {
                 authorBuilder.append(author).append("\n");
             }
             mPaperAuthorView.setText(authorBuilder.toString());
@@ -225,7 +227,7 @@ public class MainActivity extends AppCompatActivity
      * The drawer layout includes the {@NavigationView} and the header which
      * contains the {@link TextView}'s for the paper title and the authors.
      */
-    private void setUpDrawerLayout(){
+    private void setUpDrawerLayout() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -244,26 +246,26 @@ public class MainActivity extends AppCompatActivity
      * @param paper the current paper which contains the sections.
      * @return list mapping the TOC entries to their position in the ViewPager.
      */
-    private List<Integer> setUpTableOfContents(Paper paper){
+    private List<Integer> setUpTableOfContents(Paper paper) {
         List<Integer> tocViewPagerPositions = new ArrayList<>();
-        if(!paper.getAbstract().isEmpty()){
-            addTableOfContentEntry(tocViewPagerPositions, getString(R.string.abstract_header), 0,true,0);
+        if (!paper.getAbstract().isEmpty()) {
+            addTableOfContentEntry(tocViewPagerPositions, getString(R.string.abstract_header), 0, true, 0);
         }
 
         PaperSection prevSection = paper.getSections().get(0);
-        for(int i = 0; i < prevSection.getHeader().size(); i++){
+        for (int i = 0; i < prevSection.getHeader().size(); i++) {
             addTableOfContentEntry(tocViewPagerPositions, prevSection.getHeader().get(i), i,
                     (i == prevSection.getLevel()), getViewPagerPosition(0));
         }
-        for(int sectionIndex = 1; sectionIndex < paper.getSections().size(); sectionIndex++){
+        for (int sectionIndex = 1; sectionIndex < paper.getSections().size(); sectionIndex++) {
             PaperSection section = paper.getSections().get(sectionIndex);
 
-            for(int level = 0; level < section.getHeader().size(); level++){
+            for (int level = 0; level < section.getHeader().size(); level++) {
                 String headerTitle = section.getHeader().get(level);
                 // Equal titles on the same level with the previous section should be skipped
-                if(!(level <= prevSection.getLevel() &&
+                if (!(level <= prevSection.getLevel() &&
                         !prevSection.getHeader().isEmpty() &&
-                        prevSection.getHeader().get(level).equals(headerTitle))){
+                        prevSection.getHeader().get(level).equals(headerTitle))) {
                     addTableOfContentEntry(tocViewPagerPositions, headerTitle, level,
                             (level == section.getLevel()), getViewPagerPosition(sectionIndex));
                 }
@@ -280,23 +282,22 @@ public class MainActivity extends AppCompatActivity
      *
      * @param tocViewPagerPositions stores the checking configuration, it maps the TOC entries to their
      *                              corresponding ViewPager positions
-     * @param title the title of the TOC entry
-     * @param level the level of the title, used for indentation of the TOC entry
-     * @param lowestLevel boolean indicating whether the TOC entry is on the lowest hierarchical level
-     * @param position the corresponding position in the ViewPager for this TOC entry
+     * @param title                 the title of the TOC entry
+     * @param level                 the level of the title, used for indentation of the TOC entry
+     * @param lowestLevel           boolean indicating whether the TOC entry is on the lowest hierarchical level
+     * @param position              the corresponding position in the ViewPager for this TOC entry
      */
     private void addTableOfContentEntry(List<Integer> tocViewPagerPositions, String title, int level,
-                                        boolean lowestLevel, int position){
+                                        boolean lowestLevel, int position) {
         // If a TOC entry is not on the lowest hierarchical level, it should never be checked hence the -1
-        if(lowestLevel){
+        if (lowestLevel) {
             tocViewPagerPositions.add(position);
-        }
-        else{
+        } else {
             tocViewPagerPositions.add(NO_NAVIGATION);
         }
 
         StringBuilder tocEntry = new StringBuilder();
-        for(int i = 0; i < level; i++){
+        for (int i = 0; i < level; i++) {
             tocEntry.append("\t  ");
         }
         tocEntry.append(title);
@@ -316,8 +317,8 @@ public class MainActivity extends AppCompatActivity
      *
      * @param tocViewPagerPositions the TOC entries mapped to their corresponding ViewPager positions
      */
-    private void setCheckedTableOfContents(List<Integer> tocViewPagerPositions){
-        for(int i = 0; i < tocViewPagerPositions.size(); i++) {
+    private void setCheckedTableOfContents(List<Integer> tocViewPagerPositions) {
+        for (int i = 0; i < tocViewPagerPositions.size(); i++) {
             boolean isCurrentPage = (tocViewPagerPositions.get(i) == mViewPager.getCurrentItem());
             mTableOfContentsSubMenu.getItem(i).setChecked(isCurrentPage);
         }
@@ -330,10 +331,10 @@ public class MainActivity extends AppCompatActivity
      * @param sectionIndex the index of the section in the {@link Paper}
      * @return the position in the {@link ViewPager}
      */
-    public int getViewPagerPosition(int sectionIndex){
-        if(mPaperViewModel.hasAbstract()){
+    public int getViewPagerPosition(int sectionIndex) {
+        if (mPaperViewModel.hasAbstract()) {
             return sectionIndex + 1;
-        } else{
+        } else {
             return sectionIndex;
         }
     }
@@ -343,10 +344,10 @@ public class MainActivity extends AppCompatActivity
      *
      * @param intentThatStartedThisActivity Intent that opened the plugin
      */
-    private void handleIntentThatOpenedPlugin(Intent intentThatStartedThisActivity){
+    private void handleIntentThatOpenedPlugin(Intent intentThatStartedThisActivity) {
         // Get the Uri to the transferred file
         Uri fileUri = intentThatStartedThisActivity.getData();
-        if(fileUri == null) {
+        if (fileUri == null) {
             Toast.makeText(this, "ERROR: The intent had no uri in the data field",
                     Snackbar.LENGTH_LONG).show();
         } else {
@@ -374,9 +375,9 @@ public class MainActivity extends AppCompatActivity
      *
      * @param fileUri Uri to the file
      */
-    private void convertReadFileToExtractedText(Uri fileUri){
+    private void convertReadFileToExtractedText(Uri fileUri) {
         try {
-            ExtractedText extractedText = ExtractedText.getExtractedTextFromFile( fileUri,
+            ExtractedText extractedText = ExtractedText.getExtractedTextFromFile(fileUri,
                     this);
             if (extractedText != null) {
                 Log.d(CLASS_TAG, "Loading extracted text.");
@@ -407,7 +408,7 @@ public class MainActivity extends AppCompatActivity
      *
      * @param fileUri Uri to the file
      */
-    private void convertReadFileToPaper(Uri fileUri){
+    private void convertReadFileToPaper(Uri fileUri) {
         try {
             Paper receivedObject = Paper.getPluginObjectFromFile(fileUri, this, Paper.class);
 
@@ -432,9 +433,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public ViewPager getSectionViewPager(){
+    public ViewPager getSectionViewPager() {
         return mViewPager;
     }
+
     /**
      * <p>
      * Handles selection of options in NavigationView (Drawer layout).
@@ -463,8 +465,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        if(id == R.id.action_images) {
-            if(!mPaperViewModel.hasImages()){
+        if (id == R.id.action_images) {
+            if (!mPaperViewModel.hasImages()) {
                 Toast.makeText(this, "No images were found for this paper.", Snackbar.LENGTH_LONG).show();
                 return false;
             }
@@ -473,7 +475,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 mImageContainer.setVisibility(View.VISIBLE);
             }
-        } else if(id == R.id.action_settings) {
+        } else if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         }

@@ -113,9 +113,7 @@ public final class PaperParser {
                 // Wrongfully split up sections, append to previous section content
                 if(section.getTitle().isEmpty()){
                     appendContent(section, sectionContent, sectionImages);
-                }
-                // Reached new section
-                else {
+                } else {
                     if (sectionContent.length() > 0) {
                         PaperSection paperSection = new PaperSection(currentSectionHeader,
                                 sectionContent.toString(), sectionImages);

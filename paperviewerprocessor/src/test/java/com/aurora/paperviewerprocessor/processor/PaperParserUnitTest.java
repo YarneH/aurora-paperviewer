@@ -51,8 +51,7 @@ public class PaperParserUnitTest {
         String irrelevantUri = "dummyFileUri";
         List<String> irrelevantFileNames = new ArrayList<>();
         String irrelevantFileName = "filename";
-        irrelevantFileNames.add(irrelevantFileName);
-        extractedText = new ExtractedText(irrelevantUri, irrelevantFileNames);
+        extractedText = new ExtractedText(irrelevantUri, irrelevantFileName);
         extractedText.setTitle(title);
         extractedText.setAuthors(authors);
         extractedText.addSection(abstractSection);
@@ -139,8 +138,7 @@ public class PaperParserUnitTest {
         String irrelevantUri = "dummyFileUri";
         List<String> irrelevantFileNames = new ArrayList<>();
         String irrelevantFileName = "filename";
-        irrelevantFileNames.add(irrelevantFileName);
-        ExtractedText extractedText = new ExtractedText(irrelevantUri, irrelevantFileNames);
+        ExtractedText extractedText = new ExtractedText(irrelevantUri, irrelevantFileName);
 
         // Act
         PaperParser.parse(extractedText);

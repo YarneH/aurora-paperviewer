@@ -55,22 +55,26 @@ public class PaperUnitTest {
     public void Abstract_content_shouldNotContainHtmlTags() {
         // Initialize
         String abstractHtmlTags = "Abstract</html> content";
+        String abstractHtmlBothTags = "<html>Section content. </html> Content line 2.";
         List<String> irrelevantAuthors = new ArrayList<>();
         List<PaperSection> irrelevantSections = new ArrayList<>();
 
         // Assert
-        new Paper("", irrelevantAuthors, "Title", abstractHtmlTags, irrelevantSections);
+        new Paper("", irrelevantAuthors, "Title", abstractHtmlBothTags, irrelevantSections);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void Section_content_shouldNotContainHtmlTags() {
         // Initialize
         String contentHtmlTags = "Section content. </html> Content line 2.";
+        String contentHtmlBothTags = "<html>Section content. </html> Content line 2.";
+
         List<String> irrelevantHeader = new ArrayList<>();
         List<String> irrelevantImages = new ArrayList<>();
 
         // Assert
         new PaperSection(irrelevantHeader, contentHtmlTags, irrelevantImages);
+        new PaperSection(irrelevantHeader, contentHtmlBothTags, irrelevantImages);
     }
 
 }

@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity
             tocViewPagerPositions.add(NO_NAVIGATION);
         }
 
-        StringBuilder tocEntry = new StringBuilder();
+        StringBuilder tocEntry = new StringBuilder((level * "\t ".length()) + title.length());
         for (int i = 0; i < level; i++) {
             tocEntry.append("\t  ");
         }

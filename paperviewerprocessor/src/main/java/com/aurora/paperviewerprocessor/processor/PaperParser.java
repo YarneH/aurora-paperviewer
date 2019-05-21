@@ -37,6 +37,8 @@ public final class PaperParser {
      *
      * @param extractedText The {@link ExtractedText} received from aurora
      * @return A parsed {@link Paper}
+     * @throws PaperDetectionException an indication that the paper is invalid,
+     * either no sections were parsed or the sections have no content
      */
     public static Paper parse(ExtractedText extractedText) throws PaperDetectionException {
         Paper processedPaper = new Paper(extractedText.getFilename());

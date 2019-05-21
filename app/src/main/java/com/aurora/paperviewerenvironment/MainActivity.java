@@ -1,6 +1,8 @@
 package com.aurora.paperviewerenvironment;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import com.aurora.auroralib.Constants;
 import com.aurora.auroralib.ExtractedText;
+import com.aurora.auroralib.ProcessorCommunicator;
 import com.aurora.paperviewerprocessor.paper.Paper;
 import com.aurora.paperviewerprocessor.paper.PaperSection;
 
@@ -167,8 +170,9 @@ public class MainActivity extends AppCompatActivity
 
         if (intentIsOkay) {
             handleIntentThatOpenedPlugin(intentThatStartedThisActivity);
+        } else {
+            showGoBackToAuroraBox();
         }
-
 
         mPaperViewModel.getPaper().observe(this, (Paper paper) -> {
             if (paper == null) {
@@ -220,6 +224,30 @@ public class MainActivity extends AppCompatActivity
             ImageFragment imageFragment = ImageFragment.newInstance();
             fm.beginTransaction().add(R.id.image_container, imageFragment).commit();
         });
+    }
+
+    /**
+     * Private function that shows a dialog box if the paper has disappeared from memory.
+     * This dialog box redirects the user to Aurora.
+     */
+    private void showGoBackToAuroraBox() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.dialog_message)
+                .setTitle(R.string.dialog_title);
+
+        builder.setPositiveButton(R.string.ok, (DialogInterface dialog, int id) -> {
+            // if the button is clicked (only possible action) the user is sent to Aurora
+            ProcessorCommunicator.returnToAurora(this);
+            finish();
+        });
+
+
+        AlertDialog dialog = builder.create();
+        // you cannot cancel this box only press the ok button
+        dialog.setCancelable(false);
+        dialog.show();
+
     }
 
     /**

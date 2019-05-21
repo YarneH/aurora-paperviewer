@@ -65,6 +65,9 @@ public class PaperViewModel extends AndroidViewModel {
      * @return number of sections
      */
     public int getNumberOfSections(){
+        if(mPaper == null) {
+            return 0;
+        }
         return mPaper.getValue().getSections().size();
     }
 
@@ -74,6 +77,9 @@ public class PaperViewModel extends AndroidViewModel {
      * @return number of sections
      */
     public boolean hasAbstract(){
+        if (mPaper == null) {
+            return false;
+        }
         return !mPaper.getValue().getAbstract().isEmpty();
     }
 
@@ -82,6 +88,11 @@ public class PaperViewModel extends AndroidViewModel {
      *
      * @return boolean indicating if there are images present
      */
-    public boolean hasImages(){ return !mPaper.getValue().getImages().isEmpty(); }
+    public boolean hasImages(){
+        if (mPaper == null) {
+            return false;
+        }
+        return !mPaper.getValue().getImages().isEmpty();
+    }
 
 }

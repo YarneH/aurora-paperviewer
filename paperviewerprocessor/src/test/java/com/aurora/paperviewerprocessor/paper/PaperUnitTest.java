@@ -1,14 +1,10 @@
 package com.aurora.paperviewerprocessor.paper;
 
-import android.graphics.Bitmap;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for the PluginObject Paper.

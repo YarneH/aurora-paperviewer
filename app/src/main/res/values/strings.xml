@@ -1,6 +1,6 @@
 <resources>
     <!-- Application info -->
-    <string name="app_name">Paperviewer</string>
+    <string name="app_name">PaperViewer</string>
     <string name="description">Making papers finally readable on your smartphone.</string>
 
     <!-- Action bar menu items -->
@@ -20,6 +20,11 @@
     <string name="gallery_item">Gallery item</string>
     <string name="abstract_header">Abstract</string>
 
+    <!-- Strings for dialogbox that redirects to Aurora -->
+    <string name="dialog_title">Oh nooooooo</string>
+    <string name="dialog_message">Your Paper has expired.\nYou can find more recent papers in Aurora.</string>
+    <string name="ok">OK</string>
+
     <!-- Header content for the abstract -->
     <string name="abstract_header_content">Abstract</string>
 
@@ -33,14 +38,20 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Settings activity -->
+    <!-- The font preferences -->
     <string name="font">Font</string>
     <string name="font_size">Font size</string>
-    <string name="font_size_summary">Pick a font size</string>
+    <string name="font_size_summary">Pick a font size.</string>
     <string name="font_family">Font family</string>
-    <string name="font_family_summary">Click to show a list to choose from</string>
+    <string name="font_family_summary">Click to show a list to choose from.</string>
     <!-- This should be a font family from the font_family list in the arrays.xml resource file -->
     <string name="default_font_family">Arial</string>
+    <!-- The image toggle preferences -->
+    <string name="image">Images in text</string>
+    <string name="image_summary">Toggle to disable/enable images in text. \nWhen disabled, images are still accessible from within the gallery. </string>
+    <string name="default_image_toggle">true</string>
 
+    <!-- Abstract and section navigation descriptions -->
     <string name="btn_abstract_nav_top_description">Navigate to the top of the abstract</string>
     <string name="btn_abstract_nav_right_description">Navigate to the sections</string>
     <string name="btn_section_nav_left_description">Navigate to the previous section</string>

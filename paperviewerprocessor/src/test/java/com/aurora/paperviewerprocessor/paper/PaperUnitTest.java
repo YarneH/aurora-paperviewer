@@ -6,8 +6,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * Unit tests for the PluginObject Paper.
  */
@@ -22,8 +20,9 @@ public class PaperUnitTest {
         header1.add("Section1 header");
         List<String> header2 = new ArrayList<>();
         header1.add("Section2 header");
-        PaperSection section1 = new PaperSection(header1, "Section1 content");
-        PaperSection section2 = new PaperSection(header2, "Section2 content");
+        List<String> irrelevantImages = new ArrayList<>();
+        PaperSection section1 = new PaperSection(header1, "Section1 content", irrelevantImages);
+        PaperSection section2 = new PaperSection(header2, "Section2 content", irrelevantImages);
         paperSections.add(section1);
         paperSections.add(section2);
 
@@ -37,7 +36,7 @@ public class PaperUnitTest {
 
         // Act
         // Json the Paper to prepare it to be sent to Aurora for caching
-        String jsonPaper =  paper.toJSON();
+        String jsonPaper = paper.toJSON();
         // de-JSON the JSON string that was sent to Aurora (and would be received back when opening a cached file)
         Paper extractedPaper = Paper.fromJson(jsonPaper, Paper.class);
 
@@ -45,4 +44,5 @@ public class PaperUnitTest {
         // Assert that JSONing and de-JSONing the Paper object does not alter it
         assert (paper.equals(extractedPaper));
     }
+
 }

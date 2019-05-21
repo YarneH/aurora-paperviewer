@@ -2,7 +2,6 @@ package com.aurora.paperviewerprocessor.paper;
 
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,13 +13,18 @@ import java.util.Objects;
  * </p>
  * <p>
  * Example: <br>
- *     1. Section title <br>
- *     1.1 Subsection title <br>
- *     1.1.1 Subsubsection title <br>
+ * 1. Section title <br>
+ * 1.1 Subsection title <br>
+ * 1.1.1 Subsubsection title <br>
  * Will be split-up by subsubsection content.
  * </p>
  */
 public class PaperSection {
+
+    /**
+     * Tag for logging.
+     */
+    private static final String CLASS_TAG = PaperSection.class.getSimpleName();
 
     /**
      * The header of the paper consisting of the title hierarchy.
@@ -30,38 +34,62 @@ public class PaperSection {
     private List<String> mHeader;
 
     /**
+     * The images in this PaperSection.
+     * Their positions are referenced in the content with a placeholder
+     * tag.
+     */
+    private List<String> mImages;
+
+    /**
      * The content of the paper.
      */
     private String mContent;
 
-    public PaperSection(@NonNull List<String> header, String content) {
+    public PaperSection(@NonNull List<String> header, @NonNull String content, @NonNull List<String> images) {
         this.mHeader = header;
         this.mContent = content;
+        this.mImages = images;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the header of this paper
+     */
     public List<String> getHeader() {
-        if(mHeader == null){
-            return new ArrayList<>();
-        }
         return mHeader;
     }
 
-    public void addHeader(String header) {
-        if(mHeader == null){
-            mHeader = new ArrayList<>();
-        }
-        mHeader.add(header);
-    }
-
-    public int getLevel(){
-        if(mHeader == null || mHeader.isEmpty()){
+    /**
+     * Retrieves the hierarchical level of this paper section.
+     * If there is no header content or only empty titles,
+     * the assigned level will be 0.
+     *
+     * @return the hierarchical level of this paper section
+     */
+    public int getLevel() {
+        if (mHeader == null || mHeader.isEmpty()) {
             return 0;
         }
         return (mHeader.size() - 1);
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the content of this section
+     */
     public String getContent() {
         return mContent;
+    }
+
+    /**
+     * Default getter.
+     *
+     * @return the images contained in this paper section
+     */
+    public List<String> getImages() {
+        return mImages;
     }
 
     @Override

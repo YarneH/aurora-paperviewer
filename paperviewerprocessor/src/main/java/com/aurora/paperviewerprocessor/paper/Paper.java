@@ -1,10 +1,10 @@
 package com.aurora.paperviewerprocessor.paper;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.aurora.auroralib.BitmapListAdapter;
 import com.aurora.auroralib.PluginObject;
-import com.aurora.paperviewerprocessor.PluginConstants;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.util.ArrayList;
@@ -15,6 +15,11 @@ import java.util.Objects;
  * Paper object for the enhanced representation of a paper.
  */
 public class Paper extends PluginObject {
+
+    /**
+     * Tag for logging.
+     */
+    private static final String CLASS_TAG = Paper.class.getSimpleName();
 
     /**
      * The authors the paper
@@ -43,58 +48,108 @@ public class Paper extends PluginObject {
     private List<Bitmap> mImages = new ArrayList<>();
 
     public Paper(String fileName) {
-        super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
+        super(fileName);
     }
 
-    public Paper(String fileName, List<String> authors, String title,
-                 String paperAbstract, List<PaperSection> sections) {
-        super(fileName, PluginConstants.UNIQUE_PLUGIN_NAME);
+    public Paper(String fileName, @NonNull List<String> authors, @NonNull String title,
+                 @NonNull String paperAbstract, @NonNull List<PaperSection> sections) {
+        super(fileName);
         this.mAuthors = authors;
         this.mTitle = title;
         this.mAbstract = paperAbstract;
         this.mSections = sections;
     }
 
-    public void setAuthors(List<String> authors) {
+    /**
+     * Default setter.
+     *
+     * @param authors the authors for this paper
+     */
+    public void setAuthors(@NonNull List<String> authors) {
         this.mAuthors = authors;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the authors of this paper
+     */
     public List<String> getAuthors() {
         return this.mAuthors;
     }
 
-    public void setTitle(String title) {
+    /**
+     * Default setter.
+     *
+     * @param title the title for this paper
+     */
+    public void setTitle(@NonNull String title) {
         this.mTitle = title;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return the authors of this paper
+     */
     public String getTitle() {
         return this.mTitle;
     }
 
-    public void setAbstract(String abstractContent) {
-        if(abstractContent == null){
-            this.mAbstract = "";
-        }
+    /**
+     * Default setter.
+     *
+     * @param abstractContent the abstract for this paper
+     */
+    public void setAbstract(@NonNull String abstractContent) {
         this.mAbstract = abstractContent;
     }
 
-    public void setSections(List<PaperSection> sections) {
-        this.mSections = sections;
-    }
-
-    public List<PaperSection> getSections() {
-        return this.mSections;
-    }
-
+    /**
+     * Default getter.
+     *
+     * @return the authors of this paper
+     */
     public String getAbstract() {
         return this.mAbstract;
     }
 
+    /**
+     * Default setter.
+     *
+     * @param sections the sections for this paper
+     */
+    public void setSections(@NonNull List<PaperSection> sections) {
+        this.mSections = sections;
+    }
+
+    /**
+     * Default getter.
+     *
+     * @return the sections of this paper
+     */
+    public List<PaperSection> getSections() {
+        return this.mSections;
+    }
+
+    /**
+     * Default setter.
+     *
+     * @param images the images for this paper
+     */
     public void setImages(List<Bitmap> images) {
         this.mImages = images;
     }
 
+    /**
+     * Default getter.
+     *
+     * @return all the images contained in this paper
+     */
     public List<Bitmap> getImages() {
+        if (mImages == null) {
+            return new ArrayList<>();
+        }
         return this.mImages;
     }
 
@@ -113,14 +168,14 @@ public class Paper extends PluginObject {
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
-            if(!paper.getAbstract().equals(mAbstract)){
+            if (!paper.getAbstract().equals(mAbstract)) {
                 return false;
             }
             boolean equalHeaderContent = paper.getAuthors().equals(mAuthors)
                     && paper.getTitle().equals(mTitle);
             boolean equalAbstract = true;
             boolean equalContent = paper.getSections().equals(mSections);
-            return  equalHeaderContent && equalAbstract && equalContent;
+            return equalHeaderContent && equalAbstract && equalContent;
         }
         return false;
     }
@@ -131,7 +186,7 @@ public class Paper extends PluginObject {
         ret.append("title=").append(mTitle);
         ret.append(", author=").append(mAuthors);
 
-        if(mAbstract != null){
+        if (mAbstract != null) {
             ret.append(",\nabstract=").append(mAbstract);
         }
 

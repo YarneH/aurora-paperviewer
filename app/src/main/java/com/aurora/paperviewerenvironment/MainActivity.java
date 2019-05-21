@@ -227,8 +227,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Private function that shows a dialog box if the recipe has disappeared from memory. This dialog box redirects
-     * the user to Aurora
+     * Private function that shows a dialog box if the paper has disappeared from memory.
+     * This dialog box redirects the user to Aurora.
      */
     private void showGoBackToAuroraBox() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

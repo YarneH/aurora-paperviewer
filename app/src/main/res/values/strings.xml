@@ -20,6 +20,11 @@
     <string name="gallery_item">Gallery item</string>
     <string name="abstract_header">Abstract</string>
 
+    <!-- Strings for dialogbox that redirects to Aurora -->
+    <string name="dialog_title">Oh nooooooo</string>
+    <string name="dialog_message">Your Paper has expired.\nYou can find more recent papers in Aurora.</string>
+    <string name="ok">OK</string>
+
     <!-- Header content for the abstract -->
     <string name="abstract_header_content">Abstract</string>
 

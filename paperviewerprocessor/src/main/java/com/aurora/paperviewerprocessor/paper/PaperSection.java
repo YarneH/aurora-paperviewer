@@ -49,18 +49,8 @@ public class PaperSection {
 
     public PaperSection(@NonNull List<String> header, @NonNull String content, @NonNull List<String> images) {
         this.mHeader = header;
-        if (containsHtmlTags(content)) {
-            throw new IllegalArgumentException(CLASS_TAG + ": the content contains HTML tags. " +
-                    "HTML tags are not allowed because they can cause unexpected behavior.");
-        }
         this.mContent = content;
         this.mImages = images;
-    }
-
-    private static boolean containsHtmlTags(String content) {
-        Pattern p = Pattern.compile("</?.*?>");
-        Matcher m = p.matcher(content);
-        return m.find();
     }
 
     /**

@@ -58,18 +58,8 @@ public class Paper extends PluginObject {
         super(fileName);
         this.mAuthors = authors;
         this.mTitle = title;
-        if (containsHtmlTags(paperAbstract)) {
-            throw new IllegalArgumentException(CLASS_TAG + ": the abstract of the paper contains HTML tags. " +
-                    "HTML tags are not allowed because they can cause unexpected behavior.");
-        }
         this.mAbstract = paperAbstract;
         this.mSections = sections;
-    }
-
-    private static boolean containsHtmlTags(String content) {
-        Pattern p = Pattern.compile("</?.*?>");
-        Matcher m = p.matcher(content);
-        return m.find();
     }
 
     /**

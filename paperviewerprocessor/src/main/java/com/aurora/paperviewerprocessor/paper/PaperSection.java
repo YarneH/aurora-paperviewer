@@ -57,7 +57,7 @@ public class PaperSection {
         this.mImages = images;
     }
 
-    private boolean containsHtmlTags(String content) {
+    private static boolean containsHtmlTags(String content) {
         Pattern p = Pattern.compile("</?.*?>");
         Matcher m = p.matcher(content);
         return m.find();

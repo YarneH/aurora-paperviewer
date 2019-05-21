@@ -66,7 +66,7 @@ public class Paper extends PluginObject {
         this.mSections = sections;
     }
 
-    private boolean containsHtmlTags(String content) {
+    private static boolean containsHtmlTags(String content) {
         Pattern p = Pattern.compile("</?.*?>");
         Matcher m = p.matcher(content);
         return m.find();

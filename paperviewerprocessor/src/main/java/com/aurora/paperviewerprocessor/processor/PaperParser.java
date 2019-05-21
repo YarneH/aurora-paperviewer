@@ -198,10 +198,7 @@ public final class PaperParser {
      * @return boolean indicating whether the section is valid
      */
     private static boolean validSection(Section section){
-        if(ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle())){
-            return false;
-        }
-        return true;
+        return !ABSTRACT_TITLE.equalsIgnoreCase(section.getTitle());
     }
 
     /**

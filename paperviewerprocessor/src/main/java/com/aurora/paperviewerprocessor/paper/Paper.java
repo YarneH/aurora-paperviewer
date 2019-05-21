@@ -10,11 +10,18 @@ import com.google.gson.annotations.JsonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Paper object for the enhanced representation of a paper.
  */
 public class Paper extends PluginObject {
+
+    /**
+     * Tag for logging.
+     */
+    private static final String CLASS_TAG = Paper.class.getSimpleName();
 
     /**
      * The authors the paper
@@ -46,13 +53,23 @@ public class Paper extends PluginObject {
         super(fileName);
     }
 
-    public Paper(String fileName, @NonNull List<String> authors,@NonNull String title,
+    public Paper(String fileName, @NonNull List<String> authors, @NonNull String title,
                  @NonNull String paperAbstract, @NonNull List<PaperSection> sections) {
         super(fileName);
         this.mAuthors = authors;
         this.mTitle = title;
+        if (containsHtmlTags(paperAbstract)) {
+            throw new IllegalArgumentException(CLASS_TAG + ": the abstract of the paper contains HTML tags. " +
+                    "HTML tags are not allowed because they can cause unexpected behavior.");
+        }
         this.mAbstract = paperAbstract;
         this.mSections = sections;
+    }
+
+    private static boolean containsHtmlTags(String content) {
+        Pattern p = Pattern.compile("</?.*?>");
+        Matcher m = p.matcher(content);
+        return m.find();
     }
 
     /**
@@ -142,7 +159,7 @@ public class Paper extends PluginObject {
      * @return all the images contained in this paper
      */
     public List<Bitmap> getImages() {
-        if(mImages == null) {
+        if (mImages == null) {
             return new ArrayList<>();
         }
         return this.mImages;
@@ -163,14 +180,14 @@ public class Paper extends PluginObject {
     public boolean equals(Object o) {
         if (o instanceof Paper) {
             Paper paper = (Paper) o;
-            if(!paper.getAbstract().equals(mAbstract)){
+            if (!paper.getAbstract().equals(mAbstract)) {
                 return false;
             }
             boolean equalHeaderContent = paper.getAuthors().equals(mAuthors)
                     && paper.getTitle().equals(mTitle);
             boolean equalAbstract = true;
             boolean equalContent = paper.getSections().equals(mSections);
-            return  equalHeaderContent && equalAbstract && equalContent;
+            return equalHeaderContent && equalAbstract && equalContent;
         }
         return false;
     }
@@ -181,7 +198,7 @@ public class Paper extends PluginObject {
         ret.append("title=").append(mTitle);
         ret.append(", author=").append(mAuthors);
 
-        if(mAbstract != null){
+        if (mAbstract != null) {
             ret.append(",\nabstract=").append(mAbstract);
         }
 

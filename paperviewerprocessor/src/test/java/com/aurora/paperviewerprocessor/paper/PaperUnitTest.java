@@ -36,7 +36,7 @@ public class PaperUnitTest {
 
         // Act
         // Json the Paper to prepare it to be sent to Aurora for caching
-        String jsonPaper =  paper.toJSON();
+        String jsonPaper = paper.toJSON();
         // de-JSON the JSON string that was sent to Aurora (and would be received back when opening a cached file)
         Paper extractedPaper = Paper.fromJson(jsonPaper, Paper.class);
 
@@ -44,4 +44,31 @@ public class PaperUnitTest {
         // Assert that JSONing and de-JSONing the Paper object does not alter it
         assert (paper.equals(extractedPaper));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void Abstract_content_shouldNotContainHtmlTags() {
+        // Initialize
+        String abstractHtmlTags = "Abstract</html> content";
+        String abstractHtmlBothTags = "<html>Section content. </html> Content line 2.";
+        List<String> irrelevantAuthors = new ArrayList<>();
+        List<PaperSection> irrelevantSections = new ArrayList<>();
+
+        // Assert
+        new Paper("", irrelevantAuthors, "Title", abstractHtmlBothTags, irrelevantSections);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void Section_content_shouldNotContainHtmlTags() {
+        // Initialize
+        String contentHtmlTags = "Section content. </html> Content line 2.";
+        String contentHtmlBothTags = "<html>Section content. </html> Content line 2.";
+
+        List<String> irrelevantHeader = new ArrayList<>();
+        List<String> irrelevantImages = new ArrayList<>();
+
+        // Assert
+        new PaperSection(irrelevantHeader, contentHtmlTags, irrelevantImages);
+        new PaperSection(irrelevantHeader, contentHtmlBothTags, irrelevantImages);
+    }
+
 }

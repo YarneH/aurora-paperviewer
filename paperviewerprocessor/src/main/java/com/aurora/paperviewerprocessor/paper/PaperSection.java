@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -13,13 +15,18 @@ import java.util.Objects;
  * </p>
  * <p>
  * Example: <br>
- *     1. Section title <br>
- *     1.1 Subsection title <br>
- *     1.1.1 Subsubsection title <br>
+ * 1. Section title <br>
+ * 1.1 Subsection title <br>
+ * 1.1.1 Subsubsection title <br>
  * Will be split-up by subsubsection content.
  * </p>
  */
 public class PaperSection {
+
+    /**
+     * Tag for logging.
+     */
+    private static final String CLASS_TAG = PaperSection.class.getSimpleName();
 
     /**
      * The header of the paper consisting of the title hierarchy.
@@ -42,8 +49,18 @@ public class PaperSection {
 
     public PaperSection(@NonNull List<String> header, @NonNull String content, @NonNull List<String> images) {
         this.mHeader = header;
+        if (containsHtmlTags(content)) {
+            throw new IllegalArgumentException(CLASS_TAG + ": the content contains HTML tags. " +
+                    "HTML tags are not allowed because they can cause unexpected behavior.");
+        }
         this.mContent = content;
         this.mImages = images;
+    }
+
+    private static boolean containsHtmlTags(String content) {
+        Pattern p = Pattern.compile("</?.*?>");
+        Matcher m = p.matcher(content);
+        return m.find();
     }
 
     /**
@@ -62,8 +79,8 @@ public class PaperSection {
      *
      * @return the hierarchical level of this paper section
      */
-    public int getLevel(){
-        if(mHeader == null || mHeader.isEmpty()){
+    public int getLevel() {
+        if (mHeader == null || mHeader.isEmpty()) {
             return 0;
         }
         return (mHeader.size() - 1);
@@ -83,7 +100,7 @@ public class PaperSection {
      *
      * @return the images contained in this paper section
      */
-    public List<String> getImages(){
+    public List<String> getImages() {
         return mImages;
     }
 
